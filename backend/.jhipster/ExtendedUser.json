@@ -1,0 +1,54 @@
+{
+  "applications": "*",
+  "changelogDate": "20221208153525",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "extended_user",
+  "fields": [
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "3500",
+      "javadoc": "description"
+    },
+    {
+      "fieldName": "web",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "100",
+      "javadoc": "web"
+    },
+    {
+      "fieldName": "location",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50",
+      "javadoc": "location"
+    },
+    {
+      "fieldName": "profession",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50",
+      "javadoc": "profession"
+    }
+  ],
+  "fluentMethods": true,
+  "javadoc": "The ExtendedUser entity.\\n@author alejandro.espartal",
+  "jpaMetamodelFiltering": true,
+  "name": "ExtendedUser",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "id": true,
+      "otherEntityName": "user",
+      "ownerSide": true,
+      "relationshipName": "user",
+      "relationshipType": "one-to-one",
+      "useJPADerivedIdentifier": true
+    }
+  ],
+  "service": "serviceImpl"
+}

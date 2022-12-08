@@ -1,0 +1,79 @@
+/**
+ * CONSTANTES DE CONFIGURACIÓN
+ * ===========================
+ */
+
+STR_LONGITUD_CORTA = 50
+STR_LONGITUD_MEDIA = 100
+STR_LONGITUD_LARGA = 300
+STR_LONGITUD_MAXIMA = 3500
+
+STR_LONGITUD_CODIGO = 20
+STR_LONGITUD_DESCRIPCION = 50
+
+/**
+ * ENTITIES
+ * =========
+ */
+
+/**
+ * The ExtendedUser entity.
+ * @author alejandro.espartal
+ */
+entity ExtendedUser {
+    /** description */
+    description String maxlength(STR_LONGITUD_MAXIMA)
+    /** web */
+    web String maxlength(STR_LONGITUD_MEDIA)
+    /** location */
+    location String maxlength(STR_LONGITUD_CORTA)
+    /** profession */
+    profession String maxlength(STR_LONGITUD_CORTA)
+}
+
+/**
+ * The Project entity.
+ * @author alejandro.espartal
+ */
+entity Project {
+    /** name */
+    name String required maxlength(STR_LONGITUD_MEDIA)
+    /** description */
+    description String required maxlength(STR_LONGITUD_MAXIMA)
+    /** link */
+    link String required maxlength(STR_LONGITUD_MEDIA)
+    /** image */
+    image Blob
+    /** order */
+    order Integer required
+    /** creationDate */
+    creationDate Instant required
+    /** isPrivate */
+    isPrivate Boolean required
+    /** active */
+    active Boolean required
+}
+
+/**
+ * One to one relationships.
+ */
+relationship OneToOne {
+    ExtendedUser{user} to User with jpaDerivedIdentifier
+}
+
+/**
+ * Many to one relationship.
+ */
+relationship ManyToOne {
+    Project{extendedUser required} to ExtendedUser
+}
+
+/**
+ * OPTIONS
+ * ========
+ */
+
+paginate * with pagination
+service * with serviceImpl
+filter *
+dto * with mapstruct
