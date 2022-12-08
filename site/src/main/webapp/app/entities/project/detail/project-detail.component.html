@@ -1,0 +1,79 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="project">
+      <h2 data-cy="projectDetailsHeading"><span jhiTranslate="projectApp.project.detail.title">Project</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ project.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="projectApp.project.name" [ngbTooltip]="'projectApp.project.help.name' | translate">Name</span></dt>
+        <dd>
+          <span>{{ project.name }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.project.description" [ngbTooltip]="'projectApp.project.help.description' | translate"
+            >Description</span
+          >
+        </dt>
+        <dd>
+          <span>{{ project.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="projectApp.project.link" [ngbTooltip]="'projectApp.project.help.link' | translate">Link</span></dt>
+        <dd>
+          <span>{{ project.link }}</span>
+        </dd>
+        <dt><span jhiTranslate="projectApp.project.image" [ngbTooltip]="'projectApp.project.help.image' | translate">Image</span></dt>
+        <dd>
+          <div *ngIf="project.image">
+            <a (click)="openFile(project.image, project.imageContentType)" jhiTranslate="entity.action.open">Abrir</a>
+            {{ project.imageContentType }}, {{ byteSize(project.image) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="projectApp.project.order" [ngbTooltip]="'projectApp.project.help.order' | translate">Order</span></dt>
+        <dd>
+          <span>{{ project.order }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.project.creationDate" [ngbTooltip]="'projectApp.project.help.creationDate' | translate"
+            >Creation Date</span
+          >
+        </dt>
+        <dd>
+          <span>{{ project.creationDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.project.isPrivate" [ngbTooltip]="'projectApp.project.help.isPrivate' | translate">Is Private</span>
+        </dt>
+        <dd>
+          <span>{{ project.isPrivate }}</span>
+        </dd>
+        <dt><span jhiTranslate="projectApp.project.active" [ngbTooltip]="'projectApp.project.help.active' | translate">Active</span></dt>
+        <dd>
+          <span>{{ project.active }}</span>
+        </dd>
+        <dt><span jhiTranslate="projectApp.project.extendedUser">Extended User</span></dt>
+        <dd>
+          <div *ngIf="project.extendedUser">
+            <a [routerLink]="['/extended-user', project.extendedUser.id, 'view']">{{ project.extendedUser.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+      </button>
+
+      <button type="button" [routerLink]="['/project', project.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+      </button>
+    </div>
+  </div>
+</div>

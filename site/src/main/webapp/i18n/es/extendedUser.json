@@ -1,0 +1,33 @@
+{
+  "projectApp": {
+    "extendedUser": {
+      "home": {
+        "title": "Extended Users",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Extended User",
+        "createOrEditLabel": "Crear o editar Extended User",
+        "notFound": "Ningún Extended Users encontrado"
+      },
+      "created": "Un nuevo Extended User ha sido creado con el identificador {{ param }}",
+      "updated": "Un Extended User ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Extended User ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Extended User {{ id }}?"
+      },
+      "detail": {
+        "title": "Extended User"
+      },
+      "description": "Description",
+      "web": "Web",
+      "location": "Location",
+      "profession": "Profession",
+      "user": "User",
+      "help": {
+        "description": "description",
+        "web": "web",
+        "location": "location",
+        "profession": "profession"
+      }
+    }
+  }
+}

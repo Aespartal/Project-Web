@@ -1,0 +1,42 @@
+{
+  "projectApp": {
+    "project": {
+      "home": {
+        "title": "Projects",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Project",
+        "createOrEditLabel": "Crear o editar Project",
+        "notFound": "Ningún Projects encontrado"
+      },
+      "created": "Un nuevo Project ha sido creado con el identificador {{ param }}",
+      "updated": "Un Project ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Project ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Project {{ id }}?"
+      },
+      "detail": {
+        "title": "Project"
+      },
+      "id": "ID",
+      "name": "Name",
+      "description": "Description",
+      "link": "Link",
+      "image": "Image",
+      "order": "Order",
+      "creationDate": "Creation Date",
+      "isPrivate": "Is Private",
+      "active": "Active",
+      "extendedUser": "Extended User",
+      "help": {
+        "name": "name",
+        "description": "description",
+        "link": "link",
+        "image": "image",
+        "order": "order",
+        "creationDate": "creationDate",
+        "isPrivate": "isPrivate",
+        "active": "active"
+      }
+    }
+  }
+}
