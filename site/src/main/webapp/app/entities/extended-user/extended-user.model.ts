@@ -1,6 +1,7 @@
 import { IUser } from 'app/entities/user/user.model';
 
 export interface IExtendedUser {
+  id: number;
   description?: string | null;
   web?: string | null;
   location?: string | null;
