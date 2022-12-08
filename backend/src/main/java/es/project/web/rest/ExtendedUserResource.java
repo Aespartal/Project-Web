@@ -1,6 +1,8 @@
 package es.project.web.rest;
 
+import es.project.domain.User;
 import es.project.repository.ExtendedUserRepository;
+import es.project.repository.UserRepository;
 import es.project.service.ExtendedUserQueryService;
 import es.project.service.ExtendedUserService;
 import es.project.service.criteria.ExtendedUserCriteria;
@@ -49,8 +51,7 @@ public class ExtendedUserResource {
     public ExtendedUserResource(
         ExtendedUserService extendedUserService,
         ExtendedUserRepository extendedUserRepository,
-        ExtendedUserQueryService extendedUserQueryService
-    ) {
+        ExtendedUserQueryService extendedUserQueryService) {
         this.extendedUserService = extendedUserService;
         this.extendedUserRepository = extendedUserRepository;
         this.extendedUserQueryService = extendedUserQueryService;
