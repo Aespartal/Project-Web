@@ -1,34 +1,34 @@
 package es.project.service.mapper;
 
+import es.project.domain.Commentary;
 import es.project.domain.ExtendedUser;
+import es.project.domain.Image;
 import es.project.domain.LikeCommentary;
-import es.project.domain.LikeImage;
-import es.project.domain.User;
+import es.project.service.dto.CommentaryDTO;
 import es.project.service.dto.ExtendedUserDTO;
+import es.project.service.dto.ImageDTO;
 import es.project.service.dto.LikeCommentaryDTO;
-import es.project.service.dto.LikeImageDTO;
-import es.project.service.dto.UserDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity {@link ExtendedUser} and its DTO {@link ExtendedUserDTO}.
+ * Mapper for the entity {@link Commentary} and its DTO {@link CommentaryDTO}.
  */
 @Mapper(componentModel = "spring")
-public interface ExtendedUserMapper extends EntityMapper<ExtendedUserDTO, ExtendedUser> {
-    @Mapping(target = "user", source = "user", qualifiedByName = "userId")
-    @Mapping(target = "likeImage", source = "likeImage", qualifiedByName = "likeImageId")
+public interface CommentaryMapper extends EntityMapper<CommentaryDTO, Commentary> {
+    @Mapping(target = "extendedUser", source = "extendedUser", qualifiedByName = "extendedUserId")
+    @Mapping(target = "image", source = "image", qualifiedByName = "imageId")
     @Mapping(target = "likeCommentary", source = "likeCommentary", qualifiedByName = "likeCommentaryId")
-    ExtendedUserDTO toDto(ExtendedUser s);
+    CommentaryDTO toDto(Commentary s);
 
-    @Named("userId")
+    @Named("extendedUserId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    UserDTO toDtoUserId(User user);
+    ExtendedUserDTO toDtoExtendedUserId(ExtendedUser extendedUser);
 
-    @Named("likeImageId")
+    @Named("imageId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    LikeImageDTO toDtoLikeImageId(LikeImage likeImage);
+    ImageDTO toDtoImageId(Image image);
 
     @Named("likeCommentaryId")
     @BeanMapping(ignoreByDefault = true)

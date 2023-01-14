@@ -93,19 +93,40 @@ public class ExtendedUserQueryService extends QueryService<ExtendedUser> {
             if (criteria.getDescription() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDescription(), ExtendedUser_.description));
             }
-            if (criteria.getWeb() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getWeb(), ExtendedUser_.web));
-            }
             if (criteria.getLocation() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLocation(), ExtendedUser_.location));
             }
-            if (criteria.getProfession() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getProfession(), ExtendedUser_.profession));
+            if (criteria.getHeight() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getHeight(), ExtendedUser_.height));
+            }
+            if (criteria.getWeight() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getWeight(), ExtendedUser_.weight));
+            }
+            if (criteria.getBirthDate() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getBirthDate(), ExtendedUser_.birthDate));
             }
             if (criteria.getUserId() != null) {
                 specification =
                     specification.and(
                         buildSpecification(criteria.getUserId(), root -> root.join(ExtendedUser_.user, JoinType.LEFT).get(User_.id))
+                    );
+            }
+            if (criteria.getLikeImageId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getLikeImageId(),
+                            root -> root.join(ExtendedUser_.likeImage, JoinType.LEFT).get(LikeImage_.id)
+                        )
+                    );
+            }
+            if (criteria.getLikeCommentaryId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getLikeCommentaryId(),
+                            root -> root.join(ExtendedUser_.likeCommentary, JoinType.LEFT).get(LikeCommentary_.id)
+                        )
                     );
             }
         }

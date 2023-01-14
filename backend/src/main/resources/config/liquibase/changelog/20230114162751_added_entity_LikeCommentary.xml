@@ -7,37 +7,19 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <!--
-        Added the entity ExtendedUser.
+        Added the entity LikeCommentary.
     -->
-    <changeSet id="20221208153525-1" author="jhipster">
-        <createTable tableName="extended_user" remarks="The ExtendedUser entity.\n@author alejandro.espartal">
+    <changeSet id="20230114162751-1" author="jhipster">
+        <createTable tableName="like_commentary">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="description" type="varchar(3500)" remarks="description">
-                <constraints nullable="true" />
-            </column>
-            <column name="location" type="varchar(50)" remarks="location">
-                <constraints nullable="true" />
-            </column>
-            <column name="height" type="double" remarks="height">
+            <column name="creation_date" type="${datetimeType}" remarks="creationDate">
                 <constraints nullable="false" />
-            </column>
-            <column name="weight" type="double" remarks="weight">
-                <constraints nullable="false" />
-            </column>
-            <column name="birth_date" type="${datetimeType}" remarks="birthDate">
-                <constraints nullable="false" />
-            </column>
-            <column name="like_image_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="like_commentary_id" type="bigint">
-                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="extended_user" columnName="birth_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="like_commentary" columnName="creation_date" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -50,18 +32,14 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <changeSet id="20221208153525-1-data" author="jhipster">
+    <changeSet id="20230114162751-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/data/extended_user.csv"
+                  file="config/liquibase/fake-data/like_commentary.csv"
                   separator=";"
-                  tableName="extended_user"
+                  tableName="like_commentary"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="description" type="string"/>
-            <column name="location" type="string"/>
-            <column name="height" type="numeric"/>
-            <column name="weight" type="numeric"/>
-            <column name="birth_date" type="date"/>
+            <column name="creation_date" type="date"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

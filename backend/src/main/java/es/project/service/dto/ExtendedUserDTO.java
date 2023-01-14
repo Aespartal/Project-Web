@@ -2,6 +2,7 @@ package es.project.service.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 import javax.validation.constraints.*;
 
@@ -22,13 +23,6 @@ public class ExtendedUserDTO implements Serializable {
     private String description;
 
     /**
-     * web
-     */
-    @Size(max = 100)
-    @Schema(description = "web")
-    private String web;
-
-    /**
      * location
      */
     @Size(max = 50)
@@ -36,13 +30,33 @@ public class ExtendedUserDTO implements Serializable {
     private String location;
 
     /**
-     * profession
+     * height
      */
-    @Size(max = 50)
-    @Schema(description = "profession")
-    private String profession;
+    @NotNull
+    @DecimalMin(value = "0")
+    @Schema(description = "height", required = true)
+    private Double height;
+
+    /**
+     * weight
+     */
+    @NotNull
+    @DecimalMin(value = "0")
+    @Schema(description = "weight", required = true)
+    private Double weight;
+
+    /**
+     * birthDate
+     */
+    @NotNull
+    @Schema(description = "birthDate", required = true)
+    private Instant birthDate;
 
     private UserDTO user;
+
+    private LikeImageDTO likeImage;
+
+    private LikeCommentaryDTO likeCommentary;
 
     public Long getId() {
         return id;
@@ -60,14 +74,6 @@ public class ExtendedUserDTO implements Serializable {
         this.description = description;
     }
 
-    public String getWeb() {
-        return web;
-    }
-
-    public void setWeb(String web) {
-        this.web = web;
-    }
-
     public String getLocation() {
         return location;
     }
@@ -76,12 +82,28 @@ public class ExtendedUserDTO implements Serializable {
         this.location = location;
     }
 
-    public String getProfession() {
-        return profession;
+    public Double getHeight() {
+        return height;
     }
 
-    public void setProfession(String profession) {
-        this.profession = profession;
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public Instant getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Instant birthDate) {
+        this.birthDate = birthDate;
     }
 
     public UserDTO getUser() {
@@ -90,6 +112,22 @@ public class ExtendedUserDTO implements Serializable {
 
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    public LikeImageDTO getLikeImage() {
+        return likeImage;
+    }
+
+    public void setLikeImage(LikeImageDTO likeImage) {
+        this.likeImage = likeImage;
+    }
+
+    public LikeCommentaryDTO getLikeCommentary() {
+        return likeCommentary;
+    }
+
+    public void setLikeCommentary(LikeCommentaryDTO likeCommentary) {
+        this.likeCommentary = likeCommentary;
     }
 
     @Override
@@ -119,10 +157,13 @@ public class ExtendedUserDTO implements Serializable {
         return "ExtendedUserDTO{" +
             "id=" + getId() +
             ", description='" + getDescription() + "'" +
-            ", web='" + getWeb() + "'" +
             ", location='" + getLocation() + "'" +
-            ", profession='" + getProfession() + "'" +
+            ", height=" + getHeight() +
+            ", weight=" + getWeight() +
+            ", birthDate='" + getBirthDate() + "'" +
             ", user=" + getUser() +
+            ", likeImage=" + getLikeImage() +
+            ", likeCommentary=" + getLikeCommentary() +
             "}";
     }
 }

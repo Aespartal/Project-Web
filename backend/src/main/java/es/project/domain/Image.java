@@ -3,16 +3,18 @@ package es.project.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 /**
- * The Project entity.\n@author alejandro.espartal
+ * The Image entity.\n@author alejandro.espartal
  */
 @Entity
-@Table(name = "project")
+@Table(name = "image")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Project implements Serializable {
+public class Image implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,29 +41,19 @@ public class Project implements Serializable {
     private String description;
 
     /**
-     * link
-     */
-    @NotNull
-    @Size(max = 100)
-    @Column(name = "link", length = 100, nullable = false)
-    private String link;
-
-    /**
      * image
      */
-    @Lob
-    @Column(name = "image")
-    private byte[] image;
-
-    @Column(name = "image_content_type")
-    private String imageContentType;
+    @NotNull
+    @Size(max = 3500)
+    @Column(name = "image", length = 3500, nullable = false)
+    private String image;
 
     /**
-     * order
+     * imageType
      */
     @NotNull
-    @Column(name = "jhi_order", nullable = false)
-    private Integer order;
+    @Column(name = "image_type", nullable = false)
+    private String imageType;
 
     /**
      * creationDate
@@ -71,23 +63,30 @@ public class Project implements Serializable {
     private Instant creationDate;
 
     /**
+     * modificationDate
+     */
+    @Column(name = "modification_date")
+    private Instant modificationDate;
+
+    /**
      * isPrivate
      */
     @NotNull
     @Column(name = "is_private", nullable = false)
     private Boolean isPrivate;
 
-    /**
-     * active
-     */
-    @NotNull
-    @Column(name = "active", nullable = false)
-    private Boolean active;
+    @OneToMany(mappedBy = "image")
+    @JsonIgnoreProperties(value = { "extendedUser", "image", "likeCommentary" }, allowSetters = true)
+    private Set<Commentary> commentaries = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = { "user", "likeImage", "likeCommentary" }, allowSetters = true)
     private ExtendedUser extendedUser;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "images", "extendedUsers" }, allowSetters = true)
+    private LikeImage likeImage;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -95,7 +94,7 @@ public class Project implements Serializable {
         return this.id;
     }
 
-    public Project id(Long id) {
+    public Image id(Long id) {
         this.setId(id);
         return this;
     }
@@ -108,7 +107,7 @@ public class Project implements Serializable {
         return this.name;
     }
 
-    public Project name(String name) {
+    public Image name(String name) {
         this.setName(name);
         return this;
     }
@@ -121,7 +120,7 @@ public class Project implements Serializable {
         return this.description;
     }
 
-    public Project description(String description) {
+    public Image description(String description) {
         this.setDescription(description);
         return this;
     }
@@ -130,63 +129,37 @@ public class Project implements Serializable {
         this.description = description;
     }
 
-    public String getLink() {
-        return this.link;
-    }
-
-    public Project link(String link) {
-        this.setLink(link);
-        return this;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public byte[] getImage() {
+    public String getImage() {
         return this.image;
     }
 
-    public Project image(byte[] image) {
+    public Image image(String image) {
         this.setImage(image);
         return this;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
-    public String getImageContentType() {
-        return this.imageContentType;
+    public String getImageType() {
+        return this.imageType;
     }
 
-    public Project imageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
+    public Image imageType(String imageType) {
+        this.setImageType(imageType);
         return this;
     }
 
-    public void setImageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
-    }
-
-    public Integer getOrder() {
-        return this.order;
-    }
-
-    public Project order(Integer order) {
-        this.setOrder(order);
-        return this;
-    }
-
-    public void setOrder(Integer order) {
-        this.order = order;
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
     }
 
     public Instant getCreationDate() {
         return this.creationDate;
     }
 
-    public Project creationDate(Instant creationDate) {
+    public Image creationDate(Instant creationDate) {
         this.setCreationDate(creationDate);
         return this;
     }
@@ -195,11 +168,24 @@ public class Project implements Serializable {
         this.creationDate = creationDate;
     }
 
+    public Instant getModificationDate() {
+        return this.modificationDate;
+    }
+
+    public Image modificationDate(Instant modificationDate) {
+        this.setModificationDate(modificationDate);
+        return this;
+    }
+
+    public void setModificationDate(Instant modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
     public Boolean getIsPrivate() {
         return this.isPrivate;
     }
 
-    public Project isPrivate(Boolean isPrivate) {
+    public Image isPrivate(Boolean isPrivate) {
         this.setIsPrivate(isPrivate);
         return this;
     }
@@ -208,17 +194,35 @@ public class Project implements Serializable {
         this.isPrivate = isPrivate;
     }
 
-    public Boolean getActive() {
-        return this.active;
+    public Set<Commentary> getCommentaries() {
+        return this.commentaries;
     }
 
-    public Project active(Boolean active) {
-        this.setActive(active);
+    public void setCommentaries(Set<Commentary> commentaries) {
+        if (this.commentaries != null) {
+            this.commentaries.forEach(i -> i.setImage(null));
+        }
+        if (commentaries != null) {
+            commentaries.forEach(i -> i.setImage(this));
+        }
+        this.commentaries = commentaries;
+    }
+
+    public Image commentaries(Set<Commentary> commentaries) {
+        this.setCommentaries(commentaries);
         return this;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public Image addCommentaries(Commentary commentary) {
+        this.commentaries.add(commentary);
+        commentary.setImage(this);
+        return this;
+    }
+
+    public Image removeCommentaries(Commentary commentary) {
+        this.commentaries.remove(commentary);
+        commentary.setImage(null);
+        return this;
     }
 
     public ExtendedUser getExtendedUser() {
@@ -229,8 +233,21 @@ public class Project implements Serializable {
         this.extendedUser = extendedUser;
     }
 
-    public Project extendedUser(ExtendedUser extendedUser) {
+    public Image extendedUser(ExtendedUser extendedUser) {
         this.setExtendedUser(extendedUser);
+        return this;
+    }
+
+    public LikeImage getLikeImage() {
+        return this.likeImage;
+    }
+
+    public void setLikeImage(LikeImage likeImage) {
+        this.likeImage = likeImage;
+    }
+
+    public Image likeImage(LikeImage likeImage) {
+        this.setLikeImage(likeImage);
         return this;
     }
 
@@ -241,10 +258,10 @@ public class Project implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Project)) {
+        if (!(o instanceof Image)) {
             return false;
         }
-        return id != null && id.equals(((Project) o).id);
+        return id != null && id.equals(((Image) o).id);
     }
 
     @Override
@@ -256,17 +273,15 @@ public class Project implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "Project{" +
+        return "Image{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", link='" + getLink() + "'" +
             ", image='" + getImage() + "'" +
-            ", imageContentType='" + getImageContentType() + "'" +
-            ", order=" + getOrder() +
+            ", imageType='" + getImageType() + "'" +
             ", creationDate='" + getCreationDate() + "'" +
+            ", modificationDate='" + getModificationDate() + "'" +
             ", isPrivate='" + getIsPrivate() + "'" +
-            ", active='" + getActive() + "'" +
             "}";
     }
 }

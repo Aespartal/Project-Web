@@ -13,13 +13,6 @@
       "javadoc": "description"
     },
     {
-      "fieldName": "web",
-      "fieldType": "String",
-      "fieldValidateRules": ["maxlength"],
-      "fieldValidateRulesMaxlength": "100",
-      "javadoc": "web"
-    },
-    {
       "fieldName": "location",
       "fieldType": "String",
       "fieldValidateRules": ["maxlength"],
@@ -27,11 +20,24 @@
       "javadoc": "location"
     },
     {
-      "fieldName": "profession",
-      "fieldType": "String",
-      "fieldValidateRules": ["maxlength"],
-      "fieldValidateRulesMaxlength": "50",
-      "javadoc": "profession"
+      "fieldName": "height",
+      "fieldType": "Double",
+      "fieldValidateRules": ["min", "required"],
+      "fieldValidateRulesMin": "0",
+      "javadoc": "height"
+    },
+    {
+      "fieldName": "weight",
+      "fieldType": "Double",
+      "fieldValidateRules": ["min", "required"],
+      "fieldValidateRulesMin": "0",
+      "javadoc": "weight"
+    },
+    {
+      "fieldName": "birthDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"],
+      "javadoc": "birthDate"
     }
   ],
   "fluentMethods": true,
@@ -48,6 +54,18 @@
       "relationshipName": "user",
       "relationshipType": "one-to-one",
       "useJPADerivedIdentifier": true
+    },
+    {
+      "otherEntityName": "likeImage",
+      "otherEntityRelationshipName": "extendedUser",
+      "relationshipName": "likeImage",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "likeCommentary",
+      "otherEntityRelationshipName": "extendedUser",
+      "relationshipName": "likeCommentary",
+      "relationshipType": "many-to-one"
     }
   ],
   "service": "serviceImpl"

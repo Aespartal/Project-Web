@@ -25,13 +25,19 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
 
     private StringFilter description;
 
-    private StringFilter web;
-
     private StringFilter location;
 
-    private StringFilter profession;
+    private DoubleFilter height;
+
+    private DoubleFilter weight;
+
+    private InstantFilter birthDate;
 
     private LongFilter userId;
+
+    private LongFilter likeImageId;
+
+    private LongFilter likeCommentaryId;
 
     private Boolean distinct;
 
@@ -40,10 +46,13 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
     public ExtendedUserCriteria(ExtendedUserCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.description = other.description == null ? null : other.description.copy();
-        this.web = other.web == null ? null : other.web.copy();
         this.location = other.location == null ? null : other.location.copy();
-        this.profession = other.profession == null ? null : other.profession.copy();
+        this.height = other.height == null ? null : other.height.copy();
+        this.weight = other.weight == null ? null : other.weight.copy();
+        this.birthDate = other.birthDate == null ? null : other.birthDate.copy();
         this.userId = other.userId == null ? null : other.userId.copy();
+        this.likeImageId = other.likeImageId == null ? null : other.likeImageId.copy();
+        this.likeCommentaryId = other.likeCommentaryId == null ? null : other.likeCommentaryId.copy();
         this.distinct = other.distinct;
     }
 
@@ -82,21 +91,6 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
         this.description = description;
     }
 
-    public StringFilter getWeb() {
-        return web;
-    }
-
-    public StringFilter web() {
-        if (web == null) {
-            web = new StringFilter();
-        }
-        return web;
-    }
-
-    public void setWeb(StringFilter web) {
-        this.web = web;
-    }
-
     public StringFilter getLocation() {
         return location;
     }
@@ -112,19 +106,49 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
         this.location = location;
     }
 
-    public StringFilter getProfession() {
-        return profession;
+    public DoubleFilter getHeight() {
+        return height;
     }
 
-    public StringFilter profession() {
-        if (profession == null) {
-            profession = new StringFilter();
+    public DoubleFilter height() {
+        if (height == null) {
+            height = new DoubleFilter();
         }
-        return profession;
+        return height;
     }
 
-    public void setProfession(StringFilter profession) {
-        this.profession = profession;
+    public void setHeight(DoubleFilter height) {
+        this.height = height;
+    }
+
+    public DoubleFilter getWeight() {
+        return weight;
+    }
+
+    public DoubleFilter weight() {
+        if (weight == null) {
+            weight = new DoubleFilter();
+        }
+        return weight;
+    }
+
+    public void setWeight(DoubleFilter weight) {
+        this.weight = weight;
+    }
+
+    public InstantFilter getBirthDate() {
+        return birthDate;
+    }
+
+    public InstantFilter birthDate() {
+        if (birthDate == null) {
+            birthDate = new InstantFilter();
+        }
+        return birthDate;
+    }
+
+    public void setBirthDate(InstantFilter birthDate) {
+        this.birthDate = birthDate;
     }
 
     public LongFilter getUserId() {
@@ -140,6 +164,36 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
 
     public void setUserId(LongFilter userId) {
         this.userId = userId;
+    }
+
+    public LongFilter getLikeImageId() {
+        return likeImageId;
+    }
+
+    public LongFilter likeImageId() {
+        if (likeImageId == null) {
+            likeImageId = new LongFilter();
+        }
+        return likeImageId;
+    }
+
+    public void setLikeImageId(LongFilter likeImageId) {
+        this.likeImageId = likeImageId;
+    }
+
+    public LongFilter getLikeCommentaryId() {
+        return likeCommentaryId;
+    }
+
+    public LongFilter likeCommentaryId() {
+        if (likeCommentaryId == null) {
+            likeCommentaryId = new LongFilter();
+        }
+        return likeCommentaryId;
+    }
+
+    public void setLikeCommentaryId(LongFilter likeCommentaryId) {
+        this.likeCommentaryId = likeCommentaryId;
     }
 
     public Boolean getDistinct() {
@@ -162,17 +216,20 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
         return (
             Objects.equals(id, that.id) &&
             Objects.equals(description, that.description) &&
-            Objects.equals(web, that.web) &&
             Objects.equals(location, that.location) &&
-            Objects.equals(profession, that.profession) &&
+            Objects.equals(height, that.height) &&
+            Objects.equals(weight, that.weight) &&
+            Objects.equals(birthDate, that.birthDate) &&
             Objects.equals(userId, that.userId) &&
+            Objects.equals(likeImageId, that.likeImageId) &&
+            Objects.equals(likeCommentaryId, that.likeCommentaryId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, web, location, profession, userId, distinct);
+        return Objects.hash(id, description, location, height, weight, birthDate, userId, likeImageId, likeCommentaryId, distinct);
     }
 
     // prettier-ignore
@@ -181,10 +238,13 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
         return "ExtendedUserCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
-            (web != null ? "web=" + web + ", " : "") +
             (location != null ? "location=" + location + ", " : "") +
-            (profession != null ? "profession=" + profession + ", " : "") +
+            (height != null ? "height=" + height + ", " : "") +
+            (weight != null ? "weight=" + weight + ", " : "") +
+            (birthDate != null ? "birthDate=" + birthDate + ", " : "") +
             (userId != null ? "userId=" + userId + ", " : "") +
+            (likeImageId != null ? "likeImageId=" + likeImageId + ", " : "") +
+            (likeCommentaryId != null ? "likeCommentaryId=" + likeCommentaryId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

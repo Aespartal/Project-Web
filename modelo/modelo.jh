@@ -23,35 +23,52 @@ STR_LONGITUD_DESCRIPCION = 50
 entity ExtendedUser {
     /** description */
     description String maxlength(STR_LONGITUD_MAXIMA)
-    /** web */
-    web String maxlength(STR_LONGITUD_MEDIA)
     /** location */
     location String maxlength(STR_LONGITUD_CORTA)
-    /** profession */
-    profession String maxlength(STR_LONGITUD_CORTA)
+    /** height */
+    height Double min(0) required
+    /** weight */
+    weight Double min(0) required
+    /** birthDate */
+    birthDate Instant required
 }
 
 /**
- * The Project entity.
+ * The Image entity.
  * @author alejandro.espartal
  */
-entity Project {
+entity Image {
     /** name */
     name String required maxlength(STR_LONGITUD_MEDIA)
     /** description */
     description String required maxlength(STR_LONGITUD_MAXIMA)
-    /** link */
-    link String required maxlength(STR_LONGITUD_MEDIA)
     /** image */
-    image Blob
-    /** order */
-    order Integer required
+    image String required maxlength(STR_LONGITUD_MAXIMA)
+    /** imageType */
+    imageType String required
     /** creationDate */
     creationDate Instant required
+    /** modificationDate */
+    modificationDate Instant
     /** isPrivate */
     isPrivate Boolean required
-    /** active */
-    active Boolean required
+}
+
+entity LikeImage {
+    /** creationDate */
+    creationDate Instant required
+}
+
+entity Commentary {
+    /** description */
+    description String required maxlength(STR_LONGITUD_MAXIMA)
+    /** creationDate */
+    creationDate Instant required
+}
+
+entity LikeCommentary {
+    /** creationDate */
+    creationDate Instant required
 }
 
 /**
@@ -62,10 +79,24 @@ relationship OneToOne {
 }
 
 /**
+ * One to Many relationships.
+ */
+relationship OneToMany {
+    Image{commentaries} to Commentary
+
+    LikeImage{image required} to Image
+    LikeImage{extendedUser required} to ExtendedUser
+
+    LikeCommentary{commentary required} to Commentary
+    LikeCommentary{extendedUser required} to ExtendedUser
+}
+
+/**
  * Many to one relationship.
  */
 relationship ManyToOne {
-    Project{extendedUser required} to ExtendedUser
+    Image{extendedUser required} to ExtendedUser
+    Commentary{extendedUser required} to ExtendedUser
 }
 
 /**

@@ -1,0 +1,37 @@
+{
+  "applications": "*",
+  "changelogDate": "20230114162751",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "like_commentary",
+  "fields": [
+    {
+      "fieldName": "creationDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"],
+      "javadoc": "creationDate"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "LikeCommentary",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "commentary",
+      "otherEntityRelationshipName": "likeCommentary",
+      "relationshipName": "commentary",
+      "relationshipType": "one-to-many",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "extendedUser",
+      "otherEntityRelationshipName": "likeCommentary",
+      "relationshipName": "extendedUser",
+      "relationshipType": "one-to-many",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "serviceImpl"
+}
