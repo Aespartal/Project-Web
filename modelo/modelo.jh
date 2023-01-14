@@ -83,12 +83,6 @@ relationship OneToOne {
  */
 relationship OneToMany {
     Image{commentaries} to Commentary
-
-    LikeImage{image required} to Image
-    LikeImage{extendedUser required} to ExtendedUser
-
-    LikeCommentary{commentary required} to Commentary
-    LikeCommentary{extendedUser required} to ExtendedUser
 }
 
 /**
@@ -97,6 +91,12 @@ relationship OneToMany {
 relationship ManyToOne {
     Image{extendedUser required} to ExtendedUser
     Commentary{extendedUser required} to ExtendedUser
+
+    LikeImage{image required} to Image
+    LikeImage{extendedUser required} to ExtendedUser
+
+    LikeCommentary{commentary required} to Commentary
+    LikeCommentary{extendedUser required} to ExtendedUser
 }
 
 /**

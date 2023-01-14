@@ -54,18 +54,6 @@
       "relationshipName": "user",
       "relationshipType": "one-to-one",
       "useJPADerivedIdentifier": true
-    },
-    {
-      "otherEntityName": "likeImage",
-      "otherEntityRelationshipName": "extendedUser",
-      "relationshipName": "likeImage",
-      "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "likeCommentary",
-      "otherEntityRelationshipName": "extendedUser",
-      "relationshipName": "likeCommentary",
-      "relationshipType": "many-to-one"
     }
   ],
   "service": "serviceImpl"

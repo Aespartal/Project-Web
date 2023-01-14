@@ -9,7 +9,6 @@ import es.project.IntegrationTest;
 import es.project.domain.Commentary;
 import es.project.domain.ExtendedUser;
 import es.project.domain.Image;
-import es.project.domain.LikeImage;
 import es.project.repository.ImageRepository;
 import es.project.service.criteria.ImageCriteria;
 import es.project.service.dto.ImageDTO;
@@ -770,29 +769,6 @@ class ImageResourceIT {
 
         // Get all the imageList where extendedUser equals to (extendedUserId + 1)
         defaultImageShouldNotBeFound("extendedUserId.equals=" + (extendedUserId + 1));
-    }
-
-    @Test
-    @Transactional
-    void getAllImagesByLikeImageIsEqualToSomething() throws Exception {
-        LikeImage likeImage;
-        if (TestUtil.findAll(em, LikeImage.class).isEmpty()) {
-            imageRepository.saveAndFlush(image);
-            likeImage = LikeImageResourceIT.createEntity(em);
-        } else {
-            likeImage = TestUtil.findAll(em, LikeImage.class).get(0);
-        }
-        em.persist(likeImage);
-        em.flush();
-        image.setLikeImage(likeImage);
-        imageRepository.saveAndFlush(image);
-        Long likeImageId = likeImage.getId();
-
-        // Get all the imageList where likeImage equals to likeImageId
-        defaultImageShouldBeFound("likeImageId.equals=" + likeImageId);
-
-        // Get all the imageList where likeImage equals to (likeImageId + 1)
-        defaultImageShouldNotBeFound("likeImageId.equals=" + (likeImageId + 1));
     }
 
     /**

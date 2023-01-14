@@ -3,8 +3,6 @@ package es.project.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -31,13 +29,15 @@ public class LikeImage implements Serializable {
     @Column(name = "creation_date", nullable = false)
     private Instant creationDate;
 
-    @OneToMany(mappedBy = "likeImage")
-    @JsonIgnoreProperties(value = { "commentaries", "extendedUser", "likeImage" }, allowSetters = true)
-    private Set<Image> images = new HashSet<>();
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = { "commentaries", "extendedUser" }, allowSetters = true)
+    private Image image;
 
-    @OneToMany(mappedBy = "likeImage")
-    @JsonIgnoreProperties(value = { "user", "likeImage", "likeCommentary" }, allowSetters = true)
-    private Set<ExtendedUser> extendedUsers = new HashSet<>();
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
+    private ExtendedUser extendedUser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -67,65 +67,29 @@ public class LikeImage implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public Set<Image> getImages() {
-        return this.images;
+    public Image getImage() {
+        return this.image;
     }
 
-    public void setImages(Set<Image> images) {
-        if (this.images != null) {
-            this.images.forEach(i -> i.setLikeImage(null));
-        }
-        if (images != null) {
-            images.forEach(i -> i.setLikeImage(this));
-        }
-        this.images = images;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
-    public LikeImage images(Set<Image> images) {
-        this.setImages(images);
+    public LikeImage image(Image image) {
+        this.setImage(image);
         return this;
     }
 
-    public LikeImage addImage(Image image) {
-        this.images.add(image);
-        image.setLikeImage(this);
-        return this;
+    public ExtendedUser getExtendedUser() {
+        return this.extendedUser;
     }
 
-    public LikeImage removeImage(Image image) {
-        this.images.remove(image);
-        image.setLikeImage(null);
-        return this;
+    public void setExtendedUser(ExtendedUser extendedUser) {
+        this.extendedUser = extendedUser;
     }
 
-    public Set<ExtendedUser> getExtendedUsers() {
-        return this.extendedUsers;
-    }
-
-    public void setExtendedUsers(Set<ExtendedUser> extendedUsers) {
-        if (this.extendedUsers != null) {
-            this.extendedUsers.forEach(i -> i.setLikeImage(null));
-        }
-        if (extendedUsers != null) {
-            extendedUsers.forEach(i -> i.setLikeImage(this));
-        }
-        this.extendedUsers = extendedUsers;
-    }
-
-    public LikeImage extendedUsers(Set<ExtendedUser> extendedUsers) {
-        this.setExtendedUsers(extendedUsers);
-        return this;
-    }
-
-    public LikeImage addExtendedUser(ExtendedUser extendedUser) {
-        this.extendedUsers.add(extendedUser);
-        extendedUser.setLikeImage(this);
-        return this;
-    }
-
-    public LikeImage removeExtendedUser(ExtendedUser extendedUser) {
-        this.extendedUsers.remove(extendedUser);
-        extendedUser.setLikeImage(null);
+    public LikeImage extendedUser(ExtendedUser extendedUser) {
+        this.setExtendedUser(extendedUser);
         return this;
     }
 

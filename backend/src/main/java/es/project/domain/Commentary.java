@@ -39,16 +39,12 @@ public class Commentary implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "user", "likeImage", "likeCommentary" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private ExtendedUser extendedUser;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "commentaries", "extendedUser", "likeImage" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "commentaries", "extendedUser" }, allowSetters = true)
     private Image image;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "commentaries", "extendedUsers" }, allowSetters = true)
-    private LikeCommentary likeCommentary;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -114,19 +110,6 @@ public class Commentary implements Serializable {
 
     public Commentary image(Image image) {
         this.setImage(image);
-        return this;
-    }
-
-    public LikeCommentary getLikeCommentary() {
-        return this.likeCommentary;
-    }
-
-    public void setLikeCommentary(LikeCommentary likeCommentary) {
-        this.likeCommentary = likeCommentary;
-    }
-
-    public Commentary likeCommentary(LikeCommentary likeCommentary) {
-        this.setLikeCommentary(likeCommentary);
         return this;
     }
 

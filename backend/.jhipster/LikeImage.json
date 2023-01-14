@@ -20,16 +20,14 @@
   "relationships": [
     {
       "otherEntityName": "image",
-      "otherEntityRelationshipName": "likeImage",
       "relationshipName": "image",
-      "relationshipType": "one-to-many",
+      "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
     },
     {
       "otherEntityName": "extendedUser",
-      "otherEntityRelationshipName": "likeImage",
       "relationshipName": "extendedUser",
-      "relationshipType": "one-to-many",
+      "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
     }
   ],

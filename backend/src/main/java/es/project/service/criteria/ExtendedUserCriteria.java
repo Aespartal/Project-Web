@@ -35,10 +35,6 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
 
     private LongFilter userId;
 
-    private LongFilter likeImageId;
-
-    private LongFilter likeCommentaryId;
-
     private Boolean distinct;
 
     public ExtendedUserCriteria() {}
@@ -51,8 +47,6 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
         this.weight = other.weight == null ? null : other.weight.copy();
         this.birthDate = other.birthDate == null ? null : other.birthDate.copy();
         this.userId = other.userId == null ? null : other.userId.copy();
-        this.likeImageId = other.likeImageId == null ? null : other.likeImageId.copy();
-        this.likeCommentaryId = other.likeCommentaryId == null ? null : other.likeCommentaryId.copy();
         this.distinct = other.distinct;
     }
 
@@ -166,36 +160,6 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
         this.userId = userId;
     }
 
-    public LongFilter getLikeImageId() {
-        return likeImageId;
-    }
-
-    public LongFilter likeImageId() {
-        if (likeImageId == null) {
-            likeImageId = new LongFilter();
-        }
-        return likeImageId;
-    }
-
-    public void setLikeImageId(LongFilter likeImageId) {
-        this.likeImageId = likeImageId;
-    }
-
-    public LongFilter getLikeCommentaryId() {
-        return likeCommentaryId;
-    }
-
-    public LongFilter likeCommentaryId() {
-        if (likeCommentaryId == null) {
-            likeCommentaryId = new LongFilter();
-        }
-        return likeCommentaryId;
-    }
-
-    public void setLikeCommentaryId(LongFilter likeCommentaryId) {
-        this.likeCommentaryId = likeCommentaryId;
-    }
-
     public Boolean getDistinct() {
         return distinct;
     }
@@ -221,15 +185,13 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
             Objects.equals(weight, that.weight) &&
             Objects.equals(birthDate, that.birthDate) &&
             Objects.equals(userId, that.userId) &&
-            Objects.equals(likeImageId, that.likeImageId) &&
-            Objects.equals(likeCommentaryId, that.likeCommentaryId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, location, height, weight, birthDate, userId, likeImageId, likeCommentaryId, distinct);
+        return Objects.hash(id, description, location, height, weight, birthDate, userId, distinct);
     }
 
     // prettier-ignore
@@ -243,8 +205,6 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
             (weight != null ? "weight=" + weight + ", " : "") +
             (birthDate != null ? "birthDate=" + birthDate + ", " : "") +
             (userId != null ? "userId=" + userId + ", " : "") +
-            (likeImageId != null ? "likeImageId=" + likeImageId + ", " : "") +
-            (likeCommentaryId != null ? "likeCommentaryId=" + likeCommentaryId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

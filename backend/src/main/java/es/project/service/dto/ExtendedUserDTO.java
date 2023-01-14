@@ -54,10 +54,6 @@ public class ExtendedUserDTO implements Serializable {
 
     private UserDTO user;
 
-    private LikeImageDTO likeImage;
-
-    private LikeCommentaryDTO likeCommentary;
-
     public Long getId() {
         return id;
     }
@@ -114,22 +110,6 @@ public class ExtendedUserDTO implements Serializable {
         this.user = user;
     }
 
-    public LikeImageDTO getLikeImage() {
-        return likeImage;
-    }
-
-    public void setLikeImage(LikeImageDTO likeImage) {
-        this.likeImage = likeImage;
-    }
-
-    public LikeCommentaryDTO getLikeCommentary() {
-        return likeCommentary;
-    }
-
-    public void setLikeCommentary(LikeCommentaryDTO likeCommentary) {
-        this.likeCommentary = likeCommentary;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -162,8 +142,6 @@ public class ExtendedUserDTO implements Serializable {
             ", weight=" + getWeight() +
             ", birthDate='" + getBirthDate() + "'" +
             ", user=" + getUser() +
-            ", likeImage=" + getLikeImage() +
-            ", likeCommentary=" + getLikeCommentary() +
             "}";
     }
 }

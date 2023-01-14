@@ -76,17 +76,13 @@ public class Image implements Serializable {
     private Boolean isPrivate;
 
     @OneToMany(mappedBy = "image")
-    @JsonIgnoreProperties(value = { "extendedUser", "image", "likeCommentary" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "extendedUser", "image" }, allowSetters = true)
     private Set<Commentary> commentaries = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "user", "likeImage", "likeCommentary" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private ExtendedUser extendedUser;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "images", "extendedUsers" }, allowSetters = true)
-    private LikeImage likeImage;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -235,19 +231,6 @@ public class Image implements Serializable {
 
     public Image extendedUser(ExtendedUser extendedUser) {
         this.setExtendedUser(extendedUser);
-        return this;
-    }
-
-    public LikeImage getLikeImage() {
-        return this.likeImage;
-    }
-
-    public void setLikeImage(LikeImage likeImage) {
-        this.likeImage = likeImage;
-    }
-
-    public Image likeImage(LikeImage likeImage) {
-        this.setLikeImage(likeImage);
         return this;
     }
 

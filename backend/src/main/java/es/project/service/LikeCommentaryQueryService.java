@@ -98,7 +98,7 @@ public class LikeCommentaryQueryService extends QueryService<LikeCommentary> {
                     specification.and(
                         buildSpecification(
                             criteria.getCommentaryId(),
-                            root -> root.join(LikeCommentary_.commentaries, JoinType.LEFT).get(Commentary_.id)
+                            root -> root.join(LikeCommentary_.commentary, JoinType.LEFT).get(Commentary_.id)
                         )
                     );
             }
@@ -107,7 +107,7 @@ public class LikeCommentaryQueryService extends QueryService<LikeCommentary> {
                     specification.and(
                         buildSpecification(
                             criteria.getExtendedUserId(),
-                            root -> root.join(LikeCommentary_.extendedUsers, JoinType.LEFT).get(ExtendedUser_.id)
+                            root -> root.join(LikeCommentary_.extendedUser, JoinType.LEFT).get(ExtendedUser_.id)
                         )
                     );
             }

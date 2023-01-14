@@ -9,7 +9,6 @@ import es.project.IntegrationTest;
 import es.project.domain.Commentary;
 import es.project.domain.ExtendedUser;
 import es.project.domain.Image;
-import es.project.domain.LikeCommentary;
 import es.project.repository.CommentaryRepository;
 import es.project.service.criteria.CommentaryCriteria;
 import es.project.service.dto.CommentaryDTO;
@@ -381,29 +380,6 @@ class CommentaryResourceIT {
 
         // Get all the commentaryList where image equals to (imageId + 1)
         defaultCommentaryShouldNotBeFound("imageId.equals=" + (imageId + 1));
-    }
-
-    @Test
-    @Transactional
-    void getAllCommentariesByLikeCommentaryIsEqualToSomething() throws Exception {
-        LikeCommentary likeCommentary;
-        if (TestUtil.findAll(em, LikeCommentary.class).isEmpty()) {
-            commentaryRepository.saveAndFlush(commentary);
-            likeCommentary = LikeCommentaryResourceIT.createEntity(em);
-        } else {
-            likeCommentary = TestUtil.findAll(em, LikeCommentary.class).get(0);
-        }
-        em.persist(likeCommentary);
-        em.flush();
-        commentary.setLikeCommentary(likeCommentary);
-        commentaryRepository.saveAndFlush(commentary);
-        Long likeCommentaryId = likeCommentary.getId();
-
-        // Get all the commentaryList where likeCommentary equals to likeCommentaryId
-        defaultCommentaryShouldBeFound("likeCommentaryId.equals=" + likeCommentaryId);
-
-        // Get all the commentaryList where likeCommentary equals to (likeCommentaryId + 1)
-        defaultCommentaryShouldNotBeFound("likeCommentaryId.equals=" + (likeCommentaryId + 1));
     }
 
     /**

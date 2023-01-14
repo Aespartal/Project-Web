@@ -111,24 +111,6 @@ public class ExtendedUserQueryService extends QueryService<ExtendedUser> {
                         buildSpecification(criteria.getUserId(), root -> root.join(ExtendedUser_.user, JoinType.LEFT).get(User_.id))
                     );
             }
-            if (criteria.getLikeImageId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getLikeImageId(),
-                            root -> root.join(ExtendedUser_.likeImage, JoinType.LEFT).get(LikeImage_.id)
-                        )
-                    );
-            }
-            if (criteria.getLikeCommentaryId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getLikeCommentaryId(),
-                            root -> root.join(ExtendedUser_.likeCommentary, JoinType.LEFT).get(LikeCommentary_.id)
-                        )
-                    );
-            }
         }
         return specification;
     }

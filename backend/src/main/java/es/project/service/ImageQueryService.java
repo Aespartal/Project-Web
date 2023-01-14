@@ -129,12 +129,6 @@ public class ImageQueryService extends QueryService<Image> {
                         )
                     );
             }
-            if (criteria.getLikeImageId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(criteria.getLikeImageId(), root -> root.join(Image_.likeImage, JoinType.LEFT).get(LikeImage_.id))
-                    );
-            }
         }
         return specification;
     }

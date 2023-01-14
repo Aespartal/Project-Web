@@ -31,8 +31,6 @@ public class CommentaryCriteria implements Serializable, Criteria {
 
     private LongFilter imageId;
 
-    private LongFilter likeCommentaryId;
-
     private Boolean distinct;
 
     public CommentaryCriteria() {}
@@ -43,7 +41,6 @@ public class CommentaryCriteria implements Serializable, Criteria {
         this.creationDate = other.creationDate == null ? null : other.creationDate.copy();
         this.extendedUserId = other.extendedUserId == null ? null : other.extendedUserId.copy();
         this.imageId = other.imageId == null ? null : other.imageId.copy();
-        this.likeCommentaryId = other.likeCommentaryId == null ? null : other.likeCommentaryId.copy();
         this.distinct = other.distinct;
     }
 
@@ -127,21 +124,6 @@ public class CommentaryCriteria implements Serializable, Criteria {
         this.imageId = imageId;
     }
 
-    public LongFilter getLikeCommentaryId() {
-        return likeCommentaryId;
-    }
-
-    public LongFilter likeCommentaryId() {
-        if (likeCommentaryId == null) {
-            likeCommentaryId = new LongFilter();
-        }
-        return likeCommentaryId;
-    }
-
-    public void setLikeCommentaryId(LongFilter likeCommentaryId) {
-        this.likeCommentaryId = likeCommentaryId;
-    }
-
     public Boolean getDistinct() {
         return distinct;
     }
@@ -165,14 +147,13 @@ public class CommentaryCriteria implements Serializable, Criteria {
             Objects.equals(creationDate, that.creationDate) &&
             Objects.equals(extendedUserId, that.extendedUserId) &&
             Objects.equals(imageId, that.imageId) &&
-            Objects.equals(likeCommentaryId, that.likeCommentaryId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, creationDate, extendedUserId, imageId, likeCommentaryId, distinct);
+        return Objects.hash(id, description, creationDate, extendedUserId, imageId, distinct);
     }
 
     // prettier-ignore
@@ -184,7 +165,6 @@ public class CommentaryCriteria implements Serializable, Criteria {
             (creationDate != null ? "creationDate=" + creationDate + ", " : "") +
             (extendedUserId != null ? "extendedUserId=" + extendedUserId + ", " : "") +
             (imageId != null ? "imageId=" + imageId + ", " : "") +
-            (likeCommentaryId != null ? "likeCommentaryId=" + likeCommentaryId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

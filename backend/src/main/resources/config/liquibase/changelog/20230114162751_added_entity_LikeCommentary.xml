@@ -17,6 +17,12 @@
             <column name="creation_date" type="${datetimeType}" remarks="creationDate">
                 <constraints nullable="false" />
             </column>
+            <column name="commentary_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="extended_user_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="like_commentary" columnName="creation_date" columnDataType="${datetimeType}"/>
@@ -40,6 +46,8 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="creation_date" type="date"/>
+            <column name="commentary_id" type="numeric"/>
+            <column name="extended_user_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

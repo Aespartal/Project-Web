@@ -13,17 +13,5 @@
                                  constraintName="fk_extended_user__user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
-
-        <addForeignKeyConstraint baseColumnNames="like_image_id"
-                                 baseTableName="extended_user"
-                                 constraintName="fk_extended_user__like_image_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="like_image"/>
-
-        <addForeignKeyConstraint baseColumnNames="like_commentary_id"
-                                 baseTableName="extended_user"
-                                 constraintName="fk_extended_user__like_commentary_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="like_commentary"/>
     </changeSet>
 </databaseChangeLog>

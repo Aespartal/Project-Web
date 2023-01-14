@@ -20,16 +20,14 @@
   "relationships": [
     {
       "otherEntityName": "commentary",
-      "otherEntityRelationshipName": "likeCommentary",
       "relationshipName": "commentary",
-      "relationshipType": "one-to-many",
+      "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
     },
     {
       "otherEntityName": "extendedUser",
-      "otherEntityRelationshipName": "likeCommentary",
       "relationshipName": "extendedUser",
-      "relationshipType": "one-to-many",
+      "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
     }
   ],

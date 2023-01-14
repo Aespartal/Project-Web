@@ -19,11 +19,5 @@
                                  constraintName="fk_commentary__image_id"
                                  referencedColumnNames="id"
                                  referencedTableName="image"/>
-
-        <addForeignKeyConstraint baseColumnNames="like_commentary_id"
-                                 baseTableName="commentary"
-                                 constraintName="fk_commentary__like_commentary_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="like_commentary"/>
     </changeSet>
 </databaseChangeLog>

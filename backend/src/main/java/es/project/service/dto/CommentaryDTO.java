@@ -33,8 +33,6 @@ public class CommentaryDTO implements Serializable {
 
     private ImageDTO image;
 
-    private LikeCommentaryDTO likeCommentary;
-
     public Long getId() {
         return id;
     }
@@ -75,14 +73,6 @@ public class CommentaryDTO implements Serializable {
         this.image = image;
     }
 
-    public LikeCommentaryDTO getLikeCommentary() {
-        return likeCommentary;
-    }
-
-    public void setLikeCommentary(LikeCommentaryDTO likeCommentary) {
-        this.likeCommentary = likeCommentary;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -113,7 +103,6 @@ public class CommentaryDTO implements Serializable {
             ", creationDate='" + getCreationDate() + "'" +
             ", extendedUser=" + getExtendedUser() +
             ", image=" + getImage() +
-            ", likeCommentary=" + getLikeCommentary() +
             "}";
     }
 }

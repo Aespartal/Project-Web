@@ -3,8 +3,6 @@ package es.project.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -31,13 +29,15 @@ public class LikeCommentary implements Serializable {
     @Column(name = "creation_date", nullable = false)
     private Instant creationDate;
 
-    @OneToMany(mappedBy = "likeCommentary")
-    @JsonIgnoreProperties(value = { "extendedUser", "image", "likeCommentary" }, allowSetters = true)
-    private Set<Commentary> commentaries = new HashSet<>();
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = { "extendedUser", "image" }, allowSetters = true)
+    private Commentary commentary;
 
-    @OneToMany(mappedBy = "likeCommentary")
-    @JsonIgnoreProperties(value = { "user", "likeImage", "likeCommentary" }, allowSetters = true)
-    private Set<ExtendedUser> extendedUsers = new HashSet<>();
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
+    private ExtendedUser extendedUser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -67,65 +67,29 @@ public class LikeCommentary implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public Set<Commentary> getCommentaries() {
-        return this.commentaries;
+    public Commentary getCommentary() {
+        return this.commentary;
     }
 
-    public void setCommentaries(Set<Commentary> commentaries) {
-        if (this.commentaries != null) {
-            this.commentaries.forEach(i -> i.setLikeCommentary(null));
-        }
-        if (commentaries != null) {
-            commentaries.forEach(i -> i.setLikeCommentary(this));
-        }
-        this.commentaries = commentaries;
+    public void setCommentary(Commentary commentary) {
+        this.commentary = commentary;
     }
 
-    public LikeCommentary commentaries(Set<Commentary> commentaries) {
-        this.setCommentaries(commentaries);
+    public LikeCommentary commentary(Commentary commentary) {
+        this.setCommentary(commentary);
         return this;
     }
 
-    public LikeCommentary addCommentary(Commentary commentary) {
-        this.commentaries.add(commentary);
-        commentary.setLikeCommentary(this);
-        return this;
+    public ExtendedUser getExtendedUser() {
+        return this.extendedUser;
     }
 
-    public LikeCommentary removeCommentary(Commentary commentary) {
-        this.commentaries.remove(commentary);
-        commentary.setLikeCommentary(null);
-        return this;
+    public void setExtendedUser(ExtendedUser extendedUser) {
+        this.extendedUser = extendedUser;
     }
 
-    public Set<ExtendedUser> getExtendedUsers() {
-        return this.extendedUsers;
-    }
-
-    public void setExtendedUsers(Set<ExtendedUser> extendedUsers) {
-        if (this.extendedUsers != null) {
-            this.extendedUsers.forEach(i -> i.setLikeCommentary(null));
-        }
-        if (extendedUsers != null) {
-            extendedUsers.forEach(i -> i.setLikeCommentary(this));
-        }
-        this.extendedUsers = extendedUsers;
-    }
-
-    public LikeCommentary extendedUsers(Set<ExtendedUser> extendedUsers) {
-        this.setExtendedUsers(extendedUsers);
-        return this;
-    }
-
-    public LikeCommentary addExtendedUser(ExtendedUser extendedUser) {
-        this.extendedUsers.add(extendedUser);
-        extendedUser.setLikeCommentary(this);
-        return this;
-    }
-
-    public LikeCommentary removeExtendedUser(ExtendedUser extendedUser) {
-        this.extendedUsers.remove(extendedUser);
-        extendedUser.setLikeCommentary(null);
+    public LikeCommentary extendedUser(ExtendedUser extendedUser) {
+        this.setExtendedUser(extendedUser);
         return this;
     }
 

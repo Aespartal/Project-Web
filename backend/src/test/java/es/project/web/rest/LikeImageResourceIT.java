@@ -76,7 +76,7 @@ class LikeImageResourceIT {
         } else {
             image = TestUtil.findAll(em, Image.class).get(0);
         }
-        likeImage.getImages().add(image);
+        likeImage.setImage(image);
         // Add required entity
         ExtendedUser extendedUser;
         if (TestUtil.findAll(em, ExtendedUser.class).isEmpty()) {
@@ -86,7 +86,7 @@ class LikeImageResourceIT {
         } else {
             extendedUser = TestUtil.findAll(em, ExtendedUser.class).get(0);
         }
-        likeImage.getExtendedUsers().add(extendedUser);
+        likeImage.setExtendedUser(extendedUser);
         return likeImage;
     }
 
@@ -107,7 +107,7 @@ class LikeImageResourceIT {
         } else {
             image = TestUtil.findAll(em, Image.class).get(0);
         }
-        likeImage.getImages().add(image);
+        likeImage.setImage(image);
         // Add required entity
         ExtendedUser extendedUser;
         if (TestUtil.findAll(em, ExtendedUser.class).isEmpty()) {
@@ -117,7 +117,7 @@ class LikeImageResourceIT {
         } else {
             extendedUser = TestUtil.findAll(em, ExtendedUser.class).get(0);
         }
-        likeImage.getExtendedUsers().add(extendedUser);
+        likeImage.setExtendedUser(extendedUser);
         return likeImage;
     }
 
@@ -279,7 +279,7 @@ class LikeImageResourceIT {
         }
         em.persist(image);
         em.flush();
-        likeImage.addImage(image);
+        likeImage.setImage(image);
         likeImageRepository.saveAndFlush(likeImage);
         Long imageId = image.getId();
 
@@ -302,7 +302,7 @@ class LikeImageResourceIT {
         }
         em.persist(extendedUser);
         em.flush();
-        likeImage.addExtendedUser(extendedUser);
+        likeImage.setExtendedUser(extendedUser);
         likeImageRepository.saveAndFlush(likeImage);
         Long extendedUserId = extendedUser.getId();
 

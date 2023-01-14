@@ -68,12 +68,6 @@
       "relationshipName": "extendedUser",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
-    },
-    {
-      "otherEntityName": "likeImage",
-      "otherEntityRelationshipName": "image",
-      "relationshipName": "likeImage",
-      "relationshipType": "many-to-one"
     }
   ],
   "service": "serviceImpl"

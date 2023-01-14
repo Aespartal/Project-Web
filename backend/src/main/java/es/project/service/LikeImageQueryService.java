@@ -96,7 +96,7 @@ public class LikeImageQueryService extends QueryService<LikeImage> {
             if (criteria.getImageId() != null) {
                 specification =
                     specification.and(
-                        buildSpecification(criteria.getImageId(), root -> root.join(LikeImage_.images, JoinType.LEFT).get(Image_.id))
+                        buildSpecification(criteria.getImageId(), root -> root.join(LikeImage_.image, JoinType.LEFT).get(Image_.id))
                     );
             }
             if (criteria.getExtendedUserId() != null) {
@@ -104,7 +104,7 @@ public class LikeImageQueryService extends QueryService<LikeImage> {
                     specification.and(
                         buildSpecification(
                             criteria.getExtendedUserId(),
-                            root -> root.join(LikeImage_.extendedUsers, JoinType.LEFT).get(ExtendedUser_.id)
+                            root -> root.join(LikeImage_.extendedUser, JoinType.LEFT).get(ExtendedUser_.id)
                         )
                     );
             }

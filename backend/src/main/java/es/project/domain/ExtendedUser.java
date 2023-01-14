@@ -1,6 +1,5 @@
 package es.project.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.*;
@@ -61,14 +60,6 @@ public class ExtendedUser implements Serializable {
     @MapsId
     @JoinColumn(name = "id")
     private User user;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "images", "extendedUsers" }, allowSetters = true)
-    private LikeImage likeImage;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "commentaries", "extendedUsers" }, allowSetters = true)
-    private LikeCommentary likeCommentary;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -160,32 +151,6 @@ public class ExtendedUser implements Serializable {
 
     public ExtendedUser user(User user) {
         this.setUser(user);
-        return this;
-    }
-
-    public LikeImage getLikeImage() {
-        return this.likeImage;
-    }
-
-    public void setLikeImage(LikeImage likeImage) {
-        this.likeImage = likeImage;
-    }
-
-    public ExtendedUser likeImage(LikeImage likeImage) {
-        this.setLikeImage(likeImage);
-        return this;
-    }
-
-    public LikeCommentary getLikeCommentary() {
-        return this.likeCommentary;
-    }
-
-    public void setLikeCommentary(LikeCommentary likeCommentary) {
-        this.likeCommentary = likeCommentary;
-    }
-
-    public ExtendedUser likeCommentary(LikeCommentary likeCommentary) {
-        this.setLikeCommentary(likeCommentary);
         return this;
     }
 

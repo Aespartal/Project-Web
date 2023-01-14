@@ -36,12 +36,6 @@
       "otherEntityRelationshipName": "commentaries",
       "relationshipName": "image",
       "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "likeCommentary",
-      "otherEntityRelationshipName": "commentary",
-      "relationshipName": "likeCommentary",
-      "relationshipType": "many-to-one"
     }
   ],
   "service": "serviceImpl"

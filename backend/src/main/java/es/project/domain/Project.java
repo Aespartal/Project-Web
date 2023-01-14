@@ -86,7 +86,7 @@ public class Project implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "user", "likeImage", "likeCommentary" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private ExtendedUser extendedUser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

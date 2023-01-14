@@ -41,8 +41,6 @@ public class ImageCriteria implements Serializable, Criteria {
 
     private LongFilter extendedUserId;
 
-    private LongFilter likeImageId;
-
     private Boolean distinct;
 
     public ImageCriteria() {}
@@ -58,7 +56,6 @@ public class ImageCriteria implements Serializable, Criteria {
         this.isPrivate = other.isPrivate == null ? null : other.isPrivate.copy();
         this.commentariesId = other.commentariesId == null ? null : other.commentariesId.copy();
         this.extendedUserId = other.extendedUserId == null ? null : other.extendedUserId.copy();
-        this.likeImageId = other.likeImageId == null ? null : other.likeImageId.copy();
         this.distinct = other.distinct;
     }
 
@@ -217,21 +214,6 @@ public class ImageCriteria implements Serializable, Criteria {
         this.extendedUserId = extendedUserId;
     }
 
-    public LongFilter getLikeImageId() {
-        return likeImageId;
-    }
-
-    public LongFilter likeImageId() {
-        if (likeImageId == null) {
-            likeImageId = new LongFilter();
-        }
-        return likeImageId;
-    }
-
-    public void setLikeImageId(LongFilter likeImageId) {
-        this.likeImageId = likeImageId;
-    }
-
     public Boolean getDistinct() {
         return distinct;
     }
@@ -260,7 +242,6 @@ public class ImageCriteria implements Serializable, Criteria {
             Objects.equals(isPrivate, that.isPrivate) &&
             Objects.equals(commentariesId, that.commentariesId) &&
             Objects.equals(extendedUserId, that.extendedUserId) &&
-            Objects.equals(likeImageId, that.likeImageId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -278,7 +259,6 @@ public class ImageCriteria implements Serializable, Criteria {
             isPrivate,
             commentariesId,
             extendedUserId,
-            likeImageId,
             distinct
         );
     }
@@ -297,7 +277,6 @@ public class ImageCriteria implements Serializable, Criteria {
             (isPrivate != null ? "isPrivate=" + isPrivate + ", " : "") +
             (commentariesId != null ? "commentariesId=" + commentariesId + ", " : "") +
             (extendedUserId != null ? "extendedUserId=" + extendedUserId + ", " : "") +
-            (likeImageId != null ? "likeImageId=" + likeImageId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

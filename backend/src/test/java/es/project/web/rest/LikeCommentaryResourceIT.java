@@ -76,7 +76,7 @@ class LikeCommentaryResourceIT {
         } else {
             commentary = TestUtil.findAll(em, Commentary.class).get(0);
         }
-        likeCommentary.getCommentaries().add(commentary);
+        likeCommentary.setCommentary(commentary);
         // Add required entity
         ExtendedUser extendedUser;
         if (TestUtil.findAll(em, ExtendedUser.class).isEmpty()) {
@@ -86,7 +86,7 @@ class LikeCommentaryResourceIT {
         } else {
             extendedUser = TestUtil.findAll(em, ExtendedUser.class).get(0);
         }
-        likeCommentary.getExtendedUsers().add(extendedUser);
+        likeCommentary.setExtendedUser(extendedUser);
         return likeCommentary;
     }
 
@@ -107,7 +107,7 @@ class LikeCommentaryResourceIT {
         } else {
             commentary = TestUtil.findAll(em, Commentary.class).get(0);
         }
-        likeCommentary.getCommentaries().add(commentary);
+        likeCommentary.setCommentary(commentary);
         // Add required entity
         ExtendedUser extendedUser;
         if (TestUtil.findAll(em, ExtendedUser.class).isEmpty()) {
@@ -117,7 +117,7 @@ class LikeCommentaryResourceIT {
         } else {
             extendedUser = TestUtil.findAll(em, ExtendedUser.class).get(0);
         }
-        likeCommentary.getExtendedUsers().add(extendedUser);
+        likeCommentary.setExtendedUser(extendedUser);
         return likeCommentary;
     }
 
@@ -285,7 +285,7 @@ class LikeCommentaryResourceIT {
         }
         em.persist(commentary);
         em.flush();
-        likeCommentary.addCommentary(commentary);
+        likeCommentary.setCommentary(commentary);
         likeCommentaryRepository.saveAndFlush(likeCommentary);
         Long commentaryId = commentary.getId();
 
@@ -308,7 +308,7 @@ class LikeCommentaryResourceIT {
         }
         em.persist(extendedUser);
         em.flush();
-        likeCommentary.addExtendedUser(extendedUser);
+        likeCommentary.setExtendedUser(extendedUser);
         likeCommentaryRepository.saveAndFlush(likeCommentary);
         Long extendedUserId = extendedUser.getId();
 

@@ -7,8 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import es.project.IntegrationTest;
 import es.project.domain.ExtendedUser;
-import es.project.domain.LikeCommentary;
-import es.project.domain.LikeImage;
 import es.project.domain.User;
 import es.project.repository.ExtendedUserRepository;
 import es.project.service.criteria.ExtendedUserCriteria;
@@ -689,52 +687,6 @@ class ExtendedUserResourceIT {
 
         // Get all the extendedUserList where user equals to (userId + 1)
         defaultExtendedUserShouldNotBeFound("userId.equals=" + (userId + 1));
-    }
-
-    @Test
-    @Transactional
-    void getAllExtendedUsersByLikeImageIsEqualToSomething() throws Exception {
-        LikeImage likeImage;
-        if (TestUtil.findAll(em, LikeImage.class).isEmpty()) {
-            extendedUserRepository.saveAndFlush(extendedUser);
-            likeImage = LikeImageResourceIT.createEntity(em);
-        } else {
-            likeImage = TestUtil.findAll(em, LikeImage.class).get(0);
-        }
-        em.persist(likeImage);
-        em.flush();
-        extendedUser.setLikeImage(likeImage);
-        extendedUserRepository.saveAndFlush(extendedUser);
-        Long likeImageId = likeImage.getId();
-
-        // Get all the extendedUserList where likeImage equals to likeImageId
-        defaultExtendedUserShouldBeFound("likeImageId.equals=" + likeImageId);
-
-        // Get all the extendedUserList where likeImage equals to (likeImageId + 1)
-        defaultExtendedUserShouldNotBeFound("likeImageId.equals=" + (likeImageId + 1));
-    }
-
-    @Test
-    @Transactional
-    void getAllExtendedUsersByLikeCommentaryIsEqualToSomething() throws Exception {
-        LikeCommentary likeCommentary;
-        if (TestUtil.findAll(em, LikeCommentary.class).isEmpty()) {
-            extendedUserRepository.saveAndFlush(extendedUser);
-            likeCommentary = LikeCommentaryResourceIT.createEntity(em);
-        } else {
-            likeCommentary = TestUtil.findAll(em, LikeCommentary.class).get(0);
-        }
-        em.persist(likeCommentary);
-        em.flush();
-        extendedUser.setLikeCommentary(likeCommentary);
-        extendedUserRepository.saveAndFlush(extendedUser);
-        Long likeCommentaryId = likeCommentary.getId();
-
-        // Get all the extendedUserList where likeCommentary equals to likeCommentaryId
-        defaultExtendedUserShouldBeFound("likeCommentaryId.equals=" + likeCommentaryId);
-
-        // Get all the extendedUserList where likeCommentary equals to (likeCommentaryId + 1)
-        defaultExtendedUserShouldNotBeFound("likeCommentaryId.equals=" + (likeCommentaryId + 1));
     }
 
     /**

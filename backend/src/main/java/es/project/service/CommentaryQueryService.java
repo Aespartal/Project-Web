@@ -111,15 +111,6 @@ public class CommentaryQueryService extends QueryService<Commentary> {
                         buildSpecification(criteria.getImageId(), root -> root.join(Commentary_.image, JoinType.LEFT).get(Image_.id))
                     );
             }
-            if (criteria.getLikeCommentaryId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getLikeCommentaryId(),
-                            root -> root.join(Commentary_.likeCommentary, JoinType.LEFT).get(LikeCommentary_.id)
-                        )
-                    );
-            }
         }
         return specification;
     }

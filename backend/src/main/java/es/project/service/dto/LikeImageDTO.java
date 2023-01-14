@@ -21,6 +21,10 @@ public class LikeImageDTO implements Serializable {
     @Schema(description = "creationDate", required = true)
     private Instant creationDate;
 
+    private ImageDTO image;
+
+    private ExtendedUserDTO extendedUser;
+
     public Long getId() {
         return id;
     }
@@ -35,6 +39,22 @@ public class LikeImageDTO implements Serializable {
 
     public void setCreationDate(Instant creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public ImageDTO getImage() {
+        return image;
+    }
+
+    public void setImage(ImageDTO image) {
+        this.image = image;
+    }
+
+    public ExtendedUserDTO getExtendedUser() {
+        return extendedUser;
+    }
+
+    public void setExtendedUser(ExtendedUserDTO extendedUser) {
+        this.extendedUser = extendedUser;
     }
 
     @Override
@@ -64,6 +84,8 @@ public class LikeImageDTO implements Serializable {
         return "LikeImageDTO{" +
             "id=" + getId() +
             ", creationDate='" + getCreationDate() + "'" +
+            ", image=" + getImage() +
+            ", extendedUser=" + getExtendedUser() +
             "}";
     }
 }

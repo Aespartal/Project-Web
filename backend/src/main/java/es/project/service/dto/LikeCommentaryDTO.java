@@ -21,6 +21,10 @@ public class LikeCommentaryDTO implements Serializable {
     @Schema(description = "creationDate", required = true)
     private Instant creationDate;
 
+    private CommentaryDTO commentary;
+
+    private ExtendedUserDTO extendedUser;
+
     public Long getId() {
         return id;
     }
@@ -35,6 +39,22 @@ public class LikeCommentaryDTO implements Serializable {
 
     public void setCreationDate(Instant creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public CommentaryDTO getCommentary() {
+        return commentary;
+    }
+
+    public void setCommentary(CommentaryDTO commentary) {
+        this.commentary = commentary;
+    }
+
+    public ExtendedUserDTO getExtendedUser() {
+        return extendedUser;
+    }
+
+    public void setExtendedUser(ExtendedUserDTO extendedUser) {
+        this.extendedUser = extendedUser;
     }
 
     @Override
@@ -64,6 +84,8 @@ public class LikeCommentaryDTO implements Serializable {
         return "LikeCommentaryDTO{" +
             "id=" + getId() +
             ", creationDate='" + getCreationDate() + "'" +
+            ", commentary=" + getCommentary() +
+            ", extendedUser=" + getExtendedUser() +
             "}";
     }
 }

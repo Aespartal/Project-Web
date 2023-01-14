@@ -29,12 +29,6 @@
             <column name="birth_date" type="${datetimeType}" remarks="birthDate">
                 <constraints nullable="false" />
             </column>
-            <column name="like_image_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="like_commentary_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="extended_user" columnName="birth_date" columnDataType="${datetimeType}"/>
@@ -50,9 +44,9 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <changeSet id="20221208153525-1-data" author="jhipster">
+    <changeSet id="20221208153525-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/data/extended_user.csv"
+                  file="config/liquibase/fake-data/extended_user.csv"
                   separator=";"
                   tableName="extended_user"
                   usePreparedStatements="true">
