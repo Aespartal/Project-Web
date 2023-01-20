@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="image">
+      <h2 data-cy="imageDetailsHeading"><span jhiTranslate="projectApp.image.detail.title">Image</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ image.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="projectApp.image.name" [ngbTooltip]="'projectApp.image.help.name' | translate">Name</span></dt>
+        <dd>
+          <span>{{ image.name }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.image.description" [ngbTooltip]="'projectApp.image.help.description' | translate"
+            >Description</span
+          >
+        </dt>
+        <dd>
+          <span>{{ image.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="projectApp.image.image" [ngbTooltip]="'projectApp.image.help.image' | translate">Image</span></dt>
+        <dd>
+          <span>{{ image.image }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.image.imageType" [ngbTooltip]="'projectApp.image.help.imageType' | translate">Image Type</span>
+        </dt>
+        <dd>
+          <span>{{ image.imageType }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.image.creationDate" [ngbTooltip]="'projectApp.image.help.creationDate' | translate"
+            >Creation Date</span
+          >
+        </dt>
+        <dd>
+          <span>{{ image.creationDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.image.modificationDate" [ngbTooltip]="'projectApp.image.help.modificationDate' | translate"
+            >Modification Date</span
+          >
+        </dt>
+        <dd>
+          <span>{{ image.modificationDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.image.isPrivate" [ngbTooltip]="'projectApp.image.help.isPrivate' | translate">Is Private</span>
+        </dt>
+        <dd>
+          <span>{{ image.isPrivate }}</span>
+        </dd>
+        <dt><span jhiTranslate="projectApp.image.extendedUser">Extended User</span></dt>
+        <dd>
+          <div *ngIf="image.extendedUser">
+            <a [routerLink]="['/extended-user', image.extendedUser.id, 'view']">{{ image.extendedUser.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+      </button>
+
+      <button type="button" [routerLink]="['/image', image.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -40,21 +40,27 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="web">
-            <div class="d-flex">
-              <span jhiTranslate="projectApp.extendedUser.web">Web</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
           <th scope="col" jhiSortBy="location">
             <div class="d-flex">
               <span jhiTranslate="projectApp.extendedUser.location">Location</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="profession">
+          <th scope="col" jhiSortBy="height">
             <div class="d-flex">
-              <span jhiTranslate="projectApp.extendedUser.profession">Profession</span>
+              <span jhiTranslate="projectApp.extendedUser.height">Height</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="weight">
+            <div class="d-flex">
+              <span jhiTranslate="projectApp.extendedUser.weight">Weight</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="birthDate">
+            <div class="d-flex">
+              <span jhiTranslate="projectApp.extendedUser.birthDate">Birth Date</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -70,9 +76,10 @@
       <tbody>
         <tr *ngFor="let extendedUser of extendedUsers; trackBy: trackId" data-cy="entityTable">
           <td>{{ extendedUser.description }}</td>
-          <td>{{ extendedUser.web }}</td>
           <td>{{ extendedUser.location }}</td>
-          <td>{{ extendedUser.profession }}</td>
+          <td>{{ extendedUser.height }}</td>
+          <td>{{ extendedUser.weight }}</td>
+          <td>{{ extendedUser.birthDate | formatMediumDatetime }}</td>
           <td>
             {{ extendedUser.user?.id }}
           </td>

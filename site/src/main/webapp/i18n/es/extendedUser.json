@@ -18,15 +18,17 @@
         "title": "Extended User"
       },
       "description": "Description",
-      "web": "Web",
       "location": "Location",
-      "profession": "Profession",
+      "height": "Height",
+      "weight": "Weight",
+      "birthDate": "Birth Date",
       "user": "User",
       "help": {
         "description": "description",
-        "web": "web",
         "location": "location",
-        "profession": "profession"
+        "height": "height",
+        "weight": "weight",
+        "birthDate": "birthDate"
       }
     }
   }

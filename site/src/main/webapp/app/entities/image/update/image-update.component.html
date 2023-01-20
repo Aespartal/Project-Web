@@ -1,0 +1,247 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-image-heading" data-cy="ImageCreateUpdateHeading" jhiTranslate="projectApp.image.home.createOrEditLabel">
+        Crear o editar Image
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.image.name"
+            for="field_name"
+            [ngbTooltip]="'projectApp.image.help.name' | translate"
+            >Name</label
+          >
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+              Este campo es obligatorio.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('name')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 100 }"
+            >
+              Este campo no puede superar más de 100 caracteres.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.image.description"
+            for="field_description"
+            [ngbTooltip]="'projectApp.image.help.description' | translate"
+            >Description</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+          <div *ngIf="editForm.get('description')!.invalid && (editForm.get('description')!.dirty || editForm.get('description')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('description')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Este campo es obligatorio.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('description')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 3500 }"
+            >
+              Este campo no puede superar más de 3500 caracteres.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.image.image"
+            for="field_image"
+            [ngbTooltip]="'projectApp.image.help.image' | translate"
+            >Image</label
+          >
+          <input type="text" class="form-control" name="image" id="field_image" data-cy="image" formControlName="image" />
+          <div *ngIf="editForm.get('image')!.invalid && (editForm.get('image')!.dirty || editForm.get('image')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('image')?.errors?.required" jhiTranslate="entity.validation.required">
+              Este campo es obligatorio.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('image')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 3500 }"
+            >
+              Este campo no puede superar más de 3500 caracteres.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.image.imageType"
+            for="field_imageType"
+            [ngbTooltip]="'projectApp.image.help.imageType' | translate"
+            >Image Type</label
+          >
+          <input type="text" class="form-control" name="imageType" id="field_imageType" data-cy="imageType" formControlName="imageType" />
+          <div *ngIf="editForm.get('imageType')!.invalid && (editForm.get('imageType')!.dirty || editForm.get('imageType')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('imageType')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Este campo es obligatorio.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.image.creationDate"
+            for="field_creationDate"
+            [ngbTooltip]="'projectApp.image.help.creationDate' | translate"
+            >Creation Date</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_creationDate"
+              data-cy="creationDate"
+              type="datetime-local"
+              class="form-control"
+              name="creationDate"
+              formControlName="creationDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div
+            *ngIf="editForm.get('creationDate')!.invalid && (editForm.get('creationDate')!.dirty || editForm.get('creationDate')!.touched)"
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('creationDate')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Este campo es obligatorio.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('creationDate')?.errors?.datetimelocal"
+              jhiTranslate="entity.validation.datetimelocal"
+            >
+              Este campo debe ser una fecha y hora.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.image.modificationDate"
+            for="field_modificationDate"
+            [ngbTooltip]="'projectApp.image.help.modificationDate' | translate"
+            >Modification Date</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_modificationDate"
+              data-cy="modificationDate"
+              type="datetime-local"
+              class="form-control"
+              name="modificationDate"
+              formControlName="modificationDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.image.isPrivate"
+            for="field_isPrivate"
+            [ngbTooltip]="'projectApp.image.help.isPrivate' | translate"
+            >Is Private</label
+          >
+          <input type="checkbox" class="form-check" name="isPrivate" id="field_isPrivate" data-cy="isPrivate" formControlName="isPrivate" />
+          <div *ngIf="editForm.get('isPrivate')!.invalid && (editForm.get('isPrivate')!.dirty || editForm.get('isPrivate')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('isPrivate')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Este campo es obligatorio.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="projectApp.image.extendedUser" for="field_extendedUser">Extended User</label>
+          <select
+            class="form-control"
+            id="field_extendedUser"
+            data-cy="extendedUser"
+            name="extendedUser"
+            formControlName="extendedUser"
+            [compareWith]="compareExtendedUser"
+          >
+            <option *ngIf="!editForm.get('extendedUser')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="extendedUserOption" *ngFor="let extendedUserOption of extendedUsersSharedCollection">
+              {{ extendedUserOption.id }}
+            </option>
+          </select>
+        </div>
+        <div
+          *ngIf="
+            editForm.get(['extendedUser'])!.invalid && (editForm.get(['extendedUser'])!.dirty || editForm.get(['extendedUser'])!.touched)
+          "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['extendedUser'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Este campo es obligatorio.
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+{
+  "projectApp": {
+    "image": {
+      "home": {
+        "title": "Images",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Image",
+        "createOrEditLabel": "Crear o editar Image",
+        "notFound": "Ningún Images encontrado"
+      },
+      "created": "Un nuevo Image ha sido creado con el identificador {{ param }}",
+      "updated": "Un Image ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Image ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Image {{ id }}?"
+      },
+      "detail": {
+        "title": "Image"
+      },
+      "id": "ID",
+      "name": "Name",
+      "description": "Description",
+      "image": "Image",
+      "imageType": "Image Type",
+      "creationDate": "Creation Date",
+      "modificationDate": "Modification Date",
+      "isPrivate": "Is Private",
+      "commentaries": "Commentaries",
+      "extendedUser": "Extended User",
+      "help": {
+        "name": "name",
+        "description": "description",
+        "image": "image",
+        "imageType": "imageType",
+        "creationDate": "creationDate",
+        "modificationDate": "modificationDate",
+        "isPrivate": "isPrivate"
+      }
+    }
+  }
+}

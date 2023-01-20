@@ -43,27 +43,6 @@
         <div class="row mb-3">
           <label
             class="form-label"
-            jhiTranslate="projectApp.extendedUser.web"
-            for="field_web"
-            [ngbTooltip]="'projectApp.extendedUser.help.web' | translate"
-            >Web</label
-          >
-          <input type="text" class="form-control" name="web" id="field_web" data-cy="web" formControlName="web" />
-          <div *ngIf="editForm.get('web')!.invalid && (editForm.get('web')!.dirty || editForm.get('web')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('web')?.errors?.maxlength"
-              jhiTranslate="entity.validation.maxlength"
-              [translateValues]="{ max: 100 }"
-            >
-              Este campo no puede superar más de 100 caracteres.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label
-            class="form-label"
             jhiTranslate="projectApp.extendedUser.location"
             for="field_location"
             [ngbTooltip]="'projectApp.extendedUser.help.location' | translate"
@@ -85,27 +64,90 @@
         <div class="row mb-3">
           <label
             class="form-label"
-            jhiTranslate="projectApp.extendedUser.profession"
-            for="field_profession"
-            [ngbTooltip]="'projectApp.extendedUser.help.profession' | translate"
-            >Profession</label
+            jhiTranslate="projectApp.extendedUser.height"
+            for="field_height"
+            [ngbTooltip]="'projectApp.extendedUser.help.height' | translate"
+            >Height</label
           >
-          <input
-            type="text"
-            class="form-control"
-            name="profession"
-            id="field_profession"
-            data-cy="profession"
-            formControlName="profession"
-          />
-          <div *ngIf="editForm.get('profession')!.invalid && (editForm.get('profession')!.dirty || editForm.get('profession')!.touched)">
+          <input type="number" class="form-control" name="height" id="field_height" data-cy="height" formControlName="height" />
+          <div *ngIf="editForm.get('height')!.invalid && (editForm.get('height')!.dirty || editForm.get('height')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('height')?.errors?.required" jhiTranslate="entity.validation.required">
+              Este campo es obligatorio.
+            </small>
             <small
               class="form-text text-danger"
-              *ngIf="editForm.get('profession')?.errors?.maxlength"
-              jhiTranslate="entity.validation.maxlength"
-              [translateValues]="{ max: 50 }"
+              *ngIf="editForm.get('height')?.errors?.min"
+              jhiTranslate="entity.validation.min"
+              [translateValues]="{ min: 0 }"
             >
-              Este campo no puede superar más de 50 caracteres.
+              Este campo debe ser mayor que 0.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('height')?.errors?.number" jhiTranslate="entity.validation.number">
+              Este campo debe ser un número.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.extendedUser.weight"
+            for="field_weight"
+            [ngbTooltip]="'projectApp.extendedUser.help.weight' | translate"
+            >Weight</label
+          >
+          <input type="number" class="form-control" name="weight" id="field_weight" data-cy="weight" formControlName="weight" />
+          <div *ngIf="editForm.get('weight')!.invalid && (editForm.get('weight')!.dirty || editForm.get('weight')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('weight')?.errors?.required" jhiTranslate="entity.validation.required">
+              Este campo es obligatorio.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('weight')?.errors?.min"
+              jhiTranslate="entity.validation.min"
+              [translateValues]="{ min: 0 }"
+            >
+              Este campo debe ser mayor que 0.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('weight')?.errors?.number" jhiTranslate="entity.validation.number">
+              Este campo debe ser un número.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.extendedUser.birthDate"
+            for="field_birthDate"
+            [ngbTooltip]="'projectApp.extendedUser.help.birthDate' | translate"
+            >Birth Date</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_birthDate"
+              data-cy="birthDate"
+              type="datetime-local"
+              class="form-control"
+              name="birthDate"
+              formControlName="birthDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div *ngIf="editForm.get('birthDate')!.invalid && (editForm.get('birthDate')!.dirty || editForm.get('birthDate')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('birthDate')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Este campo es obligatorio.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('birthDate')?.errors?.datetimelocal"
+              jhiTranslate="entity.validation.datetimelocal"
+            >
+              Este campo debe ser una fecha y hora.
             </small>
           </div>
         </div>

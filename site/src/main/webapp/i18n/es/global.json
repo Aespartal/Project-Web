@@ -9,6 +9,10 @@
         "main": "Entidades",
         "extendedUser": "Extended User",
         "project": "Project",
+        "image": "Image",
+        "likeImage": "Like Image",
+        "commentary": "Commentary",
+        "likeCommentary": "Like Commentary",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

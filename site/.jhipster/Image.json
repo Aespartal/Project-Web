@@ -1,0 +1,74 @@
+{
+  "applications": "*",
+  "changelogDate": "20230114164532",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "image",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "100",
+      "javadoc": "name"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "3500",
+      "javadoc": "description"
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "3500",
+      "javadoc": "image"
+    },
+    {
+      "fieldName": "imageType",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"],
+      "javadoc": "imageType"
+    },
+    {
+      "fieldName": "creationDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"],
+      "javadoc": "creationDate"
+    },
+    {
+      "fieldName": "modificationDate",
+      "fieldType": "Instant",
+      "javadoc": "modificationDate"
+    },
+    {
+      "fieldName": "isPrivate",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"],
+      "javadoc": "isPrivate"
+    }
+  ],
+  "fluentMethods": true,
+  "javadoc": "The Image entity.\\n@author alejandro.espartal",
+  "jpaMetamodelFiltering": true,
+  "name": "Image",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "commentary",
+      "otherEntityRelationshipName": "image",
+      "relationshipName": "commentaries",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "extendedUser",
+      "relationshipName": "extendedUser",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "serviceImpl"
+}
