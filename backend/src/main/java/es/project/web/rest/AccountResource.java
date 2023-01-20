@@ -10,7 +10,6 @@ import es.project.service.MailService;
 import es.project.service.UserService;
 import es.project.service.dto.AdminUserDTO;
 import es.project.service.dto.PasswordChangeDTO;
-import es.project.web.rest.errors.*;
 import es.project.web.rest.vm.KeyAndPasswordVM;
 import es.project.web.rest.vm.ManagedUserVM;
 import java.util.*;

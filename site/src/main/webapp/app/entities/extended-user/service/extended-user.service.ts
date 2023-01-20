@@ -37,6 +37,12 @@ export class ExtendedUserService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  me(): Observable<EntityResponseType> {
+    return this.http
+      .get<RestExtendedUser>(`${this.resourceUrl}/me`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
   update(extendedUser: IExtendedUser): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(extendedUser);
     return this.http

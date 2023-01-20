@@ -41,8 +41,8 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
-      if (account) {
-        this.settingsForm.patchValue(account);
+      if (account?.user) {
+        this.settingsForm.patchValue(account.user);
       }
     });
   }
@@ -51,14 +51,14 @@ export class SettingsComponent implements OnInit {
     this.success = false;
 
     const account = this.settingsForm.getRawValue();
-    this.accountService.save(account).subscribe(() => {
-      this.success = true;
+    // this.accountService.save(account).subscribe(() => {
+    //   this.success = true;
 
-      this.accountService.authenticate(account);
+    //   this.accountService.authenticate(account);
 
-      if (account.langKey !== this.translateService.currentLang) {
-        this.translateService.use(account.langKey);
-      }
-    });
+    //   if (account.langKey !== this.translateService.currentLang) {
+    //     this.translateService.use(account.langKey);
+    //   }
+    // });
   }
 }

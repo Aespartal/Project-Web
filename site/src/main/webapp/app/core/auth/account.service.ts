@@ -9,12 +9,13 @@ import { shareReplay, tap, catchError } from 'rxjs/operators';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { ApplicationConfigService } from '../config/application-config.service';
 import { Account } from 'app/core/auth/account.model';
+import { IExtendedUser } from 'app/entities/extended-user/extended-user.model';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
-  private userIdentity: Account | null = null;
-  private authenticationState = new ReplaySubject<Account | null>(1);
-  private accountCache$?: Observable<Account> | null;
+  private userIdentity: IExtendedUser | null = null;
+  private authenticationState = new ReplaySubject<IExtendedUser | null>(1);
+  private accountCache$?: Observable<IExtendedUser | null> | null;
 
   constructor(
     private translateService: TranslateService,
@@ -29,7 +30,7 @@ export class AccountService {
     return this.http.post(this.applicationConfigService.getEndpointFor('api/account'), account);
   }
 
-  authenticate(identity: Account | null): void {
+  authenticate(identity: IExtendedUser | null): void {
     this.userIdentity = identity;
     this.authenticationState.next(this.userIdentity);
     if (!identity) {
@@ -38,46 +39,47 @@ export class AccountService {
   }
 
   hasAnyAuthority(authorities: string[] | string): boolean {
-    if (!this.userIdentity) {
+    if (!this.userIdentity || !this.userIdentity.user!.authorities) {
       return false;
     }
     if (!Array.isArray(authorities)) {
       authorities = [authorities];
     }
-    return this.userIdentity.authorities.some((authority: string) => authorities.includes(authority));
+    return this.userIdentity.user!.authorities.some((authority: string) => authorities.includes(authority));
   }
 
-  identity(force?: boolean): Observable<Account | null> {
-    if (!this.accountCache$ || force) {
+  identity(force?: boolean): Observable<IExtendedUser | null> {
+    if (!this.accountCache$ || force || !this.isAuthenticated()) {
       this.accountCache$ = this.fetch().pipe(
-        tap((account: Account) => {
+        catchError(() => {
+          return of(null);
+        }),
+        tap((account: IExtendedUser | null) => {
           this.authenticate(account);
 
-          // After retrieve the account info, the language will be changed to
-          // the user's preferred language configured in the account setting
-          // unless user have choosed other language in the current session
-          if (!this.sessionStorageService.retrieve('locale')) {
-            this.translateService.use(account.langKey);
+          if (account && account.user!.langKey && !this.sessionStorageService.retrieve('locale')) {
+            this.translateService.use(account.user!.langKey);
           }
-
-          this.navigateToStoredUrl();
+          if (account) {
+            this.navigateToStoredUrl();
+          }
         }),
         shareReplay()
       );
     }
-    return this.accountCache$.pipe(catchError(() => of(null)));
+    return this.accountCache$;
   }
 
   isAuthenticated(): boolean {
     return this.userIdentity !== null;
   }
 
-  getAuthenticationState(): Observable<Account | null> {
+  getAuthenticationState(): Observable<IExtendedUser | null> {
     return this.authenticationState.asObservable();
   }
 
-  private fetch(): Observable<Account> {
-    return this.http.get<Account>(this.applicationConfigService.getEndpointFor('api/account'));
+  private fetch(): Observable<IExtendedUser | null> {
+    return this.http.get<IExtendedUser>(this.applicationConfigService.getEndpointFor('api/extended-users/me'));
   }
 
   private navigateToStoredUrl(): void {

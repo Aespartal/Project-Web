@@ -9,10 +9,12 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link ExtendedUser} and its DTO {@link ExtendedUserDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses= { UserMapper.class })
 public interface ExtendedUserMapper extends EntityMapper<ExtendedUserDTO, ExtendedUser> {
-    @Mapping(target = "user", source = "user", qualifiedByName = "userId")
+
     ExtendedUserDTO toDto(ExtendedUser s);
+
+    ExtendedUser toEntity(ExtendedUserDTO dto);
 
     @Named("userId")
     @BeanMapping(ignoreByDefault = true)

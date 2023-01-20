@@ -1,9 +1,13 @@
 package es.project.service.dto;
 
+import es.project.domain.Commentary;
+import es.project.domain.Image;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.validation.constraints.*;
 
 /**
@@ -67,6 +71,8 @@ public class ImageDTO implements Serializable {
     private Boolean isPrivate;
 
     private ExtendedUserDTO extendedUser;
+
+    private Set<CommentaryDTO> commentaries = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -138,6 +144,37 @@ public class ImageDTO implements Serializable {
 
     public void setExtendedUser(ExtendedUserDTO extendedUser) {
         this.extendedUser = extendedUser;
+    }
+
+    public ImageDTO commentaries(Set<CommentaryDTO> commentaries) {
+        this.setCommentaries(commentaries);
+        return this;
+    }
+
+    public ImageDTO addCommentaries(CommentaryDTO commentary) {
+        this.commentaries.add(commentary);
+        commentary.setImage(this);
+        return this;
+    }
+
+    public ImageDTO removeCommentaries(CommentaryDTO commentary) {
+        this.commentaries.remove(commentary);
+        commentary.setImage(null);
+        return this;
+    }
+
+    public Set<CommentaryDTO> getCommentaries() {
+        return this.commentaries;
+    }
+
+    public void setCommentaries(Set<CommentaryDTO> commentaries) {
+        if (this.commentaries != null) {
+            this.commentaries.forEach(i -> i.setImage(null));
+        }
+        if (commentaries != null) {
+            commentaries.forEach(i -> i.setImage(this));
+        }
+        this.commentaries = commentaries;
     }
 
     @Override

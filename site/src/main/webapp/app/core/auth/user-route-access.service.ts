@@ -13,7 +13,7 @@ export class UserRouteAccessService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.accountService.identity().pipe(
       map(account => {
-        if (account) {
+        if (account?.user) {
           const authorities = route.data['authorities'];
 
           if (!authorities || authorities.length === 0 || this.accountService.hasAnyAuthority(authorities)) {

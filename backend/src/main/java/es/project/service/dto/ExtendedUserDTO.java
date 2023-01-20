@@ -52,7 +52,7 @@ public class ExtendedUserDTO implements Serializable {
     @Schema(description = "birthDate", required = true)
     private Instant birthDate;
 
-    private UserDTO user;
+    private AdminUserDTO user;
 
     public Long getId() {
         return id;
@@ -102,11 +102,11 @@ public class ExtendedUserDTO implements Serializable {
         this.birthDate = birthDate;
     }
 
-    public UserDTO getUser() {
+    public AdminUserDTO getUser() {
         return user;
     }
 
-    public void setUser(UserDTO user) {
+    public void setUser(AdminUserDTO user) {
         this.user = user;
     }
 

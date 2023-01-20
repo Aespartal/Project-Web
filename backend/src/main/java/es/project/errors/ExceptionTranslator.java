@@ -219,22 +219,4 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         // This list is for sure not complete
         return StringUtils.containsAny(message, "org.", "java.", "net.", "javax.", "com.", "io.", "de.", "es.project");
     }
-
-    public static class InvalidPasswordException extends RuntimeException {
-
-        private static final long serialVersionUID = 1L;
-
-        public InvalidPasswordException() {
-            super("Incorrect password");
-        }
-    }
-
-    public static class EmailAlreadyUsedException extends RuntimeException {
-
-        private static final long serialVersionUID = 1L;
-
-        public EmailAlreadyUsedException() {
-            super("Email is already in use!");
-        }
-    }
 }

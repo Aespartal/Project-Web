@@ -11,13 +11,14 @@ import { Account } from 'app/core/auth/account.model';
 import { UserManagementService } from '../service/user-management.service';
 import { User } from '../user-management.model';
 import { UserManagementDeleteDialogComponent } from '../delete/user-management-delete-dialog.component';
+import { IExtendedUser } from 'app/entities/extended-user/extended-user.model';
 
 @Component({
   selector: 'jhi-user-mgmt',
   templateUrl: './user-management.component.html',
 })
 export class UserManagementComponent implements OnInit {
-  currentAccount: Account | null = null;
+  currentExtendedUser: IExtendedUser | null = null;
   users: User[] | null = null;
   isLoading = false;
   totalItems = 0;
@@ -35,7 +36,9 @@ export class UserManagementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.accountService.identity().subscribe(account => (this.currentAccount = account));
+    this.accountService.identity().subscribe(account => (
+      this.currentExtendedUser = account
+      ));
     this.handleNavigation();
   }
 

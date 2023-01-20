@@ -3,7 +3,9 @@ package es.project.service;
 import es.project.config.Constants;
 import es.project.domain.Authority;
 import es.project.domain.User;
+import es.project.errors.EmailAlreadyUsedException;
 import es.project.errors.ExceptionTranslator;
+import es.project.errors.InvalidPasswordException;
 import es.project.errors.UsernameAlreadyUsedException;
 import es.project.repository.AuthorityRepository;
 import es.project.repository.UserRepository;
@@ -97,7 +99,7 @@ public class UserService {
             .ifPresent(existingUser -> {
                 boolean removed = removeNonActivatedUser(existingUser);
                 if (!removed) {
-                    throw new ExceptionTranslator.EmailAlreadyUsedException();
+                    throw new EmailAlreadyUsedException();
                 }
             });
         User newUser = new User();
@@ -246,7 +248,7 @@ public class UserService {
             .ifPresent(user -> {
                 String currentEncryptedPassword = user.getPassword();
                 if (!passwordEncoder.matches(currentClearTextPassword, currentEncryptedPassword)) {
-                    throw new ExceptionTranslator.InvalidPasswordException();
+                    throw new InvalidPasswordException();
                 }
                 String encryptedPassword = passwordEncoder.encode(newPassword);
                 user.setPassword(encryptedPassword);
