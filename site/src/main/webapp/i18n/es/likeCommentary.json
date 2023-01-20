@@ -1,0 +1,29 @@
+{
+  "projectApp": {
+    "likeCommentary": {
+      "home": {
+        "title": "Like Commentaries",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Like Commentary",
+        "createOrEditLabel": "Crear o editar Like Commentary",
+        "notFound": "Ningún Like Commentaries encontrado"
+      },
+      "created": "Un nuevo Like Commentary ha sido creado con el identificador {{ param }}",
+      "updated": "Un Like Commentary ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Like Commentary ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Like Commentary {{ id }}?"
+      },
+      "detail": {
+        "title": "Like Commentary"
+      },
+      "id": "ID",
+      "creationDate": "Creation Date",
+      "commentary": "Commentary",
+      "extendedUser": "Extended User",
+      "help": {
+        "creationDate": "creationDate"
+      }
+    }
+  }
+}

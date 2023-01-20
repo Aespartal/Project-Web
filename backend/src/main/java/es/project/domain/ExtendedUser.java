@@ -1,6 +1,7 @@
 package es.project.domain;
 
 import java.io.Serializable;
+import java.time.Instant;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -26,13 +27,6 @@ public class ExtendedUser implements Serializable {
     private String description;
 
     /**
-     * web
-     */
-    @Size(max = 100)
-    @Column(name = "web", length = 100)
-    private String web;
-
-    /**
      * location
      */
     @Size(max = 50)
@@ -40,11 +34,27 @@ public class ExtendedUser implements Serializable {
     private String location;
 
     /**
-     * profession
+     * height
      */
-    @Size(max = 50)
-    @Column(name = "profession", length = 50)
-    private String profession;
+    @NotNull
+    @DecimalMin(value = "0")
+    @Column(name = "height", nullable = false)
+    private Double height;
+
+    /**
+     * weight
+     */
+    @NotNull
+    @DecimalMin(value = "0")
+    @Column(name = "weight", nullable = false)
+    private Double weight;
+
+    /**
+     * birthDate
+     */
+    @NotNull
+    @Column(name = "birth_date", nullable = false)
+    private Instant birthDate;
 
     @OneToOne
     @MapsId
@@ -79,19 +89,6 @@ public class ExtendedUser implements Serializable {
         this.description = description;
     }
 
-    public String getWeb() {
-        return this.web;
-    }
-
-    public ExtendedUser web(String web) {
-        this.setWeb(web);
-        return this;
-    }
-
-    public void setWeb(String web) {
-        this.web = web;
-    }
-
     public String getLocation() {
         return this.location;
     }
@@ -105,17 +102,43 @@ public class ExtendedUser implements Serializable {
         this.location = location;
     }
 
-    public String getProfession() {
-        return this.profession;
+    public Double getHeight() {
+        return this.height;
     }
 
-    public ExtendedUser profession(String profession) {
-        this.setProfession(profession);
+    public ExtendedUser height(Double height) {
+        this.setHeight(height);
         return this;
     }
 
-    public void setProfession(String profession) {
-        this.profession = profession;
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    public Double getWeight() {
+        return this.weight;
+    }
+
+    public ExtendedUser weight(Double weight) {
+        this.setWeight(weight);
+        return this;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public Instant getBirthDate() {
+        return this.birthDate;
+    }
+
+    public ExtendedUser birthDate(Instant birthDate) {
+        this.setBirthDate(birthDate);
+        return this;
+    }
+
+    public void setBirthDate(Instant birthDate) {
+        this.birthDate = birthDate;
     }
 
     public User getUser() {
@@ -156,9 +179,10 @@ public class ExtendedUser implements Serializable {
         return "ExtendedUser{" +
             "id=" + getId() +
             ", description='" + getDescription() + "'" +
-            ", web='" + getWeb() + "'" +
             ", location='" + getLocation() + "'" +
-            ", profession='" + getProfession() + "'" +
+            ", height=" + getHeight() +
+            ", weight=" + getWeight() +
+            ", birthDate='" + getBirthDate() + "'" +
             "}";
     }
 }

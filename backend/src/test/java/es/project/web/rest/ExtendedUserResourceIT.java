@@ -12,6 +12,8 @@ import es.project.repository.ExtendedUserRepository;
 import es.project.service.criteria.ExtendedUserCriteria;
 import es.project.service.dto.ExtendedUserDTO;
 import es.project.service.mapper.ExtendedUserMapper;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -36,14 +38,19 @@ class ExtendedUserResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_WEB = "AAAAAAAAAA";
-    private static final String UPDATED_WEB = "BBBBBBBBBB";
-
     private static final String DEFAULT_LOCATION = "AAAAAAAAAA";
     private static final String UPDATED_LOCATION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_PROFESSION = "AAAAAAAAAA";
-    private static final String UPDATED_PROFESSION = "BBBBBBBBBB";
+    private static final Double DEFAULT_HEIGHT = 0D;
+    private static final Double UPDATED_HEIGHT = 1D;
+    private static final Double SMALLER_HEIGHT = 0D - 1D;
+
+    private static final Double DEFAULT_WEIGHT = 0D;
+    private static final Double UPDATED_WEIGHT = 1D;
+    private static final Double SMALLER_WEIGHT = 0D - 1D;
+
+    private static final Instant DEFAULT_BIRTH_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_BIRTH_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String ENTITY_API_URL = "/api/extended-users";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -74,9 +81,10 @@ class ExtendedUserResourceIT {
     public static ExtendedUser createEntity(EntityManager em) {
         ExtendedUser extendedUser = new ExtendedUser()
             .description(DEFAULT_DESCRIPTION)
-            .web(DEFAULT_WEB)
             .location(DEFAULT_LOCATION)
-            .profession(DEFAULT_PROFESSION);
+            .height(DEFAULT_HEIGHT)
+            .weight(DEFAULT_WEIGHT)
+            .birthDate(DEFAULT_BIRTH_DATE);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -94,9 +102,10 @@ class ExtendedUserResourceIT {
     public static ExtendedUser createUpdatedEntity(EntityManager em) {
         ExtendedUser extendedUser = new ExtendedUser()
             .description(UPDATED_DESCRIPTION)
-            .web(UPDATED_WEB)
             .location(UPDATED_LOCATION)
-            .profession(UPDATED_PROFESSION);
+            .height(UPDATED_HEIGHT)
+            .weight(UPDATED_WEIGHT)
+            .birthDate(UPDATED_BIRTH_DATE);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -127,9 +136,10 @@ class ExtendedUserResourceIT {
         assertThat(extendedUserList).hasSize(databaseSizeBeforeCreate + 1);
         ExtendedUser testExtendedUser = extendedUserList.get(extendedUserList.size() - 1);
         assertThat(testExtendedUser.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testExtendedUser.getWeb()).isEqualTo(DEFAULT_WEB);
         assertThat(testExtendedUser.getLocation()).isEqualTo(DEFAULT_LOCATION);
-        assertThat(testExtendedUser.getProfession()).isEqualTo(DEFAULT_PROFESSION);
+        assertThat(testExtendedUser.getHeight()).isEqualTo(DEFAULT_HEIGHT);
+        assertThat(testExtendedUser.getWeight()).isEqualTo(DEFAULT_WEIGHT);
+        assertThat(testExtendedUser.getBirthDate()).isEqualTo(DEFAULT_BIRTH_DATE);
 
         // Validate the id for MapsId, the ids must be same
         assertThat(testExtendedUser.getId()).isEqualTo(extendedUserDTO.getUser().getId());
@@ -199,6 +209,66 @@ class ExtendedUserResourceIT {
 
     @Test
     @Transactional
+    void checkHeightIsRequired() throws Exception {
+        int databaseSizeBeforeTest = extendedUserRepository.findAll().size();
+        // set the field null
+        extendedUser.setHeight(null);
+
+        // Create the ExtendedUser, which fails.
+        ExtendedUserDTO extendedUserDTO = extendedUserMapper.toDto(extendedUser);
+
+        restExtendedUserMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(extendedUserDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<ExtendedUser> extendedUserList = extendedUserRepository.findAll();
+        assertThat(extendedUserList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkWeightIsRequired() throws Exception {
+        int databaseSizeBeforeTest = extendedUserRepository.findAll().size();
+        // set the field null
+        extendedUser.setWeight(null);
+
+        // Create the ExtendedUser, which fails.
+        ExtendedUserDTO extendedUserDTO = extendedUserMapper.toDto(extendedUser);
+
+        restExtendedUserMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(extendedUserDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<ExtendedUser> extendedUserList = extendedUserRepository.findAll();
+        assertThat(extendedUserList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkBirthDateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = extendedUserRepository.findAll().size();
+        // set the field null
+        extendedUser.setBirthDate(null);
+
+        // Create the ExtendedUser, which fails.
+        ExtendedUserDTO extendedUserDTO = extendedUserMapper.toDto(extendedUser);
+
+        restExtendedUserMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(extendedUserDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<ExtendedUser> extendedUserList = extendedUserRepository.findAll();
+        assertThat(extendedUserList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllExtendedUsers() throws Exception {
         // Initialize the database
         extendedUserRepository.saveAndFlush(extendedUser);
@@ -210,9 +280,10 @@ class ExtendedUserResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(extendedUser.getId().intValue())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].web").value(hasItem(DEFAULT_WEB)))
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION)))
-            .andExpect(jsonPath("$.[*].profession").value(hasItem(DEFAULT_PROFESSION)));
+            .andExpect(jsonPath("$.[*].height").value(hasItem(DEFAULT_HEIGHT.doubleValue())))
+            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())))
+            .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE.toString())));
     }
 
     @Test
@@ -228,9 +299,10 @@ class ExtendedUserResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(extendedUser.getId().intValue()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
-            .andExpect(jsonPath("$.web").value(DEFAULT_WEB))
             .andExpect(jsonPath("$.location").value(DEFAULT_LOCATION))
-            .andExpect(jsonPath("$.profession").value(DEFAULT_PROFESSION));
+            .andExpect(jsonPath("$.height").value(DEFAULT_HEIGHT.doubleValue()))
+            .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT.doubleValue()))
+            .andExpect(jsonPath("$.birthDate").value(DEFAULT_BIRTH_DATE.toString()));
     }
 
     @Test
@@ -318,71 +390,6 @@ class ExtendedUserResourceIT {
 
     @Test
     @Transactional
-    void getAllExtendedUsersByWebIsEqualToSomething() throws Exception {
-        // Initialize the database
-        extendedUserRepository.saveAndFlush(extendedUser);
-
-        // Get all the extendedUserList where web equals to DEFAULT_WEB
-        defaultExtendedUserShouldBeFound("web.equals=" + DEFAULT_WEB);
-
-        // Get all the extendedUserList where web equals to UPDATED_WEB
-        defaultExtendedUserShouldNotBeFound("web.equals=" + UPDATED_WEB);
-    }
-
-    @Test
-    @Transactional
-    void getAllExtendedUsersByWebIsInShouldWork() throws Exception {
-        // Initialize the database
-        extendedUserRepository.saveAndFlush(extendedUser);
-
-        // Get all the extendedUserList where web in DEFAULT_WEB or UPDATED_WEB
-        defaultExtendedUserShouldBeFound("web.in=" + DEFAULT_WEB + "," + UPDATED_WEB);
-
-        // Get all the extendedUserList where web equals to UPDATED_WEB
-        defaultExtendedUserShouldNotBeFound("web.in=" + UPDATED_WEB);
-    }
-
-    @Test
-    @Transactional
-    void getAllExtendedUsersByWebIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        extendedUserRepository.saveAndFlush(extendedUser);
-
-        // Get all the extendedUserList where web is not null
-        defaultExtendedUserShouldBeFound("web.specified=true");
-
-        // Get all the extendedUserList where web is null
-        defaultExtendedUserShouldNotBeFound("web.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllExtendedUsersByWebContainsSomething() throws Exception {
-        // Initialize the database
-        extendedUserRepository.saveAndFlush(extendedUser);
-
-        // Get all the extendedUserList where web contains DEFAULT_WEB
-        defaultExtendedUserShouldBeFound("web.contains=" + DEFAULT_WEB);
-
-        // Get all the extendedUserList where web contains UPDATED_WEB
-        defaultExtendedUserShouldNotBeFound("web.contains=" + UPDATED_WEB);
-    }
-
-    @Test
-    @Transactional
-    void getAllExtendedUsersByWebNotContainsSomething() throws Exception {
-        // Initialize the database
-        extendedUserRepository.saveAndFlush(extendedUser);
-
-        // Get all the extendedUserList where web does not contain DEFAULT_WEB
-        defaultExtendedUserShouldNotBeFound("web.doesNotContain=" + DEFAULT_WEB);
-
-        // Get all the extendedUserList where web does not contain UPDATED_WEB
-        defaultExtendedUserShouldBeFound("web.doesNotContain=" + UPDATED_WEB);
-    }
-
-    @Test
-    @Transactional
     void getAllExtendedUsersByLocationIsEqualToSomething() throws Exception {
         // Initialize the database
         extendedUserRepository.saveAndFlush(extendedUser);
@@ -448,67 +455,223 @@ class ExtendedUserResourceIT {
 
     @Test
     @Transactional
-    void getAllExtendedUsersByProfessionIsEqualToSomething() throws Exception {
+    void getAllExtendedUsersByHeightIsEqualToSomething() throws Exception {
         // Initialize the database
         extendedUserRepository.saveAndFlush(extendedUser);
 
-        // Get all the extendedUserList where profession equals to DEFAULT_PROFESSION
-        defaultExtendedUserShouldBeFound("profession.equals=" + DEFAULT_PROFESSION);
+        // Get all the extendedUserList where height equals to DEFAULT_HEIGHT
+        defaultExtendedUserShouldBeFound("height.equals=" + DEFAULT_HEIGHT);
 
-        // Get all the extendedUserList where profession equals to UPDATED_PROFESSION
-        defaultExtendedUserShouldNotBeFound("profession.equals=" + UPDATED_PROFESSION);
+        // Get all the extendedUserList where height equals to UPDATED_HEIGHT
+        defaultExtendedUserShouldNotBeFound("height.equals=" + UPDATED_HEIGHT);
     }
 
     @Test
     @Transactional
-    void getAllExtendedUsersByProfessionIsInShouldWork() throws Exception {
+    void getAllExtendedUsersByHeightIsInShouldWork() throws Exception {
         // Initialize the database
         extendedUserRepository.saveAndFlush(extendedUser);
 
-        // Get all the extendedUserList where profession in DEFAULT_PROFESSION or UPDATED_PROFESSION
-        defaultExtendedUserShouldBeFound("profession.in=" + DEFAULT_PROFESSION + "," + UPDATED_PROFESSION);
+        // Get all the extendedUserList where height in DEFAULT_HEIGHT or UPDATED_HEIGHT
+        defaultExtendedUserShouldBeFound("height.in=" + DEFAULT_HEIGHT + "," + UPDATED_HEIGHT);
 
-        // Get all the extendedUserList where profession equals to UPDATED_PROFESSION
-        defaultExtendedUserShouldNotBeFound("profession.in=" + UPDATED_PROFESSION);
+        // Get all the extendedUserList where height equals to UPDATED_HEIGHT
+        defaultExtendedUserShouldNotBeFound("height.in=" + UPDATED_HEIGHT);
     }
 
     @Test
     @Transactional
-    void getAllExtendedUsersByProfessionIsNullOrNotNull() throws Exception {
+    void getAllExtendedUsersByHeightIsNullOrNotNull() throws Exception {
         // Initialize the database
         extendedUserRepository.saveAndFlush(extendedUser);
 
-        // Get all the extendedUserList where profession is not null
-        defaultExtendedUserShouldBeFound("profession.specified=true");
+        // Get all the extendedUserList where height is not null
+        defaultExtendedUserShouldBeFound("height.specified=true");
 
-        // Get all the extendedUserList where profession is null
-        defaultExtendedUserShouldNotBeFound("profession.specified=false");
+        // Get all the extendedUserList where height is null
+        defaultExtendedUserShouldNotBeFound("height.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllExtendedUsersByProfessionContainsSomething() throws Exception {
+    void getAllExtendedUsersByHeightIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         extendedUserRepository.saveAndFlush(extendedUser);
 
-        // Get all the extendedUserList where profession contains DEFAULT_PROFESSION
-        defaultExtendedUserShouldBeFound("profession.contains=" + DEFAULT_PROFESSION);
+        // Get all the extendedUserList where height is greater than or equal to DEFAULT_HEIGHT
+        defaultExtendedUserShouldBeFound("height.greaterThanOrEqual=" + DEFAULT_HEIGHT);
 
-        // Get all the extendedUserList where profession contains UPDATED_PROFESSION
-        defaultExtendedUserShouldNotBeFound("profession.contains=" + UPDATED_PROFESSION);
+        // Get all the extendedUserList where height is greater than or equal to UPDATED_HEIGHT
+        defaultExtendedUserShouldNotBeFound("height.greaterThanOrEqual=" + UPDATED_HEIGHT);
     }
 
     @Test
     @Transactional
-    void getAllExtendedUsersByProfessionNotContainsSomething() throws Exception {
+    void getAllExtendedUsersByHeightIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         extendedUserRepository.saveAndFlush(extendedUser);
 
-        // Get all the extendedUserList where profession does not contain DEFAULT_PROFESSION
-        defaultExtendedUserShouldNotBeFound("profession.doesNotContain=" + DEFAULT_PROFESSION);
+        // Get all the extendedUserList where height is less than or equal to DEFAULT_HEIGHT
+        defaultExtendedUserShouldBeFound("height.lessThanOrEqual=" + DEFAULT_HEIGHT);
 
-        // Get all the extendedUserList where profession does not contain UPDATED_PROFESSION
-        defaultExtendedUserShouldBeFound("profession.doesNotContain=" + UPDATED_PROFESSION);
+        // Get all the extendedUserList where height is less than or equal to SMALLER_HEIGHT
+        defaultExtendedUserShouldNotBeFound("height.lessThanOrEqual=" + SMALLER_HEIGHT);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByHeightIsLessThanSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where height is less than DEFAULT_HEIGHT
+        defaultExtendedUserShouldNotBeFound("height.lessThan=" + DEFAULT_HEIGHT);
+
+        // Get all the extendedUserList where height is less than UPDATED_HEIGHT
+        defaultExtendedUserShouldBeFound("height.lessThan=" + UPDATED_HEIGHT);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByHeightIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where height is greater than DEFAULT_HEIGHT
+        defaultExtendedUserShouldNotBeFound("height.greaterThan=" + DEFAULT_HEIGHT);
+
+        // Get all the extendedUserList where height is greater than SMALLER_HEIGHT
+        defaultExtendedUserShouldBeFound("height.greaterThan=" + SMALLER_HEIGHT);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByWeightIsEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where weight equals to DEFAULT_WEIGHT
+        defaultExtendedUserShouldBeFound("weight.equals=" + DEFAULT_WEIGHT);
+
+        // Get all the extendedUserList where weight equals to UPDATED_WEIGHT
+        defaultExtendedUserShouldNotBeFound("weight.equals=" + UPDATED_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByWeightIsInShouldWork() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where weight in DEFAULT_WEIGHT or UPDATED_WEIGHT
+        defaultExtendedUserShouldBeFound("weight.in=" + DEFAULT_WEIGHT + "," + UPDATED_WEIGHT);
+
+        // Get all the extendedUserList where weight equals to UPDATED_WEIGHT
+        defaultExtendedUserShouldNotBeFound("weight.in=" + UPDATED_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByWeightIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where weight is not null
+        defaultExtendedUserShouldBeFound("weight.specified=true");
+
+        // Get all the extendedUserList where weight is null
+        defaultExtendedUserShouldNotBeFound("weight.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByWeightIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where weight is greater than or equal to DEFAULT_WEIGHT
+        defaultExtendedUserShouldBeFound("weight.greaterThanOrEqual=" + DEFAULT_WEIGHT);
+
+        // Get all the extendedUserList where weight is greater than or equal to UPDATED_WEIGHT
+        defaultExtendedUserShouldNotBeFound("weight.greaterThanOrEqual=" + UPDATED_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByWeightIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where weight is less than or equal to DEFAULT_WEIGHT
+        defaultExtendedUserShouldBeFound("weight.lessThanOrEqual=" + DEFAULT_WEIGHT);
+
+        // Get all the extendedUserList where weight is less than or equal to SMALLER_WEIGHT
+        defaultExtendedUserShouldNotBeFound("weight.lessThanOrEqual=" + SMALLER_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByWeightIsLessThanSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where weight is less than DEFAULT_WEIGHT
+        defaultExtendedUserShouldNotBeFound("weight.lessThan=" + DEFAULT_WEIGHT);
+
+        // Get all the extendedUserList where weight is less than UPDATED_WEIGHT
+        defaultExtendedUserShouldBeFound("weight.lessThan=" + UPDATED_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByWeightIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where weight is greater than DEFAULT_WEIGHT
+        defaultExtendedUserShouldNotBeFound("weight.greaterThan=" + DEFAULT_WEIGHT);
+
+        // Get all the extendedUserList where weight is greater than SMALLER_WEIGHT
+        defaultExtendedUserShouldBeFound("weight.greaterThan=" + SMALLER_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByBirthDateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where birthDate equals to DEFAULT_BIRTH_DATE
+        defaultExtendedUserShouldBeFound("birthDate.equals=" + DEFAULT_BIRTH_DATE);
+
+        // Get all the extendedUserList where birthDate equals to UPDATED_BIRTH_DATE
+        defaultExtendedUserShouldNotBeFound("birthDate.equals=" + UPDATED_BIRTH_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByBirthDateIsInShouldWork() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where birthDate in DEFAULT_BIRTH_DATE or UPDATED_BIRTH_DATE
+        defaultExtendedUserShouldBeFound("birthDate.in=" + DEFAULT_BIRTH_DATE + "," + UPDATED_BIRTH_DATE);
+
+        // Get all the extendedUserList where birthDate equals to UPDATED_BIRTH_DATE
+        defaultExtendedUserShouldNotBeFound("birthDate.in=" + UPDATED_BIRTH_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByBirthDateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where birthDate is not null
+        defaultExtendedUserShouldBeFound("birthDate.specified=true");
+
+        // Get all the extendedUserList where birthDate is null
+        defaultExtendedUserShouldNotBeFound("birthDate.specified=false");
     }
 
     @Test
@@ -536,9 +699,10 @@ class ExtendedUserResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(extendedUser.getId().intValue())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].web").value(hasItem(DEFAULT_WEB)))
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION)))
-            .andExpect(jsonPath("$.[*].profession").value(hasItem(DEFAULT_PROFESSION)));
+            .andExpect(jsonPath("$.[*].height").value(hasItem(DEFAULT_HEIGHT.doubleValue())))
+            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())))
+            .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE.toString())));
 
         // Check, that the count call also returns 1
         restExtendedUserMockMvc
@@ -586,7 +750,12 @@ class ExtendedUserResourceIT {
         ExtendedUser updatedExtendedUser = extendedUserRepository.findById(extendedUser.getId()).get();
         // Disconnect from session so that the updates on updatedExtendedUser are not directly saved in db
         em.detach(updatedExtendedUser);
-        updatedExtendedUser.description(UPDATED_DESCRIPTION).web(UPDATED_WEB).location(UPDATED_LOCATION).profession(UPDATED_PROFESSION);
+        updatedExtendedUser
+            .description(UPDATED_DESCRIPTION)
+            .location(UPDATED_LOCATION)
+            .height(UPDATED_HEIGHT)
+            .weight(UPDATED_WEIGHT)
+            .birthDate(UPDATED_BIRTH_DATE);
         ExtendedUserDTO extendedUserDTO = extendedUserMapper.toDto(updatedExtendedUser);
 
         restExtendedUserMockMvc
@@ -602,9 +771,10 @@ class ExtendedUserResourceIT {
         assertThat(extendedUserList).hasSize(databaseSizeBeforeUpdate);
         ExtendedUser testExtendedUser = extendedUserList.get(extendedUserList.size() - 1);
         assertThat(testExtendedUser.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testExtendedUser.getWeb()).isEqualTo(UPDATED_WEB);
         assertThat(testExtendedUser.getLocation()).isEqualTo(UPDATED_LOCATION);
-        assertThat(testExtendedUser.getProfession()).isEqualTo(UPDATED_PROFESSION);
+        assertThat(testExtendedUser.getHeight()).isEqualTo(UPDATED_HEIGHT);
+        assertThat(testExtendedUser.getWeight()).isEqualTo(UPDATED_WEIGHT);
+        assertThat(testExtendedUser.getBirthDate()).isEqualTo(UPDATED_BIRTH_DATE);
     }
 
     @Test
@@ -686,7 +856,7 @@ class ExtendedUserResourceIT {
         ExtendedUser partialUpdatedExtendedUser = new ExtendedUser();
         partialUpdatedExtendedUser.setId(extendedUser.getId());
 
-        partialUpdatedExtendedUser.description(UPDATED_DESCRIPTION).web(UPDATED_WEB);
+        partialUpdatedExtendedUser.description(UPDATED_DESCRIPTION).location(UPDATED_LOCATION);
 
         restExtendedUserMockMvc
             .perform(
@@ -701,9 +871,10 @@ class ExtendedUserResourceIT {
         assertThat(extendedUserList).hasSize(databaseSizeBeforeUpdate);
         ExtendedUser testExtendedUser = extendedUserList.get(extendedUserList.size() - 1);
         assertThat(testExtendedUser.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testExtendedUser.getWeb()).isEqualTo(UPDATED_WEB);
-        assertThat(testExtendedUser.getLocation()).isEqualTo(DEFAULT_LOCATION);
-        assertThat(testExtendedUser.getProfession()).isEqualTo(DEFAULT_PROFESSION);
+        assertThat(testExtendedUser.getLocation()).isEqualTo(UPDATED_LOCATION);
+        assertThat(testExtendedUser.getHeight()).isEqualTo(DEFAULT_HEIGHT);
+        assertThat(testExtendedUser.getWeight()).isEqualTo(DEFAULT_WEIGHT);
+        assertThat(testExtendedUser.getBirthDate()).isEqualTo(DEFAULT_BIRTH_DATE);
     }
 
     @Test
@@ -720,9 +891,10 @@ class ExtendedUserResourceIT {
 
         partialUpdatedExtendedUser
             .description(UPDATED_DESCRIPTION)
-            .web(UPDATED_WEB)
             .location(UPDATED_LOCATION)
-            .profession(UPDATED_PROFESSION);
+            .height(UPDATED_HEIGHT)
+            .weight(UPDATED_WEIGHT)
+            .birthDate(UPDATED_BIRTH_DATE);
 
         restExtendedUserMockMvc
             .perform(
@@ -737,9 +909,10 @@ class ExtendedUserResourceIT {
         assertThat(extendedUserList).hasSize(databaseSizeBeforeUpdate);
         ExtendedUser testExtendedUser = extendedUserList.get(extendedUserList.size() - 1);
         assertThat(testExtendedUser.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testExtendedUser.getWeb()).isEqualTo(UPDATED_WEB);
         assertThat(testExtendedUser.getLocation()).isEqualTo(UPDATED_LOCATION);
-        assertThat(testExtendedUser.getProfession()).isEqualTo(UPDATED_PROFESSION);
+        assertThat(testExtendedUser.getHeight()).isEqualTo(UPDATED_HEIGHT);
+        assertThat(testExtendedUser.getWeight()).isEqualTo(UPDATED_WEIGHT);
+        assertThat(testExtendedUser.getBirthDate()).isEqualTo(UPDATED_BIRTH_DATE);
     }
 
     @Test

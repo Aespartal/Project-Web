@@ -18,10 +18,6 @@
         <dd>
           <span>{{ extendedUser.description }}</span>
         </dd>
-        <dt><span jhiTranslate="projectApp.extendedUser.web" [ngbTooltip]="'projectApp.extendedUser.help.web' | translate">Web</span></dt>
-        <dd>
-          <span>{{ extendedUser.web }}</span>
-        </dd>
         <dt>
           <span jhiTranslate="projectApp.extendedUser.location" [ngbTooltip]="'projectApp.extendedUser.help.location' | translate"
             >Location</span
@@ -31,12 +27,24 @@
           <span>{{ extendedUser.location }}</span>
         </dd>
         <dt>
-          <span jhiTranslate="projectApp.extendedUser.profession" [ngbTooltip]="'projectApp.extendedUser.help.profession' | translate"
-            >Profession</span
+          <span jhiTranslate="projectApp.extendedUser.height" [ngbTooltip]="'projectApp.extendedUser.help.height' | translate">Height</span>
+        </dt>
+        <dd>
+          <span>{{ extendedUser.height }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.extendedUser.weight" [ngbTooltip]="'projectApp.extendedUser.help.weight' | translate">Weight</span>
+        </dt>
+        <dd>
+          <span>{{ extendedUser.weight }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.extendedUser.birthDate" [ngbTooltip]="'projectApp.extendedUser.help.birthDate' | translate"
+            >Birth Date</span
           >
         </dt>
         <dd>
-          <span>{{ extendedUser.profession }}</span>
+          <span>{{ extendedUser.birthDate | formatMediumDatetime }}</span>
         </dd>
         <dt><span jhiTranslate="projectApp.extendedUser.user">User</span></dt>
         <dd>

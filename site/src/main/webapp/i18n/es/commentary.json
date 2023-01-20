@@ -1,0 +1,31 @@
+{
+  "projectApp": {
+    "commentary": {
+      "home": {
+        "title": "Commentaries",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Commentary",
+        "createOrEditLabel": "Crear o editar Commentary",
+        "notFound": "Ningún Commentaries encontrado"
+      },
+      "created": "Un nuevo Commentary ha sido creado con el identificador {{ param }}",
+      "updated": "Un Commentary ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Commentary ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Commentary {{ id }}?"
+      },
+      "detail": {
+        "title": "Commentary"
+      },
+      "id": "ID",
+      "description": "Description",
+      "creationDate": "Creation Date",
+      "extendedUser": "Extended User",
+      "image": "Image",
+      "help": {
+        "description": "description",
+        "creationDate": "creationDate"
+      }
+    }
+  }
+}

@@ -1,11 +1,13 @@
+import dayjs from 'dayjs/esm';
 import { IUser } from 'app/entities/user/user.model';
 
 export interface IExtendedUser {
-  id: number;
+  id?: number | null;
   description?: string | null;
-  web?: string | null;
   location?: string | null;
-  profession?: string | null;
+  height?: number | null;
+  weight?: number | null;
+  birthDate?: dayjs.Dayjs | null;
   user?: Pick<IUser, 'id'> | null;
 }
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity LikeImage.
+    -->
+    <changeSet id="20230114162749-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="image_id"
+                                 baseTableName="like_image"
+                                 constraintName="fk_like_image__image_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="image"/>
+
+        <addForeignKeyConstraint baseColumnNames="extended_user_id"
+                                 baseTableName="like_image"
+                                 constraintName="fk_like_image__extended_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="extended_user"/>
+    </changeSet>
+</databaseChangeLog>

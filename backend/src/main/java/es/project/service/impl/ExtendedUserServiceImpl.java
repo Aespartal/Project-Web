@@ -2,6 +2,7 @@ package es.project.service.impl;
 
 import es.project.domain.ExtendedUser;
 import es.project.domain.User;
+import es.project.errors.ValidationException;
 import es.project.repository.ExtendedUserRepository;
 import es.project.repository.UserRepository;
 import es.project.service.ExtendedUserService;
@@ -92,10 +93,8 @@ public class ExtendedUserServiceImpl implements ExtendedUserService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete ExtendedUser : {}", id);
-        Optional<ExtendedUser> extendedUserOptional = extendedUserRepository.findById(id);
-        if (!extendedUserOptional.isPresent()) {
-            return;
-        }
+        extendedUserRepository.findById(id)
+            .orElseThrow(() -> new ValidationException("User not exist", "userNotExist"));
         extendedUserRepository.deleteById(id);
         userRepository.deleteById(id);
     }

@@ -1,0 +1,35 @@
+{
+  "applications": "*",
+  "changelogDate": "20230114164533",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "like_image",
+  "fields": [
+    {
+      "fieldName": "creationDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"],
+      "javadoc": "creationDate"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "LikeImage",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "image",
+      "relationshipName": "image",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "extendedUser",
+      "relationshipName": "extendedUser",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "serviceImpl"
+}

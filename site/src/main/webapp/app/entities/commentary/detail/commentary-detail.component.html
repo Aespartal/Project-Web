@@ -1,0 +1,56 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="commentary">
+      <h2 data-cy="commentaryDetailsHeading"><span jhiTranslate="projectApp.commentary.detail.title">Commentary</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ commentary.id }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.commentary.description" [ngbTooltip]="'projectApp.commentary.help.description' | translate"
+            >Description</span
+          >
+        </dt>
+        <dd>
+          <span>{{ commentary.description }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.commentary.creationDate" [ngbTooltip]="'projectApp.commentary.help.creationDate' | translate"
+            >Creation Date</span
+          >
+        </dt>
+        <dd>
+          <span>{{ commentary.creationDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="projectApp.commentary.extendedUser">Extended User</span></dt>
+        <dd>
+          <div *ngIf="commentary.extendedUser">
+            <a [routerLink]="['/extended-user', commentary.extendedUser.id, 'view']">{{ commentary.extendedUser.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="projectApp.commentary.image">Image</span></dt>
+        <dd>
+          <div *ngIf="commentary.image">
+            <a [routerLink]="['/image', commentary.image.id, 'view']">{{ commentary.image.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+      </button>
+
+      <button type="button" [routerLink]="['/commentary', commentary.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+      </button>
+    </div>
+  </div>
+</div>
