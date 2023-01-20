@@ -1,4 +1,4 @@
-package es.project.web.rest.errors;
+package es.project.errors;
 
 @SuppressWarnings("java:S110") // Inheritance tree of classes should not be too deep
 public class LoginAlreadyUsedException extends BadRequestAlertException {

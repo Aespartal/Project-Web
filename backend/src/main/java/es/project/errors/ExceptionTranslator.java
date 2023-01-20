@@ -1,4 +1,4 @@
-package es.project.web.rest.errors;
+package es.project.errors;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -117,7 +117,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleEmailAlreadyUsedException(
-        es.project.service.EmailAlreadyUsedException ex,
+        EmailAlreadyUsedException ex,
         NativeWebRequest request
     ) {
         EmailAlreadyUsedException problem = new EmailAlreadyUsedException();
@@ -130,7 +130,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleUsernameAlreadyUsedException(
-        es.project.service.UsernameAlreadyUsedException ex,
+        UsernameAlreadyUsedException ex,
         NativeWebRequest request
     ) {
         LoginAlreadyUsedException problem = new LoginAlreadyUsedException();
@@ -143,7 +143,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleInvalidPasswordException(
-        es.project.service.InvalidPasswordException ex,
+        InvalidPasswordException ex,
         NativeWebRequest request
     ) {
         return create(new InvalidPasswordException(), request);
@@ -218,5 +218,23 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     private boolean containsPackageName(String message) {
         // This list is for sure not complete
         return StringUtils.containsAny(message, "org.", "java.", "net.", "javax.", "com.", "io.", "de.", "es.project");
+    }
+
+    public static class InvalidPasswordException extends RuntimeException {
+
+        private static final long serialVersionUID = 1L;
+
+        public InvalidPasswordException() {
+            super("Incorrect password");
+        }
+    }
+
+    public static class EmailAlreadyUsedException extends RuntimeException {
+
+        private static final long serialVersionUID = 1L;
+
+        public EmailAlreadyUsedException() {
+            super("Email is already in use!");
+        }
     }
 }

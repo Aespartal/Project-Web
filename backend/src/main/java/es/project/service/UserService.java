@@ -3,6 +3,8 @@ package es.project.service;
 import es.project.config.Constants;
 import es.project.domain.Authority;
 import es.project.domain.User;
+import es.project.errors.ExceptionTranslator;
+import es.project.errors.UsernameAlreadyUsedException;
 import es.project.repository.AuthorityRepository;
 import es.project.repository.UserRepository;
 import es.project.security.AuthoritiesConstants;
@@ -95,7 +97,7 @@ public class UserService {
             .ifPresent(existingUser -> {
                 boolean removed = removeNonActivatedUser(existingUser);
                 if (!removed) {
-                    throw new EmailAlreadyUsedException();
+                    throw new ExceptionTranslator.EmailAlreadyUsedException();
                 }
             });
         User newUser = new User();
@@ -201,6 +203,7 @@ public class UserService {
             .map(AdminUserDTO::new);
     }
 
+    @Transactional
     public void deleteUser(String login) {
         userRepository
             .findOneByLogin(login)
@@ -243,7 +246,7 @@ public class UserService {
             .ifPresent(user -> {
                 String currentEncryptedPassword = user.getPassword();
                 if (!passwordEncoder.matches(currentClearTextPassword, currentEncryptedPassword)) {
-                    throw new InvalidPasswordException();
+                    throw new ExceptionTranslator.InvalidPasswordException();
                 }
                 String encryptedPassword = passwordEncoder.encode(newPassword);
                 user.setPassword(encryptedPassword);

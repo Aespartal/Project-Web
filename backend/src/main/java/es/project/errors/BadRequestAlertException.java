@@ -1,4 +1,4 @@
-package es.project.web.rest.errors;
+package es.project.errors;
 
 import java.net.URI;
 import java.util.HashMap;

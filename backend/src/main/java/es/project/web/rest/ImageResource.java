@@ -5,7 +5,7 @@ import es.project.service.ImageQueryService;
 import es.project.service.ImageService;
 import es.project.service.criteria.ImageCriteria;
 import es.project.service.dto.ImageDTO;
-import es.project.web.rest.errors.BadRequestAlertException;
+import es.project.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;

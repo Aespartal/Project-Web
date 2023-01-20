@@ -5,7 +5,7 @@ import es.project.service.ExtendedUserQueryService;
 import es.project.service.ExtendedUserService;
 import es.project.service.criteria.ExtendedUserCriteria;
 import es.project.service.dto.ExtendedUserDTO;
-import es.project.web.rest.errors.BadRequestAlertException;
+import es.project.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;

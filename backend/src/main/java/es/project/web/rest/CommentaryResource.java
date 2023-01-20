@@ -5,7 +5,7 @@ import es.project.service.CommentaryQueryService;
 import es.project.service.CommentaryService;
 import es.project.service.criteria.CommentaryCriteria;
 import es.project.service.dto.CommentaryDTO;
-import es.project.web.rest.errors.BadRequestAlertException;
+import es.project.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;

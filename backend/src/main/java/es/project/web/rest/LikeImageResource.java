@@ -5,7 +5,7 @@ import es.project.service.LikeImageQueryService;
 import es.project.service.LikeImageService;
 import es.project.service.criteria.LikeImageCriteria;
 import es.project.service.dto.LikeImageDTO;
-import es.project.web.rest.errors.BadRequestAlertException;
+import es.project.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
