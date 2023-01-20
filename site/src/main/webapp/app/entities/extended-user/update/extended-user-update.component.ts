@@ -10,11 +10,17 @@ import { ExtendedUserService } from '../service/extended-user.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
 
+import { LANGUAGES } from 'app/config/language.constants';
+import { FormGroup } from '@angular/forms';
+import { UserManagementService } from 'app/admin/user-management/service/user-management.service';
+
 @Component({
   selector: 'jhi-extended-user-update',
   templateUrl: './extended-user-update.component.html',
 })
 export class ExtendedUserUpdateComponent implements OnInit {
+  languages = LANGUAGES;
+  authorities: string[] = [];
   isSaving = false;
   extendedUser: IExtendedUser | null = null;
 
@@ -22,10 +28,16 @@ export class ExtendedUserUpdateComponent implements OnInit {
 
   editForm: ExtendedUserFormGroup = this.extendedUserFormService.createExtendedUserFormGroup();
 
+  // obtener de editForm el formGroup de user
+  get userFormGroup(): FormGroup {
+    return this.editForm.get('user') as FormGroup;
+  }
+
   constructor(
     protected extendedUserService: ExtendedUserService,
     protected extendedUserFormService: ExtendedUserFormService,
     protected userService: UserService,
+    protected userManagementService: UserManagementService,
     protected activatedRoute: ActivatedRoute
   ) {}
 
@@ -37,9 +49,8 @@ export class ExtendedUserUpdateComponent implements OnInit {
       if (extendedUser) {
         this.updateForm(extendedUser);
       }
-
-      this.loadRelationshipsOptions();
     });
+    this.userManagementService.authorities().subscribe(authorities => (this.authorities = authorities));
   }
 
   previousState(): void {
@@ -49,11 +60,12 @@ export class ExtendedUserUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const extendedUser = this.extendedUserFormService.getExtendedUser(this.editForm);
-    if (extendedUser.id !== null) {
-      this.subscribeToSaveResponse(this.extendedUserService.update(extendedUser));
-    } else {
-      this.subscribeToSaveResponse(this.extendedUserService.create(extendedUser));
-    }
+    console.debug(extendedUser);
+    // if (extendedUser.id !== null) {
+    //   this.subscribeToSaveResponse(this.extendedUserService.update(extendedUser));
+    // } else {
+    //   this.subscribeToSaveResponse(this.extendedUserService.create(extendedUser));
+    // }
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IExtendedUser>>): void {
@@ -78,15 +90,5 @@ export class ExtendedUserUpdateComponent implements OnInit {
   protected updateForm(extendedUser: IExtendedUser): void {
     this.extendedUser = extendedUser;
     this.extendedUserFormService.resetForm(this.editForm, extendedUser);
-
-    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing<IUser>(this.usersSharedCollection, extendedUser.user);
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.userService
-      .query()
-      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
-      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.extendedUser?.user)))
-      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
   }
 }
