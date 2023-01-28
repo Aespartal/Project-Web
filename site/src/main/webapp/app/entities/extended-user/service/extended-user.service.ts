@@ -8,11 +8,13 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IExtendedUser, NewExtendedUser } from '../extended-user.model';
+import { IUser } from 'app/entities/user/user.model';
 
 export type PartialUpdateExtendedUser = Partial<IExtendedUser> & Pick<IExtendedUser, 'id'>;
 
 type RestOf<T extends IExtendedUser | NewExtendedUser> = Omit<T, 'birthDate'> & {
   birthDate?: string | null;
+  user: IUser;
 };
 
 export type RestExtendedUser = RestOf<IExtendedUser>;
@@ -108,6 +110,7 @@ export class ExtendedUserService {
     return {
       ...extendedUser,
       birthDate: extendedUser.birthDate?.toJSON() ?? null,
+      user: extendedUser.user!,
     };
   }
 

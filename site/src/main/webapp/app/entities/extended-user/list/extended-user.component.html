@@ -34,55 +34,54 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th scope="col" jhiSortBy="description">
-            <div class="d-flex">
-              <span jhiTranslate="projectApp.extendedUser.description">Description</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
+          <th scope="col" jhiSortBy="user.login"><span jhiTranslate="userManagement.login">Login</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="user.email"><span jhiTranslate="userManagement.email">Email</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+          <th scope="col" jhiSortBy="user.langKey"><span jhiTranslate="userManagement.langKey">Idioma</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"><span jhiTranslate="userManagement.profiles">Perfiles</span></th>
+          <th scope="col" jhiSortBy="user.createdDate">
+            <span jhiTranslate="userManagement.createdDate">Fecha de creación</span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="location">
-            <div class="d-flex">
-              <span jhiTranslate="projectApp.extendedUser.location">Location</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
+          <th scope="col" jhiSortBy="user.lastModifiedBy">
+            <span jhiTranslate="userManagement.lastModifiedBy">Modificado por</span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="height">
-            <div class="d-flex">
-              <span jhiTranslate="projectApp.extendedUser.height">Height</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="weight">
-            <div class="d-flex">
-              <span jhiTranslate="projectApp.extendedUser.weight">Weight</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="birthDate">
-            <div class="d-flex">
-              <span jhiTranslate="projectApp.extendedUser.birthDate">Birth Date</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="user.id">
-            <div class="d-flex">
-              <span jhiTranslate="projectApp.extendedUser.user">User</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
+          <th scope="col" jhiSortBy="user.lastModifiedDate">
+            <span jhiTranslate="userManagement.lastModifiedDate">Fecha de modificación</span> <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let extendedUser of extendedUsers; trackBy: trackId" data-cy="entityTable">
-          <td>{{ extendedUser.description }}</td>
-          <td>{{ extendedUser.location }}</td>
-          <td>{{ extendedUser.height }}</td>
-          <td>{{ extendedUser.weight }}</td>
-          <td>{{ extendedUser.birthDate | formatMediumDatetime }}</td>
+          <td>{{ extendedUser.user?.login }}</td>
+          <td>{{ extendedUser.user?.email }}</td>
           <td>
-            {{ extendedUser.user?.id }}
+            <button
+              class="btn btn-danger btn-sm"
+              (click)="setActive(extendedUser.user!, true)"
+              *ngIf="!extendedUser.user!.activated"
+              jhiTranslate="userManagement.deactivated"
+            >
+              Desactivado
+            </button>
+            <button
+              class="btn btn-success btn-sm"
+              (click)="setActive(extendedUser.user!, false)"
+              *ngIf="extendedUser.user!.activated"
+              jhiTranslate="userManagement.activated"
+            >
+              Activado
+            </button>
           </td>
+          <td>{{ extendedUser.user?.langKey }}</td>
+          <td>
+            <div *ngFor="let authority of extendedUser.user?.authorities">
+              <span class="badge bg-info">{{ authority }}</span>
+            </div>
+          </td>
+          <td>{{ extendedUser.user?.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+          <td>{{ extendedUser.user?.lastModifiedBy }}</td>
+          <td>{{ extendedUser.user?.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button

@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { IExtendedUser, NewExtendedUser } from '../extended-user.model';
+import { IUser } from 'app/entities/user/user.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -21,6 +22,7 @@ type ExtendedUserFormGroupInput = IExtendedUser | PartialWithRequiredKeyOf<NewEx
  */
 type FormValueOf<T extends IExtendedUser | NewExtendedUser> = Omit<T, 'birthDate'> & {
   birthDate?: string | null;
+  user?: IUser | null;
 };
 
 type ExtendedUserFormRawValue = FormValueOf<IExtendedUser>;
@@ -36,7 +38,17 @@ type ExtendedUserFormGroupContent = {
   height: FormControl<ExtendedUserFormRawValue['height']>;
   weight: FormControl<ExtendedUserFormRawValue['weight']>;
   birthDate: FormControl<ExtendedUserFormRawValue['birthDate']>;
-  user: FormControl<ExtendedUserFormRawValue['user']>;
+
+  user: FormGroup<{
+    id: FormControl<IUser['id']>;
+    login: FormControl<IUser['login']>;
+    firstName: FormControl<IUser['firstName']>;
+    lastName: FormControl<IUser['lastName']>;
+    email: FormControl<IUser['email']>;
+    activated: FormControl<IUser['activated']>;
+    langKey: FormControl<IUser['langKey']>;
+    authorities: FormControl<IUser['authorities']>;
+  }>;
 };
 
 export type ExtendedUserFormGroup = FormGroup<ExtendedUserFormGroupContent>;
@@ -47,6 +59,7 @@ export class ExtendedUserFormService {
     const extendedUserRawValue = this.convertExtendedUserToExtendedUserRawValue({
       ...this.getFormDefaults(),
       ...extendedUser,
+      ...extendedUser.user,
     });
     return new FormGroup<ExtendedUserFormGroupContent>({
       id: new FormControl (extendedUserRawValue.id),
@@ -65,7 +78,26 @@ export class ExtendedUserFormService {
       birthDate: new FormControl(extendedUserRawValue.birthDate, {
         validators: [Validators.required],
       }),
-      user: new FormControl(extendedUserRawValue.user),
+      user: new FormGroup({
+        id: new FormControl(extendedUserRawValue.user?.id),
+        login: new FormControl(extendedUserRawValue.user?.login, {
+          validators: [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
+        }),
+        firstName: new FormControl(extendedUserRawValue.user?.firstName, {
+          validators: [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
+        }),
+        lastName: new FormControl(extendedUserRawValue.user?.lastName, {
+          validators: [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
+        }),
+        email: new FormControl(extendedUserRawValue.user?.email, {
+          validators: [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email],
+        }),
+        activated: new FormControl(extendedUserRawValue.user?.activated),
+        langKey: new FormControl(extendedUserRawValue.user?.langKey, {
+          validators: [Validators.required, Validators.minLength(2), Validators.maxLength(10)],
+        }),
+        authorities: new FormControl(extendedUserRawValue.user?.authorities),
+      }),
     });
   }
 
@@ -78,6 +110,7 @@ export class ExtendedUserFormService {
     form.reset(
       {
         ...extendedUserRawValue,
+        ...extendedUserRawValue.user
       } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
@@ -105,6 +138,7 @@ export class ExtendedUserFormService {
     return {
       ...extendedUser,
       birthDate: extendedUser.birthDate ? extendedUser.birthDate.format(DATE_TIME_FORMAT) : null,
+      user: extendedUser.user!
     };
   }
 }

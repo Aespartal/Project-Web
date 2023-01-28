@@ -2,39 +2,39 @@
   "projectApp": {
     "image": {
       "home": {
-        "title": "Images",
+        "title": "Imágenes",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Image",
-        "createOrEditLabel": "Crear o editar Image",
-        "notFound": "Ningún Images encontrado"
+        "createLabel": "Crear nuevo Imagen",
+        "createOrEditLabel": "Crear o editar Imagen",
+        "notFound": "Ningúna Imagen encontrada"
       },
-      "created": "Un nuevo Image ha sido creado con el identificador {{ param }}",
-      "updated": "Un Image ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un Image ha sido eliminado con el identificador {{ param }}",
+      "created": "Una nueva Imagen ha sido creada con el identificador {{ param }}",
+      "updated": "Una Imagen ha sido actualizada con el identificador {{ param }}",
+      "deleted": "Una Imagen ha sido eliminada con el identificador {{ param }}",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Image {{ id }}?"
+        "question": "¿Seguro que quiere eliminar Imagen: {{ id }}?"
       },
       "detail": {
-        "title": "Image"
+        "title": "Imagen"
       },
       "id": "ID",
-      "name": "Name",
-      "description": "Description",
-      "image": "Image",
-      "imageType": "Image Type",
-      "creationDate": "Creation Date",
-      "modificationDate": "Modification Date",
-      "isPrivate": "Is Private",
-      "commentaries": "Commentaries",
-      "extendedUser": "Extended User",
+      "name": "Título",
+      "description": "Descripción",
+      "image": "Imagen",
+      "imageType": "Extensión de la Imagen",
+      "creationDate": "Fecha de creación",
+      "modificationDate": "Fecha de modificación",
+      "isPrivate": "Es privada",
+      "commentaries": "Comentarios",
+      "extendedUser": "Usuario",
       "help": {
-        "name": "name",
-        "description": "description",
-        "image": "image",
-        "imageType": "imageType",
-        "creationDate": "creationDate",
-        "modificationDate": "modificationDate",
-        "isPrivate": "isPrivate"
+        "name": "título",
+        "description": "descripción",
+        "image": "imagen",
+        "imageType": "extensión de la Imagen",
+        "creationDate": "fecha de creación",
+        "modificationDate": "fecha de modificación",
+        "isPrivate": "es privada"
       }
     }
   }

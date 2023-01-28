@@ -17,7 +17,7 @@ export class UserManagementService {
     return this.http.post<IUser>(this.resourceUrl, user);
   }
 
-  update(user: IUser): Observable<IUser> {
+  update(user: IUser | null): Observable<IUser> {
     return this.http.put<IUser>(this.resourceUrl, user);
   }
 
