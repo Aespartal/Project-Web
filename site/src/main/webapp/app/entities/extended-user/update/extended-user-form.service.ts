@@ -40,6 +40,7 @@ type ExtendedUserFormGroupContent = {
   birthDate: FormControl<ExtendedUserFormRawValue['birthDate']>;
 
   user: FormGroup<{
+    id: FormControl<IUser['id']>;
     login: FormControl<IUser['login']>;
     firstName: FormControl<IUser['firstName']>;
     lastName: FormControl<IUser['lastName']>;
@@ -78,6 +79,7 @@ export class ExtendedUserFormService {
         validators: [Validators.required],
       }),
       user: new FormGroup({
+        id: new FormControl(extendedUserRawValue.user?.id),
         login: new FormControl(extendedUserRawValue.user?.login, {
           validators: [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
         }),

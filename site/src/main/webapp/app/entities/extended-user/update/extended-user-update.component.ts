@@ -60,12 +60,11 @@ export class ExtendedUserUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const extendedUser = this.extendedUserFormService.getExtendedUser(this.editForm);
-    console.debug(extendedUser);
-    // if (extendedUser.id !== null) {
-    //   this.subscribeToSaveResponse(this.extendedUserService.update(extendedUser));
-    // } else {
-    //   this.subscribeToSaveResponse(this.extendedUserService.create(extendedUser));
-    // }
+    if (extendedUser.id !== null) {
+      this.subscribeToSaveResponse(this.extendedUserService.update(extendedUser));
+    } else {
+      this.subscribeToSaveResponse(this.extendedUserService.create(extendedUser));
+    }
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IExtendedUser>>): void {

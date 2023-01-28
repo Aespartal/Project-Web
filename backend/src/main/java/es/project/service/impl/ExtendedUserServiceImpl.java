@@ -6,7 +6,9 @@ import es.project.errors.ValidationException;
 import es.project.repository.ExtendedUserRepository;
 import es.project.repository.UserRepository;
 import es.project.service.ExtendedUserService;
+import es.project.service.UserService;
 import es.project.service.dto.ExtendedUserDTO;
+import es.project.service.dto.UserDTO;
 import es.project.service.mapper.ExtendedUserMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -31,22 +33,25 @@ public class ExtendedUserServiceImpl implements ExtendedUserService {
 
     private final UserRepository userRepository;
 
+    private final UserService userService;
+
     public ExtendedUserServiceImpl(
         ExtendedUserRepository extendedUserRepository,
         ExtendedUserMapper extendedUserMapper,
-        UserRepository userRepository
-    ) {
+        UserRepository userRepository,
+        UserService userService) {
         this.extendedUserRepository = extendedUserRepository;
         this.extendedUserMapper = extendedUserMapper;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
     public ExtendedUserDTO save(ExtendedUserDTO extendedUserDTO) {
         log.debug("Request to save ExtendedUser : {}", extendedUserDTO);
         ExtendedUser extendedUser = extendedUserMapper.toEntity(extendedUserDTO);
-        Long userId = extendedUserDTO.getUser().getId();
-        userRepository.findById(userId).ifPresent(extendedUser::user);
+        User user = userService.createUser(extendedUserDTO.getUser());
+        extendedUser.user(user);
         extendedUser = extendedUserRepository.save(extendedUser);
         return extendedUserMapper.toDto(extendedUser);
     }
@@ -55,8 +60,7 @@ public class ExtendedUserServiceImpl implements ExtendedUserService {
     public ExtendedUserDTO update(ExtendedUserDTO extendedUserDTO) {
         log.debug("Request to update ExtendedUser : {}", extendedUserDTO);
         ExtendedUser extendedUser = extendedUserMapper.toEntity(extendedUserDTO);
-        Long userId = extendedUserDTO.getUser().getId();
-        userRepository.findById(userId).ifPresent(extendedUser::user);
+        userService.updateUser(extendedUserDTO.getUser());
         extendedUser = extendedUserRepository.save(extendedUser);
         return extendedUserMapper.toDto(extendedUser);
     }
