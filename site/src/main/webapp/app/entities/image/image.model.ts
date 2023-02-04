@@ -3,11 +3,10 @@ import { IExtendedUser } from 'app/entities/extended-user/extended-user.model';
 
 export interface IImage {
   id: number;
-  name?: string | null;
+  title?: string | null;
   description?: string | null;
-  image?: string | null;
-  imageSrc?: string | ArrayBuffer | null;
-  imageType?: string | null;
+  fileName?: string | null;
+  path?: string | null;
   creationDate?: dayjs.Dayjs | null;
   modificationDate?: dayjs.Dayjs | null;
   isPrivate?: boolean | null;

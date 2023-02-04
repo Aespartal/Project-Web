@@ -32,10 +32,10 @@ type ImageFormDefaults = Pick<NewImage, 'id' | 'creationDate' | 'modificationDat
 
 type ImageFormGroupContent = {
   id: FormControl<ImageFormRawValue['id'] | NewImage['id']>;
-  name: FormControl<ImageFormRawValue['name']>;
+  title: FormControl<ImageFormRawValue['title']>;
   description: FormControl<ImageFormRawValue['description']>;
-  image: FormControl<ImageFormRawValue['image']>;
-  imageType: FormControl<ImageFormRawValue['imageType']>;
+  fileName: FormControl<ImageFormRawValue['fileName']>;
+  path: FormControl<ImageFormRawValue['path']>;
   creationDate: FormControl<ImageFormRawValue['creationDate']>;
   modificationDate: FormControl<ImageFormRawValue['modificationDate']>;
   isPrivate: FormControl<ImageFormRawValue['isPrivate']>;
@@ -59,14 +59,14 @@ export class ImageFormService {
           validators: [Validators.required],
         }
       ),
-      name: new FormControl(imageRawValue.name, {
+      title: new FormControl(imageRawValue.title, {
         validators: [Validators.required, Validators.maxLength(100)],
       }),
       description: new FormControl(imageRawValue.description, {
         validators: [Validators.required, Validators.maxLength(3500)],
       }),
-      image: new FormControl(imageRawValue.image),
-      imageType: new FormControl(imageRawValue.imageType),
+      fileName: new FormControl(imageRawValue.fileName),
+      path: new FormControl(imageRawValue.path),
       creationDate: new FormControl(imageRawValue.creationDate, {
         validators: [Validators.required],
       }),

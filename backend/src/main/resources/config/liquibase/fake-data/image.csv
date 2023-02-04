@@ -1,4 +1,4 @@
-id;name;description;image;image_type;creation_date;modification_date;is_private;extended_user_id
+id;title;description;file_name;path;creation_date;modification_date;is_private;extended_user_id
 1;Cambridgeshire Heredado;Dollar Riera cara;Morado disintermediate;Explanada;2023-01-14T08:24:32;2023-01-14T04:37:55;true;1
 2;JSON;Krone Grupo;Acero;Intercambiable quantify Parafarmacia;2023-01-14T01:29:23;2023-01-14T06:25:34;false;2
 3;users utilización Central;Mobilidad Tajikistan sinergia;Mejorado Calidad;schemas Monte;2023-01-13T23:33:21;2023-01-14T11:12:49;false;1

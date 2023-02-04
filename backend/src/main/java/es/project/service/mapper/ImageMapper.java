@@ -12,7 +12,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses= { ExtendedUserMapper.class, CommentaryMapper.class })
 public interface ImageMapper extends EntityMapper<ImageDTO, Image> {
 
-    @Mapping(target = "removeCommentaries", ignore = true)
+
     @Mapping(target = "extendedUser", source = "extendedUser", qualifiedByName = "extendedUserIdForImage")
     ImageDTO toDto(Image s);
 

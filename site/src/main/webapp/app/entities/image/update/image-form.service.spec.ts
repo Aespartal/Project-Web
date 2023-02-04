@@ -20,10 +20,10 @@ describe('Image Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
-            name: expect.any(Object),
+            title: expect.any(Object),
             description: expect.any(Object),
-            image: expect.any(Object),
-            imageType: expect.any(Object),
+            fileName: expect.any(Object),
+            path: expect.any(Object),
             creationDate: expect.any(Object),
             modificationDate: expect.any(Object),
             isPrivate: expect.any(Object),
@@ -38,10 +38,10 @@ describe('Image Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
-            name: expect.any(Object),
+            title: expect.any(Object),
             description: expect.any(Object),
-            image: expect.any(Object),
-            imageType: expect.any(Object),
+            fileName: expect.any(Object),
+            path: expect.any(Object),
             creationDate: expect.any(Object),
             modificationDate: expect.any(Object),
             isPrivate: expect.any(Object),

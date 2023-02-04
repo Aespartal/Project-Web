@@ -7,6 +7,7 @@ import es.project.service.criteria.ImageCriteria;
 import es.project.service.dto.ImageDTO;
 import es.project.errors.BadRequestAlertException;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -25,6 +26,8 @@ import org.apache.commons.compress.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -222,9 +225,8 @@ public class ImageResource {
         @PathVariable("fileName") String fileName)
         throws IOException {
         byte[] imageBytes = Files.readAllBytes(FileUtil.getFilePath(id, fileName));
-        return ResponseEntity
-            .ok()
-            .contentType(MediaType.IMAGE_JPEG)
+        return ResponseEntity.ok()
             .body(imageBytes);
+
     }
 }

@@ -36,17 +36,17 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class ImageResourceIT {
 
-    private static final String DEFAULT_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_NAME = "BBBBBBBBBB";
+    private static final String DEFAULT_TITLE = "AAAAAAAAAA";
+    private static final String UPDATED_TITLE = "BBBBBBBBBB";
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_IMAGE = "AAAAAAAAAA";
-    private static final String UPDATED_IMAGE = "BBBBBBBBBB";
+    private static final String DEFAULT_FILE_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_FILE_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_IMAGE_TYPE = "AAAAAAAAAA";
-    private static final String UPDATED_IMAGE_TYPE = "BBBBBBBBBB";
+    private static final String DEFAULT_PATH = "AAAAAAAAAA";
+    private static final String UPDATED_PATH = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_CREATION_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATION_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -85,10 +85,10 @@ class ImageResourceIT {
      */
     public static Image createEntity(EntityManager em) {
         Image image = new Image()
-            .name(DEFAULT_NAME)
+            .title(DEFAULT_TITLE)
             .description(DEFAULT_DESCRIPTION)
-            .image(DEFAULT_IMAGE)
-            .imageType(DEFAULT_IMAGE_TYPE)
+            .fileName(DEFAULT_FILE_NAME)
+            .path(DEFAULT_PATH)
             .creationDate(DEFAULT_CREATION_DATE)
             .modificationDate(DEFAULT_MODIFICATION_DATE)
             .isPrivate(DEFAULT_IS_PRIVATE);
@@ -113,10 +113,10 @@ class ImageResourceIT {
      */
     public static Image createUpdatedEntity(EntityManager em) {
         Image image = new Image()
-            .name(UPDATED_NAME)
+            .title(UPDATED_TITLE)
             .description(UPDATED_DESCRIPTION)
-            .image(UPDATED_IMAGE)
-            .imageType(UPDATED_IMAGE_TYPE)
+            .fileName(UPDATED_FILE_NAME)
+            .path(UPDATED_PATH)
             .creationDate(UPDATED_CREATION_DATE)
             .modificationDate(UPDATED_MODIFICATION_DATE)
             .isPrivate(UPDATED_IS_PRIVATE);
@@ -152,10 +152,10 @@ class ImageResourceIT {
         List<Image> imageList = imageRepository.findAll();
         assertThat(imageList).hasSize(databaseSizeBeforeCreate + 1);
         Image testImage = imageList.get(imageList.size() - 1);
-        assertThat(testImage.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testImage.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testImage.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testImage.getImage()).isEqualTo(DEFAULT_IMAGE);
-        assertThat(testImage.getImageType()).isEqualTo(DEFAULT_IMAGE_TYPE);
+        assertThat(testImage.getFileName()).isEqualTo(DEFAULT_FILE_NAME);
+        assertThat(testImage.getPath()).isEqualTo(DEFAULT_PATH);
         assertThat(testImage.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
         assertThat(testImage.getModificationDate()).isEqualTo(DEFAULT_MODIFICATION_DATE);
         assertThat(testImage.getIsPrivate()).isEqualTo(DEFAULT_IS_PRIVATE);
@@ -182,10 +182,10 @@ class ImageResourceIT {
 
     @Test
     @Transactional
-    void checkNameIsRequired() throws Exception {
+    void checkTitleIsRequired() throws Exception {
         int databaseSizeBeforeTest = imageRepository.findAll().size();
         // set the field null
-        image.setName(null);
+        image.setTitle(null);
 
         // Create the Image, which fails.
         ImageDTO imageDTO = imageMapper.toDto(image);
@@ -218,10 +218,10 @@ class ImageResourceIT {
 
     @Test
     @Transactional
-    void checkImageIsRequired() throws Exception {
+    void checkFileNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = imageRepository.findAll().size();
         // set the field null
-        image.setImage(null);
+        image.setFileName(null);
 
         // Create the Image, which fails.
         ImageDTO imageDTO = imageMapper.toDto(image);
@@ -236,10 +236,10 @@ class ImageResourceIT {
 
     @Test
     @Transactional
-    void checkImageTypeIsRequired() throws Exception {
+    void checkPathIsRequired() throws Exception {
         int databaseSizeBeforeTest = imageRepository.findAll().size();
         // set the field null
-        image.setImageType(null);
+        image.setPath(null);
 
         // Create the Image, which fails.
         ImageDTO imageDTO = imageMapper.toDto(image);
@@ -300,10 +300,10 @@ class ImageResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(image.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].image").value(hasItem(DEFAULT_IMAGE)))
-            .andExpect(jsonPath("$.[*].imageType").value(hasItem(DEFAULT_IMAGE_TYPE)))
+            .andExpect(jsonPath("$.[*].fileName").value(hasItem(DEFAULT_FILE_NAME)))
+            .andExpect(jsonPath("$.[*].path").value(hasItem(DEFAULT_PATH)))
             .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].modificationDate").value(hasItem(DEFAULT_MODIFICATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].isPrivate").value(hasItem(DEFAULT_IS_PRIVATE.booleanValue())));
@@ -321,10 +321,10 @@ class ImageResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(image.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
-            .andExpect(jsonPath("$.image").value(DEFAULT_IMAGE))
-            .andExpect(jsonPath("$.imageType").value(DEFAULT_IMAGE_TYPE))
+            .andExpect(jsonPath("$.fileName").value(DEFAULT_FILE_NAME))
+            .andExpect(jsonPath("$.path").value(DEFAULT_PATH))
             .andExpect(jsonPath("$.creationDate").value(DEFAULT_CREATION_DATE.toString()))
             .andExpect(jsonPath("$.modificationDate").value(DEFAULT_MODIFICATION_DATE.toString()))
             .andExpect(jsonPath("$.isPrivate").value(DEFAULT_IS_PRIVATE.booleanValue()));
@@ -350,67 +350,67 @@ class ImageResourceIT {
 
     @Test
     @Transactional
-    void getAllImagesByNameIsEqualToSomething() throws Exception {
+    void getAllImagesByTitleIsEqualToSomething() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where name equals to DEFAULT_NAME
-        defaultImageShouldBeFound("name.equals=" + DEFAULT_NAME);
+        // Get all the imageList where title equals to DEFAULT_TITLE
+        defaultImageShouldBeFound("title.equals=" + DEFAULT_TITLE);
 
-        // Get all the imageList where name equals to UPDATED_NAME
-        defaultImageShouldNotBeFound("name.equals=" + UPDATED_NAME);
+        // Get all the imageList where title equals to UPDATED_TITLE
+        defaultImageShouldNotBeFound("title.equals=" + UPDATED_TITLE);
     }
 
     @Test
     @Transactional
-    void getAllImagesByNameIsInShouldWork() throws Exception {
+    void getAllImagesByTitleIsInShouldWork() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where name in DEFAULT_NAME or UPDATED_NAME
-        defaultImageShouldBeFound("name.in=" + DEFAULT_NAME + "," + UPDATED_NAME);
+        // Get all the imageList where title in DEFAULT_TITLE or UPDATED_TITLE
+        defaultImageShouldBeFound("title.in=" + DEFAULT_TITLE + "," + UPDATED_TITLE);
 
-        // Get all the imageList where name equals to UPDATED_NAME
-        defaultImageShouldNotBeFound("name.in=" + UPDATED_NAME);
+        // Get all the imageList where title equals to UPDATED_TITLE
+        defaultImageShouldNotBeFound("title.in=" + UPDATED_TITLE);
     }
 
     @Test
     @Transactional
-    void getAllImagesByNameIsNullOrNotNull() throws Exception {
+    void getAllImagesByTitleIsNullOrNotNull() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where name is not null
-        defaultImageShouldBeFound("name.specified=true");
+        // Get all the imageList where title is not null
+        defaultImageShouldBeFound("title.specified=true");
 
-        // Get all the imageList where name is null
-        defaultImageShouldNotBeFound("name.specified=false");
+        // Get all the imageList where title is null
+        defaultImageShouldNotBeFound("title.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllImagesByNameContainsSomething() throws Exception {
+    void getAllImagesByTitleContainsSomething() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where name contains DEFAULT_NAME
-        defaultImageShouldBeFound("name.contains=" + DEFAULT_NAME);
+        // Get all the imageList where title contains DEFAULT_TITLE
+        defaultImageShouldBeFound("title.contains=" + DEFAULT_TITLE);
 
-        // Get all the imageList where name contains UPDATED_NAME
-        defaultImageShouldNotBeFound("name.contains=" + UPDATED_NAME);
+        // Get all the imageList where title contains UPDATED_TITLE
+        defaultImageShouldNotBeFound("title.contains=" + UPDATED_TITLE);
     }
 
     @Test
     @Transactional
-    void getAllImagesByNameNotContainsSomething() throws Exception {
+    void getAllImagesByTitleNotContainsSomething() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where name does not contain DEFAULT_NAME
-        defaultImageShouldNotBeFound("name.doesNotContain=" + DEFAULT_NAME);
+        // Get all the imageList where title does not contain DEFAULT_TITLE
+        defaultImageShouldNotBeFound("title.doesNotContain=" + DEFAULT_TITLE);
 
-        // Get all the imageList where name does not contain UPDATED_NAME
-        defaultImageShouldBeFound("name.doesNotContain=" + UPDATED_NAME);
+        // Get all the imageList where title does not contain UPDATED_TITLE
+        defaultImageShouldBeFound("title.doesNotContain=" + UPDATED_TITLE);
     }
 
     @Test
@@ -480,132 +480,132 @@ class ImageResourceIT {
 
     @Test
     @Transactional
-    void getAllImagesByImageIsEqualToSomething() throws Exception {
+    void getAllImagesByFileNameIsEqualToSomething() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where image equals to DEFAULT_IMAGE
-        defaultImageShouldBeFound("image.equals=" + DEFAULT_IMAGE);
+        // Get all the imageList where fileName equals to DEFAULT_FILE_NAME
+        defaultImageShouldBeFound("fileName.equals=" + DEFAULT_FILE_NAME);
 
-        // Get all the imageList where image equals to UPDATED_IMAGE
-        defaultImageShouldNotBeFound("image.equals=" + UPDATED_IMAGE);
+        // Get all the imageList where fileName equals to UPDATED_FILE_NAME
+        defaultImageShouldNotBeFound("fileName.equals=" + UPDATED_FILE_NAME);
     }
 
     @Test
     @Transactional
-    void getAllImagesByImageIsInShouldWork() throws Exception {
+    void getAllImagesByFileNameIsInShouldWork() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where image in DEFAULT_IMAGE or UPDATED_IMAGE
-        defaultImageShouldBeFound("image.in=" + DEFAULT_IMAGE + "," + UPDATED_IMAGE);
+        // Get all the imageList where fileName in DEFAULT_FILE_NAME or UPDATED_FILE_NAME
+        defaultImageShouldBeFound("fileName.in=" + DEFAULT_FILE_NAME + "," + UPDATED_FILE_NAME);
 
-        // Get all the imageList where image equals to UPDATED_IMAGE
-        defaultImageShouldNotBeFound("image.in=" + UPDATED_IMAGE);
+        // Get all the imageList where fileName equals to UPDATED_FILE_NAME
+        defaultImageShouldNotBeFound("fileName.in=" + UPDATED_FILE_NAME);
     }
 
     @Test
     @Transactional
-    void getAllImagesByImageIsNullOrNotNull() throws Exception {
+    void getAllImagesByFileNameIsNullOrNotNull() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where image is not null
-        defaultImageShouldBeFound("image.specified=true");
+        // Get all the imageList where fileName is not null
+        defaultImageShouldBeFound("fileName.specified=true");
 
-        // Get all the imageList where image is null
-        defaultImageShouldNotBeFound("image.specified=false");
+        // Get all the imageList where fileName is null
+        defaultImageShouldNotBeFound("fileName.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllImagesByImageContainsSomething() throws Exception {
+    void getAllImagesByFileNameContainsSomething() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where image contains DEFAULT_IMAGE
-        defaultImageShouldBeFound("image.contains=" + DEFAULT_IMAGE);
+        // Get all the imageList where fileName contains DEFAULT_FILE_NAME
+        defaultImageShouldBeFound("fileName.contains=" + DEFAULT_FILE_NAME);
 
-        // Get all the imageList where image contains UPDATED_IMAGE
-        defaultImageShouldNotBeFound("image.contains=" + UPDATED_IMAGE);
+        // Get all the imageList where fileName contains UPDATED_FILE_NAME
+        defaultImageShouldNotBeFound("fileName.contains=" + UPDATED_FILE_NAME);
     }
 
     @Test
     @Transactional
-    void getAllImagesByImageNotContainsSomething() throws Exception {
+    void getAllImagesByFileNameNotContainsSomething() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where image does not contain DEFAULT_IMAGE
-        defaultImageShouldNotBeFound("image.doesNotContain=" + DEFAULT_IMAGE);
+        // Get all the imageList where fileName does not contain DEFAULT_FILE_NAME
+        defaultImageShouldNotBeFound("fileName.doesNotContain=" + DEFAULT_FILE_NAME);
 
-        // Get all the imageList where image does not contain UPDATED_IMAGE
-        defaultImageShouldBeFound("image.doesNotContain=" + UPDATED_IMAGE);
+        // Get all the imageList where fileName does not contain UPDATED_FILE_NAME
+        defaultImageShouldBeFound("fileName.doesNotContain=" + UPDATED_FILE_NAME);
     }
 
     @Test
     @Transactional
-    void getAllImagesByImageTypeIsEqualToSomething() throws Exception {
+    void getAllImagesByPathIsEqualToSomething() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where imageType equals to DEFAULT_IMAGE_TYPE
-        defaultImageShouldBeFound("imageType.equals=" + DEFAULT_IMAGE_TYPE);
+        // Get all the imageList where path equals to DEFAULT_PATH
+        defaultImageShouldBeFound("path.equals=" + DEFAULT_PATH);
 
-        // Get all the imageList where imageType equals to UPDATED_IMAGE_TYPE
-        defaultImageShouldNotBeFound("imageType.equals=" + UPDATED_IMAGE_TYPE);
+        // Get all the imageList where path equals to UPDATED_PATH
+        defaultImageShouldNotBeFound("path.equals=" + UPDATED_PATH);
     }
 
     @Test
     @Transactional
-    void getAllImagesByImageTypeIsInShouldWork() throws Exception {
+    void getAllImagesByPathIsInShouldWork() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where imageType in DEFAULT_IMAGE_TYPE or UPDATED_IMAGE_TYPE
-        defaultImageShouldBeFound("imageType.in=" + DEFAULT_IMAGE_TYPE + "," + UPDATED_IMAGE_TYPE);
+        // Get all the imageList where path in DEFAULT_PATH or UPDATED_PATH
+        defaultImageShouldBeFound("path.in=" + DEFAULT_PATH + "," + UPDATED_PATH);
 
-        // Get all the imageList where imageType equals to UPDATED_IMAGE_TYPE
-        defaultImageShouldNotBeFound("imageType.in=" + UPDATED_IMAGE_TYPE);
+        // Get all the imageList where path equals to UPDATED_PATH
+        defaultImageShouldNotBeFound("path.in=" + UPDATED_PATH);
     }
 
     @Test
     @Transactional
-    void getAllImagesByImageTypeIsNullOrNotNull() throws Exception {
+    void getAllImagesByPathIsNullOrNotNull() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where imageType is not null
-        defaultImageShouldBeFound("imageType.specified=true");
+        // Get all the imageList where path is not null
+        defaultImageShouldBeFound("path.specified=true");
 
-        // Get all the imageList where imageType is null
-        defaultImageShouldNotBeFound("imageType.specified=false");
+        // Get all the imageList where path is null
+        defaultImageShouldNotBeFound("path.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllImagesByImageTypeContainsSomething() throws Exception {
+    void getAllImagesByPathContainsSomething() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where imageType contains DEFAULT_IMAGE_TYPE
-        defaultImageShouldBeFound("imageType.contains=" + DEFAULT_IMAGE_TYPE);
+        // Get all the imageList where path contains DEFAULT_PATH
+        defaultImageShouldBeFound("path.contains=" + DEFAULT_PATH);
 
-        // Get all the imageList where imageType contains UPDATED_IMAGE_TYPE
-        defaultImageShouldNotBeFound("imageType.contains=" + UPDATED_IMAGE_TYPE);
+        // Get all the imageList where path contains UPDATED_PATH
+        defaultImageShouldNotBeFound("path.contains=" + UPDATED_PATH);
     }
 
     @Test
     @Transactional
-    void getAllImagesByImageTypeNotContainsSomething() throws Exception {
+    void getAllImagesByPathNotContainsSomething() throws Exception {
         // Initialize the database
         imageRepository.saveAndFlush(image);
 
-        // Get all the imageList where imageType does not contain DEFAULT_IMAGE_TYPE
-        defaultImageShouldNotBeFound("imageType.doesNotContain=" + DEFAULT_IMAGE_TYPE);
+        // Get all the imageList where path does not contain DEFAULT_PATH
+        defaultImageShouldNotBeFound("path.doesNotContain=" + DEFAULT_PATH);
 
-        // Get all the imageList where imageType does not contain UPDATED_IMAGE_TYPE
-        defaultImageShouldBeFound("imageType.doesNotContain=" + UPDATED_IMAGE_TYPE);
+        // Get all the imageList where path does not contain UPDATED_PATH
+        defaultImageShouldBeFound("path.doesNotContain=" + UPDATED_PATH);
     }
 
     @Test
@@ -780,10 +780,10 @@ class ImageResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(image.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].image").value(hasItem(DEFAULT_IMAGE)))
-            .andExpect(jsonPath("$.[*].imageType").value(hasItem(DEFAULT_IMAGE_TYPE)))
+            .andExpect(jsonPath("$.[*].fileName").value(hasItem(DEFAULT_FILE_NAME)))
+            .andExpect(jsonPath("$.[*].path").value(hasItem(DEFAULT_PATH)))
             .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].modificationDate").value(hasItem(DEFAULT_MODIFICATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].isPrivate").value(hasItem(DEFAULT_IS_PRIVATE.booleanValue())));
@@ -835,10 +835,10 @@ class ImageResourceIT {
         // Disconnect from session so that the updates on updatedImage are not directly saved in db
         em.detach(updatedImage);
         updatedImage
-            .name(UPDATED_NAME)
+            .title(UPDATED_TITLE)
             .description(UPDATED_DESCRIPTION)
-            .image(UPDATED_IMAGE)
-            .imageType(UPDATED_IMAGE_TYPE)
+            .fileName(UPDATED_FILE_NAME)
+            .path(UPDATED_PATH)
             .creationDate(UPDATED_CREATION_DATE)
             .modificationDate(UPDATED_MODIFICATION_DATE)
             .isPrivate(UPDATED_IS_PRIVATE);
@@ -856,10 +856,10 @@ class ImageResourceIT {
         List<Image> imageList = imageRepository.findAll();
         assertThat(imageList).hasSize(databaseSizeBeforeUpdate);
         Image testImage = imageList.get(imageList.size() - 1);
-        assertThat(testImage.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testImage.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testImage.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testImage.getImage()).isEqualTo(UPDATED_IMAGE);
-        assertThat(testImage.getImageType()).isEqualTo(UPDATED_IMAGE_TYPE);
+        assertThat(testImage.getFileName()).isEqualTo(UPDATED_FILE_NAME);
+        assertThat(testImage.getPath()).isEqualTo(UPDATED_PATH);
         assertThat(testImage.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
         assertThat(testImage.getModificationDate()).isEqualTo(UPDATED_MODIFICATION_DATE);
         assertThat(testImage.getIsPrivate()).isEqualTo(UPDATED_IS_PRIVATE);
@@ -944,7 +944,7 @@ class ImageResourceIT {
 
         partialUpdatedImage
             .description(UPDATED_DESCRIPTION)
-            .image(UPDATED_IMAGE)
+            .fileName(UPDATED_FILE_NAME)
             .creationDate(UPDATED_CREATION_DATE)
             .modificationDate(UPDATED_MODIFICATION_DATE)
             .isPrivate(UPDATED_IS_PRIVATE);
@@ -961,10 +961,10 @@ class ImageResourceIT {
         List<Image> imageList = imageRepository.findAll();
         assertThat(imageList).hasSize(databaseSizeBeforeUpdate);
         Image testImage = imageList.get(imageList.size() - 1);
-        assertThat(testImage.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testImage.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testImage.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testImage.getImage()).isEqualTo(UPDATED_IMAGE);
-        assertThat(testImage.getImageType()).isEqualTo(DEFAULT_IMAGE_TYPE);
+        assertThat(testImage.getFileName()).isEqualTo(UPDATED_FILE_NAME);
+        assertThat(testImage.getPath()).isEqualTo(DEFAULT_PATH);
         assertThat(testImage.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
         assertThat(testImage.getModificationDate()).isEqualTo(UPDATED_MODIFICATION_DATE);
         assertThat(testImage.getIsPrivate()).isEqualTo(UPDATED_IS_PRIVATE);
@@ -983,10 +983,10 @@ class ImageResourceIT {
         partialUpdatedImage.setId(image.getId());
 
         partialUpdatedImage
-            .name(UPDATED_NAME)
+            .title(UPDATED_TITLE)
             .description(UPDATED_DESCRIPTION)
-            .image(UPDATED_IMAGE)
-            .imageType(UPDATED_IMAGE_TYPE)
+            .fileName(UPDATED_FILE_NAME)
+            .path(UPDATED_PATH)
             .creationDate(UPDATED_CREATION_DATE)
             .modificationDate(UPDATED_MODIFICATION_DATE)
             .isPrivate(UPDATED_IS_PRIVATE);
@@ -1003,10 +1003,10 @@ class ImageResourceIT {
         List<Image> imageList = imageRepository.findAll();
         assertThat(imageList).hasSize(databaseSizeBeforeUpdate);
         Image testImage = imageList.get(imageList.size() - 1);
-        assertThat(testImage.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testImage.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testImage.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testImage.getImage()).isEqualTo(UPDATED_IMAGE);
-        assertThat(testImage.getImageType()).isEqualTo(UPDATED_IMAGE_TYPE);
+        assertThat(testImage.getFileName()).isEqualTo(UPDATED_FILE_NAME);
+        assertThat(testImage.getPath()).isEqualTo(UPDATED_PATH);
         assertThat(testImage.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
         assertThat(testImage.getModificationDate()).isEqualTo(UPDATED_MODIFICATION_DATE);
         assertThat(testImage.getIsPrivate()).isEqualTo(UPDATED_IS_PRIVATE);

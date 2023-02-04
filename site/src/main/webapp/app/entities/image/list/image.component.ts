@@ -28,12 +28,16 @@ export class ImageComponent implements OnInit {
   totalItems = 0;
   page = 1;
 
+  url = '';
+
   constructor(
     protected imageService: ImageService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected modalService: NgbModal
-  ) {}
+  ) {
+    this.url = this.imageService.resourceUrl.concat('/base64/');
+  }
 
   trackId = (_index: number, item: IImage): number => this.imageService.getImageIdentifier(item);
 
@@ -95,19 +99,6 @@ export class ImageComponent implements OnInit {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.images = dataFromBody;
-    for (const image of this.images) {
-      const file = image.image!.split('\\').pop();
-      const fileName = file?.split('.').shift();
-
-      this.imageService.getImage(image.id, fileName!).subscribe(imageBlob => {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => {
-          image.imageSrc = reader.result;
-        }, false);
-        reader.readAsDataURL(imageBlob);
-      });
-    };
-
   }
 
   protected fillComponentAttributesFromResponseBody(data: IImage[] | null): IImage[] {
