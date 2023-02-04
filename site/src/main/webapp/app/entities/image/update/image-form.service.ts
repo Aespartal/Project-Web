@@ -65,12 +65,8 @@ export class ImageFormService {
       description: new FormControl(imageRawValue.description, {
         validators: [Validators.required, Validators.maxLength(3500)],
       }),
-      image: new FormControl(imageRawValue.image, {
-        validators: [Validators.required, Validators.maxLength(3500)],
-      }),
-      imageType: new FormControl(imageRawValue.imageType, {
-        validators: [Validators.required],
-      }),
+      image: new FormControl(imageRawValue.image),
+      imageType: new FormControl(imageRawValue.imageType),
       creationDate: new FormControl(imageRawValue.creationDate, {
         validators: [Validators.required],
       }),

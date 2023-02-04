@@ -11,7 +11,7 @@ import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/conf
 import { EntityArrayResponseType, ExtendedUserService } from '../service/extended-user.service';
 import { ExtendedUserDeleteDialogComponent } from '../delete/extended-user-delete-dialog.component';
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
-import { IUser, User } from 'app/entities/user/user.model';
+import { IUser } from 'app/entities/user/user.model';
 import { UserManagementService } from 'app/admin/user-management/service/user-management.service';
 
 @Component({

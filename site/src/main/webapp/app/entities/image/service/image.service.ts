@@ -31,9 +31,13 @@ export class ImageService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(image: NewImage): Observable<EntityResponseType> {
+  create(image: NewImage, formData: FormData): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(image);
-    return this.http.post<RestImage>(this.resourceUrl, copy, { observe: 'response' }).pipe(map(res => this.convertResponseFromServer(res)));
+    formData.append('image', new Blob([JSON.stringify(copy)], {
+      type: "application/json"
+  }));
+    return this.http.post<RestImage>(this.resourceUrl, formData, { observe: 'response' })
+    .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   update(image: IImage): Observable<EntityResponseType> {
@@ -65,6 +69,10 @@ export class ImageService {
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  getImage(id: number, fileName: string): Observable<Blob> {
+    return this.http.get(`${this.resourceUrl}/base64/${id}/${fileName}`, { responseType: 'blob' });
   }
 
   getImageIdentifier(image: Pick<IImage, 'id'>): number {

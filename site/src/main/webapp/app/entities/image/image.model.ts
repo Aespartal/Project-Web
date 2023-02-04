@@ -6,6 +6,7 @@ export interface IImage {
   name?: string | null;
   description?: string | null;
   image?: string | null;
+  imageSrc?: string | ArrayBuffer | null;
   imageType?: string | null;
   creationDate?: dayjs.Dayjs | null;
   modificationDate?: dayjs.Dayjs | null;

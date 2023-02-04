@@ -1,9 +1,12 @@
 package es.project.service;
 
 import es.project.service.dto.ImageDTO;
+
+import java.io.IOException;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Service Interface for managing {@link es.project.domain.Image}.
@@ -55,4 +58,6 @@ public interface ImageService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    ImageDTO createImage(ImageDTO imageDTO, MultipartFile file);
 }

@@ -8,6 +8,8 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Lob;
 import javax.validation.constraints.*;
 
 /**
@@ -38,22 +40,19 @@ public class ImageDTO implements Serializable {
     /**
      * image
      */
-    @NotNull
     @Size(max = 3500)
-    @Schema(description = "image", required = true)
+    @Schema(description = "image")
     private String image;
 
     /**
      * imageType
      */
-    @NotNull
-    @Schema(description = "imageType", required = true)
+    @Schema(description = "imageType")
     private String imageType;
 
     /**
      * creationDate
      */
-    @NotNull
     @Schema(description = "creationDate", required = true)
     private Instant creationDate;
 
@@ -69,6 +68,10 @@ public class ImageDTO implements Serializable {
     @NotNull
     @Schema(description = "isPrivate", required = true)
     private Boolean isPrivate;
+
+    @Lob
+    @Schema(description = "imageBase64")
+    private byte[] imageBase64;
 
     private ExtendedUserDTO extendedUser;
 
@@ -136,6 +139,14 @@ public class ImageDTO implements Serializable {
 
     public void setIsPrivate(Boolean isPrivate) {
         this.isPrivate = isPrivate;
+    }
+
+    public byte[] getImageBase64() {
+        return imageBase64;
+    }
+
+    public void setImageBase64(byte[] imageBase64) {
+        this.imageBase64 = imageBase64;
     }
 
     public ExtendedUserDTO getExtendedUser() {

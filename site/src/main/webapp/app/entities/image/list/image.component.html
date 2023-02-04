@@ -98,7 +98,9 @@
           </td>
           <td>{{ image.name }}</td>
           <td>{{ image.description }}</td>
-          <td>{{ image.image }}</td>
+          <td>
+            <img [src]="image.imageSrc" alt="image" class="img-thumbnail" style="max-width: 100px" />
+          </td>
           <td>{{ image.imageType }}</td>
           <td>{{ image.creationDate | formatMediumDatetime }}</td>
           <td>{{ image.modificationDate | formatMediumDatetime }}</td>

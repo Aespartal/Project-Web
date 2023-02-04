@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -9,6 +10,8 @@ import { IImage } from '../image.model';
 import { ImageService } from '../service/image.service';
 import { IExtendedUser } from 'app/entities/extended-user/extended-user.model';
 import { ExtendedUserService } from 'app/entities/extended-user/service/extended-user.service';
+import { DataUtils } from 'app/core/util/data-util.service';
+import { EventManager } from 'app/core/util/event-manager.service';
 
 @Component({
   selector: 'jhi-image-update',
@@ -20,13 +23,20 @@ export class ImageUpdateComponent implements OnInit {
 
   extendedUsersSharedCollection: IExtendedUser[] = [];
 
+  formData = new FormData();
+
+  imagenBase64!: string;
+
   editForm: ImageFormGroup = this.imageFormService.createImageFormGroup();
 
   constructor(
     protected imageService: ImageService,
     protected imageFormService: ImageFormService,
     protected extendedUserService: ExtendedUserService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    protected elementRef: ElementRef,
+    protected dataUtils: DataUtils,
+    protected eventManager: EventManager,
   ) {}
 
   compareExtendedUser = (o1: IExtendedUser | null, o2: IExtendedUser | null): boolean =>
@@ -53,7 +63,38 @@ export class ImageUpdateComponent implements OnInit {
     if (image.id !== null) {
       this.subscribeToSaveResponse(this.imageService.update(image));
     } else {
-      this.subscribeToSaveResponse(this.imageService.create(image));
+      this.subscribeToSaveResponse(this.imageService.create(image, this.formData));
+    }
+  }
+
+  onFileChanged(event: any, field: string): void {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    if(file.type.match('image.*')){
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imagenBase64 = reader.result as string;
+      };
+      this.formData = new FormData();
+      this.formData.append(field, file);
+    } else {
+      console.error('Archivo no es una imagen');
+  }
+  }
+
+  openFile(contentType: string, base64String: string): void {
+    this.dataUtils.openFile(contentType, base64String);
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  clearInputImage(idInput: string): void {
+    this.formData = new FormData();
+    this.imagenBase64 = '';
+    if (idInput && this.elementRef.nativeElement.querySelector('#' + idInput)) {
+      this.elementRef.nativeElement.querySelector('#' + idInput).value = null;
     }
   }
 
