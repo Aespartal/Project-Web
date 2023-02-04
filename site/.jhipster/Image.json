@@ -6,11 +6,11 @@
   "entityTableName": "image",
   "fields": [
     {
-      "fieldName": "name",
+      "fieldName": "title",
       "fieldType": "String",
       "fieldValidateRules": ["required", "maxlength"],
       "fieldValidateRulesMaxlength": "100",
-      "javadoc": "name"
+      "javadoc": "title"
     },
     {
       "fieldName": "description",
@@ -20,17 +20,18 @@
       "javadoc": "description"
     },
     {
-      "fieldName": "image",
+      "fieldName": "fileName",
       "fieldType": "String",
       "fieldValidateRules": ["required", "maxlength"],
       "fieldValidateRulesMaxlength": "3500",
-      "javadoc": "image"
+      "javadoc": "fileName"
     },
     {
-      "fieldName": "imageType",
+      "fieldName": "path",
       "fieldType": "String",
-      "fieldValidateRules": ["required"],
-      "javadoc": "imageType"
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "3500",
+      "javadoc": "path"
     },
     {
       "fieldName": "creationDate",

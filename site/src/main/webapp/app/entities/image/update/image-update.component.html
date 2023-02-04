@@ -16,19 +16,19 @@
         <div class="row mb-3">
           <label
             class="form-label"
-            jhiTranslate="projectApp.image.name"
+            jhiTranslate="projectApp.image.title"
             for="field_name"
-            [ngbTooltip]="'projectApp.image.help.name' | translate"
-            >Name</label
+            [ngbTooltip]="'projectApp.image.help.title' | translate"
+            >Title</label
           >
-          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
-          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+          <input type="text" class="form-control" name="title" id="field_name" data-cy="title" formControlName="title" />
+          <div *ngIf="editForm.get('title')!.invalid && (editForm.get('title')!.dirty || editForm.get('title')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('title')?.errors?.required" jhiTranslate="entity.validation.required">
               Este campo es obligatorio.
             </small>
             <small
               class="form-text text-danger"
-              *ngIf="editForm.get('name')?.errors?.maxlength"
+              *ngIf="editForm.get('title')?.errors?.maxlength"
               jhiTranslate="entity.validation.maxlength"
               [translateValues]="{ max: 100 }"
             >
@@ -72,11 +72,11 @@
           </div>
         </div>
         <div class="row mb-3">
-          <label class="form-control-label" jhiTranslate="projectApp.image.image" for="field_imagen"
-          [ngbTooltip]="'projectApp.image.help.image' | translate">Imagen</label>
+          <label class="form-control-label" jhiTranslate="projectApp.image.path" for="field_path"
+          [ngbTooltip]="'projectApp.image.help.path' | translate">Imagen</label>
             <div>
                 <img [src]="imagenBase64" style="max-height: 100px;"
-                *ngIf="imagenBase64" alt="bloqueBase image"/>
+                *ngIf="imagenBase64" alt="path"/>
                 <div *ngIf="imagenBase64" class="form-text text-danger clearfix">
                     <span class="pull-left"> {{ byteSize(imagenBase64) }}</span>
                     <button type="button" (click)="clearInputImage('file_imagen')" class="btn btn-secondary btn-xs pull-right">

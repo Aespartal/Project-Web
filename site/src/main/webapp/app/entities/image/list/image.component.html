@@ -40,9 +40,9 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="name">
+          <th scope="col" jhiSortBy="title">
             <div class="d-flex">
-              <span jhiTranslate="projectApp.image.name">Name</span>
+              <span jhiTranslate="projectApp.image.title">Title</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -52,15 +52,15 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="image">
+          <th scope="col" jhiSortBy="fileName">
             <div class="d-flex">
-              <span jhiTranslate="projectApp.image.image">Image</span>
+              <span jhiTranslate="projectApp.image.fileName">File Name</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="imageType">
+          <th scope="col" jhiSortBy="path">
             <div class="d-flex">
-              <span jhiTranslate="projectApp.image.imageType">Image Type</span>
+              <span jhiTranslate="projectApp.image.path">Path</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -96,12 +96,10 @@
           <td>
             <a [routerLink]="['/image', image.id, 'view']">{{ image.id }}</a>
           </td>
-          <td>{{ image.name }}</td>
+          <td>{{ image.title }}</td>
           <td>{{ image.description }}</td>
-          <td>
-            <img [src]="image.imageSrc" alt="image" class="img-thumbnail" style="max-width: 100px" />
-          </td>
-          <td>{{ image.imageType }}</td>
+          <td>{{ image.fileName }}</td>
+          <td>{{ image.path }}</td>
           <td>{{ image.creationDate | formatMediumDatetime }}</td>
           <td>{{ image.modificationDate | formatMediumDatetime }}</td>
           <td>{{ image.isPrivate }}</td>

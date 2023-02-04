@@ -34,7 +34,6 @@ public class ImageDTO implements Serializable {
     /**
      * fileName
      */
-    @NotNull
     @Size(max = 3500)
     @Schema(description = "fileName", required = true)
     private String fileName;
@@ -42,7 +41,6 @@ public class ImageDTO implements Serializable {
     /**
      * path
      */
-    @NotNull
     @Size(max = 3500)
     @Schema(description = "path", required = true)
     private String path;

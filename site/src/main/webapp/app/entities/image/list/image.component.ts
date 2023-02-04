@@ -95,19 +95,6 @@ export class ImageComponent implements OnInit {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.images = dataFromBody;
-    for (const image of this.images) {
-      const file = image.image!.split('\\').pop();
-      const fileName = file?.split('.').shift();
-
-      this.imageService.getImage(image.id, fileName!).subscribe(imageBlob => {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => {
-          image.imageSrc = reader.result;
-        }, false);
-        reader.readAsDataURL(imageBlob);
-      });
-    };
-
   }
 
   protected fillComponentAttributesFromResponseBody(data: IImage[] | null): IImage[] {

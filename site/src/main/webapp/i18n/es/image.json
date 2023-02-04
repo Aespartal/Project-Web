@@ -6,35 +6,35 @@
         "refreshListLabel": "Refrescar lista",
         "createLabel": "Crear nuevo Imagen",
         "createOrEditLabel": "Crear o editar Imagen",
-        "notFound": "Ningúna Imagen encontrada"
+        "notFound": "Ninguna Imagen encontrado"
       },
       "created": "Una nueva Imagen ha sido creada con el identificador {{ param }}",
       "updated": "Una Imagen ha sido actualizada con el identificador {{ param }}",
       "deleted": "Una Imagen ha sido eliminada con el identificador {{ param }}",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Imagen: {{ id }}?"
+        "question": "¿Seguro que quiere eliminar la Imagen: {{ id }}?"
       },
       "detail": {
         "title": "Imagen"
       },
       "id": "ID",
-      "name": "Título",
+      "title": "Título",
       "description": "Descripción",
-      "image": "Imagen",
-      "imageType": "Extensión de la Imagen",
+      "fileName": "Nombre del archivo",
+      "path": "Ruta",
       "creationDate": "Fecha de creación",
       "modificationDate": "Fecha de modificación",
-      "isPrivate": "Es privada",
+      "isPrivate": "Privada",
       "commentaries": "Comentarios",
       "extendedUser": "Usuario",
       "help": {
-        "name": "título",
+        "title": "título",
         "description": "descripción",
-        "image": "imagen",
-        "imageType": "extensión de la Imagen",
+        "fileName": "nombre del archivo",
+        "path": "ruta",
         "creationDate": "fecha de creación",
         "modificationDate": "fecha de modificación",
-        "isPrivate": "es privada"
+        "isPrivate": "privada"
       }
     }
   }
