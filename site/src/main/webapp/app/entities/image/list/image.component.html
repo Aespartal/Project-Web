@@ -52,6 +52,11 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span>Imagen</span>
+            </div>
+          </th>
           <th scope="col" jhiSortBy="fileName">
             <div class="d-flex">
               <span jhiTranslate="projectApp.image.fileName">File Name</span>
@@ -98,6 +103,9 @@
           </td>
           <td>{{ image.title }}</td>
           <td>{{ image.description }}</td>
+          <td>
+            <img *ngIf="image.extendedUser" [src]="url + image.extendedUser.id + '/' + image.fileName" alt="image" class="img-thumbnail" style="max-width: 100px" />
+          </td>
           <td>{{ image.fileName }}</td>
           <td>{{ image.path }}</td>
           <td>{{ image.creationDate | formatMediumDatetime }}</td>

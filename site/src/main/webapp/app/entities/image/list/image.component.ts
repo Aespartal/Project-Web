@@ -28,12 +28,16 @@ export class ImageComponent implements OnInit {
   totalItems = 0;
   page = 1;
 
+  url = '';
+
   constructor(
     protected imageService: ImageService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected modalService: NgbModal
-  ) {}
+  ) {
+    this.url = this.imageService.resourceUrl.concat('/base64/');
+  }
 
   trackId = (_index: number, item: IImage): number => this.imageService.getImageIdentifier(item);
 

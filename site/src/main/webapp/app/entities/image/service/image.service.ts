@@ -27,7 +27,7 @@ export type EntityArrayResponseType = HttpResponse<IImage[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ImageService {
-  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/images');
+  public resourceUrl = this.applicationConfigService.getEndpointFor('api/images');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
