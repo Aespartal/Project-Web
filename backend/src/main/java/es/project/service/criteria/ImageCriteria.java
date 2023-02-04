@@ -23,13 +23,13 @@ public class ImageCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
-    private StringFilter name;
+    private StringFilter title;
 
     private StringFilter description;
 
-    private StringFilter image;
+    private StringFilter fileName;
 
-    private StringFilter imageType;
+    private StringFilter path;
 
     private InstantFilter creationDate;
 
@@ -47,10 +47,10 @@ public class ImageCriteria implements Serializable, Criteria {
 
     public ImageCriteria(ImageCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
-        this.name = other.name == null ? null : other.name.copy();
+        this.title = other.title == null ? null : other.title.copy();
         this.description = other.description == null ? null : other.description.copy();
-        this.image = other.image == null ? null : other.image.copy();
-        this.imageType = other.imageType == null ? null : other.imageType.copy();
+        this.fileName = other.fileName == null ? null : other.fileName.copy();
+        this.path = other.path == null ? null : other.path.copy();
         this.creationDate = other.creationDate == null ? null : other.creationDate.copy();
         this.modificationDate = other.modificationDate == null ? null : other.modificationDate.copy();
         this.isPrivate = other.isPrivate == null ? null : other.isPrivate.copy();
@@ -79,19 +79,19 @@ public class ImageCriteria implements Serializable, Criteria {
         this.id = id;
     }
 
-    public StringFilter getName() {
-        return name;
+    public StringFilter getTitle() {
+        return title;
     }
 
-    public StringFilter name() {
-        if (name == null) {
-            name = new StringFilter();
+    public StringFilter title() {
+        if (title == null) {
+            title = new StringFilter();
         }
-        return name;
+        return title;
     }
 
-    public void setName(StringFilter name) {
-        this.name = name;
+    public void setTitle(StringFilter title) {
+        this.title = title;
     }
 
     public StringFilter getDescription() {
@@ -109,34 +109,34 @@ public class ImageCriteria implements Serializable, Criteria {
         this.description = description;
     }
 
-    public StringFilter getImage() {
-        return image;
+    public StringFilter getFileName() {
+        return fileName;
     }
 
-    public StringFilter image() {
-        if (image == null) {
-            image = new StringFilter();
+    public StringFilter fileName() {
+        if (fileName == null) {
+            fileName = new StringFilter();
         }
-        return image;
+        return fileName;
     }
 
-    public void setImage(StringFilter image) {
-        this.image = image;
+    public void setFileName(StringFilter fileName) {
+        this.fileName = fileName;
     }
 
-    public StringFilter getImageType() {
-        return imageType;
+    public StringFilter getPath() {
+        return path;
     }
 
-    public StringFilter imageType() {
-        if (imageType == null) {
-            imageType = new StringFilter();
+    public StringFilter path() {
+        if (path == null) {
+            path = new StringFilter();
         }
-        return imageType;
+        return path;
     }
 
-    public void setImageType(StringFilter imageType) {
-        this.imageType = imageType;
+    public void setPath(StringFilter path) {
+        this.path = path;
     }
 
     public InstantFilter getCreationDate() {
@@ -233,10 +233,10 @@ public class ImageCriteria implements Serializable, Criteria {
         final ImageCriteria that = (ImageCriteria) o;
         return (
             Objects.equals(id, that.id) &&
-            Objects.equals(name, that.name) &&
+            Objects.equals(title, that.title) &&
             Objects.equals(description, that.description) &&
-            Objects.equals(image, that.image) &&
-            Objects.equals(imageType, that.imageType) &&
+            Objects.equals(fileName, that.fileName) &&
+            Objects.equals(path, that.path) &&
             Objects.equals(creationDate, that.creationDate) &&
             Objects.equals(modificationDate, that.modificationDate) &&
             Objects.equals(isPrivate, that.isPrivate) &&
@@ -250,10 +250,10 @@ public class ImageCriteria implements Serializable, Criteria {
     public int hashCode() {
         return Objects.hash(
             id,
-            name,
+            title,
             description,
-            image,
-            imageType,
+            fileName,
+            path,
             creationDate,
             modificationDate,
             isPrivate,
@@ -268,10 +268,10 @@ public class ImageCriteria implements Serializable, Criteria {
     public String toString() {
         return "ImageCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
-            (name != null ? "name=" + name + ", " : "") +
+            (title != null ? "title=" + title + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
-            (image != null ? "image=" + image + ", " : "") +
-            (imageType != null ? "imageType=" + imageType + ", " : "") +
+            (fileName != null ? "fileName=" + fileName + ", " : "") +
+            (path != null ? "path=" + path + ", " : "") +
             (creationDate != null ? "creationDate=" + creationDate + ", " : "") +
             (modificationDate != null ? "modificationDate=" + modificationDate + ", " : "") +
             (isPrivate != null ? "isPrivate=" + isPrivate + ", " : "") +

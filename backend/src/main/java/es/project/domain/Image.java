@@ -25,12 +25,12 @@ public class Image implements Serializable {
     private Long id;
 
     /**
-     * name
+     * title
      */
     @NotNull
     @Size(max = 100)
-    @Column(name = "name", length = 100, nullable = false)
-    private String name;
+    @Column(name = "title", length = 100, nullable = false)
+    private String title;
 
     /**
      * description
@@ -41,19 +41,20 @@ public class Image implements Serializable {
     private String description;
 
     /**
-     * image
+     * fileName
      */
     @NotNull
     @Size(max = 3500)
-    @Column(name = "image", length = 3500, nullable = false)
-    private String image;
+    @Column(name = "file_name", length = 3500, nullable = false)
+    private String fileName;
 
     /**
-     * imageType
+     * path
      */
     @NotNull
-    @Column(name = "image_type", nullable = false)
-    private String imageType;
+    @Size(max = 3500)
+    @Column(name = "path", length = 3500, nullable = false)
+    private String path;
 
     /**
      * creationDate
@@ -99,17 +100,17 @@ public class Image implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return this.name;
+    public String getTitle() {
+        return this.title;
     }
 
-    public Image name(String name) {
-        this.setName(name);
+    public Image title(String title) {
+        this.setTitle(title);
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -125,30 +126,30 @@ public class Image implements Serializable {
         this.description = description;
     }
 
-    public String getImage() {
-        return this.image;
+    public String getFileName() {
+        return this.fileName;
     }
 
-    public Image image(String image) {
-        this.setImage(image);
+    public Image fileName(String fileName) {
+        this.setFileName(fileName);
         return this;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    public String getImageType() {
-        return this.imageType;
+    public String getPath() {
+        return this.path;
     }
 
-    public Image imageType(String imageType) {
-        this.setImageType(imageType);
+    public Image path(String path) {
+        this.setPath(path);
         return this;
     }
 
-    public void setImageType(String imageType) {
-        this.imageType = imageType;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public Instant getCreationDate() {
@@ -258,10 +259,10 @@ public class Image implements Serializable {
     public String toString() {
         return "Image{" +
             "id=" + getId() +
-            ", name='" + getName() + "'" +
+            ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
-            ", image='" + getImage() + "'" +
-            ", imageType='" + getImageType() + "'" +
+            ", fileName='" + getFileName() + "'" +
+            ", path='" + getPath() + "'" +
             ", creationDate='" + getCreationDate() + "'" +
             ", modificationDate='" + getModificationDate() + "'" +
             ", isPrivate='" + getIsPrivate() + "'" +

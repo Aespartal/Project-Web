@@ -14,16 +14,16 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(100)" remarks="name">
+            <column name="title" type="varchar(100)" remarks="title">
                 <constraints nullable="false" />
             </column>
             <column name="description" type="varchar(3500)" remarks="description">
                 <constraints nullable="false" />
             </column>
-            <column name="image" type="varchar(3500)" remarks="image">
+            <column name="file_name" type="varchar(3500)" remarks="fileName">
                 <constraints nullable="false" />
             </column>
-            <column name="image_type" type="varchar(255)" remarks="imageType">
+            <column name="path" type="varchar(3500)" remarks="path">
                 <constraints nullable="false" />
             </column>
             <column name="creation_date" type="${datetimeType}" remarks="creationDate">
@@ -61,10 +61,10 @@
                   tableName="image"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="name" type="string"/>
+            <column name="title" type="string"/>
             <column name="description" type="string"/>
-            <column name="image" type="string"/>
-            <column name="image_type" type="string"/>
+            <column name="file_name" type="string"/>
+            <column name="path" type="string"/>
             <column name="creation_date" type="date"/>
             <column name="modification_date" type="date"/>
             <column name="is_private" type="boolean"/>

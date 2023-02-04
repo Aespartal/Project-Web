@@ -90,17 +90,14 @@ public class ImageQueryService extends QueryService<Image> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), Image_.id));
             }
-            if (criteria.getName() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getName(), Image_.name));
+            if (criteria.getTitle() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getTitle(), Image_.title));
             }
             if (criteria.getDescription() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDescription(), Image_.description));
             }
-            if (criteria.getImage() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getImage(), Image_.image));
-            }
-            if (criteria.getImageType() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getImageType(), Image_.imageType));
+            if (criteria.getPath() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getPath(), Image_.path));
             }
             if (criteria.getCreationDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCreationDate(), Image_.creationDate));

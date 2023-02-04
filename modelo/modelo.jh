@@ -38,14 +38,14 @@ entity ExtendedUser {
  * @author alejandro.espartal
  */
 entity Image {
-    /** name */
-    name String required maxlength(STR_LONGITUD_MEDIA)
+    /** title */
+    title String required maxlength(STR_LONGITUD_MEDIA)
     /** description */
     description String required maxlength(STR_LONGITUD_MAXIMA)
-    /** image */
-    image String required maxlength(STR_LONGITUD_MAXIMA)
-    /** imageType */
-    imageType String required
+    /** fileName */
+    fileName String required maxlength(STR_LONGITUD_MAXIMA)
+    /** path */
+    path String required maxlength(STR_LONGITUD_MAXIMA)
     /** creationDate */
     creationDate Instant required
     /** modificationDate */

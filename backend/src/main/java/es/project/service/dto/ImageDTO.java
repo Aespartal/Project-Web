@@ -1,15 +1,9 @@
 package es.project.service.dto;
 
-import es.project.domain.Commentary;
-import es.project.domain.Image;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Lob;
 import javax.validation.constraints.*;
 
 /**
@@ -22,12 +16,12 @@ public class ImageDTO implements Serializable {
     private Long id;
 
     /**
-     * name
+     * title
      */
     @NotNull
     @Size(max = 100)
-    @Schema(description = "name", required = true)
-    private String name;
+    @Schema(description = "title", required = true)
+    private String title;
 
     /**
      * description
@@ -38,21 +32,25 @@ public class ImageDTO implements Serializable {
     private String description;
 
     /**
-     * image
+     * fileName
      */
+    @NotNull
     @Size(max = 3500)
-    @Schema(description = "image")
-    private String image;
+    @Schema(description = "fileName", required = true)
+    private String fileName;
 
     /**
-     * imageType
+     * path
      */
-    @Schema(description = "imageType")
-    private String imageType;
+    @NotNull
+    @Size(max = 3500)
+    @Schema(description = "path", required = true)
+    private String path;
 
     /**
      * creationDate
      */
+    @NotNull
     @Schema(description = "creationDate", required = true)
     private Instant creationDate;
 
@@ -69,13 +67,7 @@ public class ImageDTO implements Serializable {
     @Schema(description = "isPrivate", required = true)
     private Boolean isPrivate;
 
-    @Lob
-    @Schema(description = "imageBase64")
-    private byte[] imageBase64;
-
     private ExtendedUserDTO extendedUser;
-
-    private Set<CommentaryDTO> commentaries = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -85,12 +77,12 @@ public class ImageDTO implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -101,20 +93,20 @@ public class ImageDTO implements Serializable {
         this.description = description;
     }
 
-    public String getImage() {
-        return image;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    public String getImageType() {
-        return imageType;
+    public String getPath() {
+        return path;
     }
 
-    public void setImageType(String imageType) {
-        this.imageType = imageType;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public Instant getCreationDate() {
@@ -141,51 +133,12 @@ public class ImageDTO implements Serializable {
         this.isPrivate = isPrivate;
     }
 
-    public byte[] getImageBase64() {
-        return imageBase64;
-    }
-
-    public void setImageBase64(byte[] imageBase64) {
-        this.imageBase64 = imageBase64;
-    }
-
     public ExtendedUserDTO getExtendedUser() {
         return extendedUser;
     }
 
     public void setExtendedUser(ExtendedUserDTO extendedUser) {
         this.extendedUser = extendedUser;
-    }
-
-    public ImageDTO commentaries(Set<CommentaryDTO> commentaries) {
-        this.setCommentaries(commentaries);
-        return this;
-    }
-
-    public ImageDTO addCommentaries(CommentaryDTO commentary) {
-        this.commentaries.add(commentary);
-        commentary.setImage(this);
-        return this;
-    }
-
-    public ImageDTO removeCommentaries(CommentaryDTO commentary) {
-        this.commentaries.remove(commentary);
-        commentary.setImage(null);
-        return this;
-    }
-
-    public Set<CommentaryDTO> getCommentaries() {
-        return this.commentaries;
-    }
-
-    public void setCommentaries(Set<CommentaryDTO> commentaries) {
-        if (this.commentaries != null) {
-            this.commentaries.forEach(i -> i.setImage(null));
-        }
-        if (commentaries != null) {
-            commentaries.forEach(i -> i.setImage(this));
-        }
-        this.commentaries = commentaries;
     }
 
     @Override
@@ -214,10 +167,10 @@ public class ImageDTO implements Serializable {
     public String toString() {
         return "ImageDTO{" +
             "id=" + getId() +
-            ", name='" + getName() + "'" +
+            ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
-            ", image='" + getImage() + "'" +
-            ", imageType='" + getImageType() + "'" +
+            ", fileName='" + getFileName() + "'" +
+            ", path='" + getPath() + "'" +
             ", creationDate='" + getCreationDate() + "'" +
             ", modificationDate='" + getModificationDate() + "'" +
             ", isPrivate='" + getIsPrivate() + "'" +

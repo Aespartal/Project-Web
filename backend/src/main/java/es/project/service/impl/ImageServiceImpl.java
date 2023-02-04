@@ -50,12 +50,11 @@ public class ImageServiceImpl implements ImageService {
     public ImageDTO createImage(ImageDTO imageDTO, MultipartFile file) {
         log.debug("Request to save Image : {}", imageDTO);
         Image image = imageMapper.toEntity(imageDTO);
-        image.setImage(file.getOriginalFilename());
-        image.setImageType(file.getContentType());
+        image.setFileName(file.getOriginalFilename());
+        Path pathImage = FileUtil.getImagePath(imageDTO.getExtendedUser().getId()).resolve(image.getFileName());
+        image.setPath(pathImage.toString());
         image = imageRepository.save(image);
-        String pathImage = saveFile(image.getId(), file);
-        image.setImage(pathImage);
-        imageRepository.save(image);
+        saveFile(image.getId(), file, pathImage);
         return imageMapper.toDto(image);
     }
 
@@ -102,13 +101,12 @@ public class ImageServiceImpl implements ImageService {
         imageRepository.deleteById(id);
     }
 
-    private String saveFile(Long id, MultipartFile file) {
+    private String saveFile(Long id, MultipartFile file, Path target) {
         try {
             String filename = file.getOriginalFilename();
             if (filename == null) {
                 throw new ValidationException("Filename is required");
             }
-            Path target = FileUtil.getImagePath(id).resolve(filename);
             FileUtil.saveFile(file, target);
             return target.toString();
         } catch (IOException e) {
