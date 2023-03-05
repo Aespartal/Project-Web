@@ -61,7 +61,7 @@ export class ImageUpdateComponent implements OnInit {
     this.isSaving = true;
     const image = this.imageFormService.getImage(this.editForm);
     if (image.id !== null) {
-      this.subscribeToSaveResponse(this.imageService.update(image));
+      this.subscribeToSaveResponse(this.imageService.update(image, this.formData));
     } else {
       this.subscribeToSaveResponse(this.imageService.create(image, this.formData));
     }
@@ -78,7 +78,7 @@ export class ImageUpdateComponent implements OnInit {
       this.formData = new FormData();
       this.formData.append(field, file);
     } else {
-      console.error('Archivo no es una imagen');
+      console.error('El archivo no es una imagen');
   }
   }
 

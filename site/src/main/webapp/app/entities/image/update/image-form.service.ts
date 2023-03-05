@@ -67,9 +67,7 @@ export class ImageFormService {
       }),
       fileName: new FormControl(imageRawValue.fileName),
       path: new FormControl(imageRawValue.path),
-      creationDate: new FormControl(imageRawValue.creationDate, {
-        validators: [Validators.required],
-      }),
+      creationDate: new FormControl(imageRawValue.creationDate),
       modificationDate: new FormControl(imageRawValue.modificationDate),
       isPrivate: new FormControl(imageRawValue.isPrivate, {
         validators: [Validators.required],

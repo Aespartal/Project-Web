@@ -1,87 +1,59 @@
 package es.project.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.*;
-import javax.validation.constraints.*;
 
 /**
  * The Image entity.\n@author alejandro.espartal
  */
 @Entity
-@Table(name = "image")
-@SuppressWarnings("common-java:DuplicatedBlocks")
-public class Image implements Serializable {
+public class ImageExt implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "id")
     private Long id;
 
-    /**
-     * title
-     */
-    @NotNull
-    @Size(max = 100)
-    @Column(name = "title", length = 100, nullable = false)
+    @Column(name = "title")
     private String title;
 
-    /**
-     * description
-     */
-    @NotNull
-    @Size(max = 3500)
-    @Column(name = "description", length = 3500, nullable = false)
+    @Column(name = "description")
     private String description;
 
-    /**
-     * fileName
-     */
-    @NotNull
-    @Size(max = 3500)
-    @Column(name = "file_name", length = 3500, nullable = false)
+    @Column(name = "file_name")
     private String fileName;
 
-    /**
-     * path
-     */
-    @NotNull
-    @Size(max = 3500)
-    @Column(name = "path", length = 3500, nullable = false)
+
+    @Column(name = "path")
     private String path;
 
-    /**
-     * creationDate
-     */
-    @NotNull
-    @Column(name = "creation_date", nullable = false)
+    @Column(name = "creation_date")
     private Instant creationDate;
 
-    /**
-     * modificationDate
-     */
     @Column(name = "modification_date")
     private Instant modificationDate;
 
-    /**
-     * isPrivate
-     */
-    @NotNull
-    @Column(name = "is_private", nullable = false)
+    @Column(name = "is_private")
     private Boolean isPrivate;
 
-    @OneToMany(mappedBy = "image", cascade = CascadeType.REMOVE)
+    @Column(name = "likes")
+    private Integer likes;
+
+    @Column(name = "is_favourited")
+    private Boolean isFavourited;
+
+    @OneToMany(mappedBy = "image")
     @JsonIgnoreProperties(value = { "extendedUser", "image" }, allowSetters = true)
     private Set<Commentary> commentaries = new HashSet<>();
 
     @ManyToOne(optional = false)
-    @NotNull
     @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private ExtendedUser extendedUser;
 
@@ -91,7 +63,7 @@ public class Image implements Serializable {
         return this.id;
     }
 
-    public Image id(Long id) {
+    public ImageExt id(Long id) {
         this.setId(id);
         return this;
     }
@@ -104,7 +76,7 @@ public class Image implements Serializable {
         return this.title;
     }
 
-    public Image title(String title) {
+    public ImageExt title(String title) {
         this.setTitle(title);
         return this;
     }
@@ -117,7 +89,7 @@ public class Image implements Serializable {
         return this.description;
     }
 
-    public Image description(String description) {
+    public ImageExt description(String description) {
         this.setDescription(description);
         return this;
     }
@@ -130,7 +102,7 @@ public class Image implements Serializable {
         return this.fileName;
     }
 
-    public Image fileName(String fileName) {
+    public ImageExt fileName(String fileName) {
         this.setFileName(fileName);
         return this;
     }
@@ -143,7 +115,7 @@ public class Image implements Serializable {
         return this.path;
     }
 
-    public Image path(String path) {
+    public ImageExt path(String path) {
         this.setPath(path);
         return this;
     }
@@ -156,7 +128,7 @@ public class Image implements Serializable {
         return this.creationDate;
     }
 
-    public Image creationDate(Instant creationDate) {
+    public ImageExt creationDate(Instant creationDate) {
         this.setCreationDate(creationDate);
         return this;
     }
@@ -169,7 +141,7 @@ public class Image implements Serializable {
         return this.modificationDate;
     }
 
-    public Image modificationDate(Instant modificationDate) {
+    public ImageExt modificationDate(Instant modificationDate) {
         this.setModificationDate(modificationDate);
         return this;
     }
@@ -182,7 +154,7 @@ public class Image implements Serializable {
         return this.isPrivate;
     }
 
-    public Image isPrivate(Boolean isPrivate) {
+    public ImageExt isPrivate(Boolean isPrivate) {
         this.setIsPrivate(isPrivate);
         return this;
     }
@@ -195,33 +167,6 @@ public class Image implements Serializable {
         return this.commentaries;
     }
 
-    public void setCommentaries(Set<Commentary> commentaries) {
-        if (this.commentaries != null) {
-            this.commentaries.forEach(i -> i.setImage(null));
-        }
-        if (commentaries != null) {
-            commentaries.forEach(i -> i.setImage(this));
-        }
-        this.commentaries = commentaries;
-    }
-
-    public Image commentaries(Set<Commentary> commentaries) {
-        this.setCommentaries(commentaries);
-        return this;
-    }
-
-    public Image addCommentaries(Commentary commentary) {
-        this.commentaries.add(commentary);
-        commentary.setImage(this);
-        return this;
-    }
-
-    public Image removeCommentaries(Commentary commentary) {
-        this.commentaries.remove(commentary);
-        commentary.setImage(null);
-        return this;
-    }
-
     public ExtendedUser getExtendedUser() {
         return this.extendedUser;
     }
@@ -230,9 +175,25 @@ public class Image implements Serializable {
         this.extendedUser = extendedUser;
     }
 
-    public Image extendedUser(ExtendedUser extendedUser) {
+    public ImageExt extendedUser(ExtendedUser extendedUser) {
         this.setExtendedUser(extendedUser);
         return this;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
+    }
+
+    public Boolean getFavourited() {
+        return isFavourited;
+    }
+
+    public void setFavourited(Boolean favourited) {
+        isFavourited = favourited;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -242,10 +203,10 @@ public class Image implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Image)) {
+        if (!(o instanceof ImageExt)) {
             return false;
         }
-        return id != null && id.equals(((Image) o).id);
+        return id != null && id.equals(((ImageExt) o).id);
     }
 
     @Override

@@ -5,6 +5,8 @@ import es.project.repository.LikeImageRepository;
 import es.project.service.LikeImageService;
 import es.project.service.dto.LikeImageDTO;
 import es.project.service.mapper.LikeImageMapper;
+
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,5 +82,16 @@ public class LikeImageServiceImpl implements LikeImageService {
     public void delete(Long id) {
         log.debug("Request to delete LikeImage : {}", id);
         likeImageRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<LikeImageDTO> findByExtendedUserIdAndImageId(Long extendedUserId, Long imageId) {
+        return likeImageRepository.findByExtendedUserIdAndImageId(extendedUserId, imageId).map(likeImageMapper::toDto);
+    }
+
+    @Override
+    @Transactional()
+    public void removeFromImageId(Long id) {
+        likeImageRepository.deleteByImageId(id);
     }
 }

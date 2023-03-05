@@ -1,14 +1,25 @@
 package es.project.service.impl;
 
+import es.project.domain.ExtendedUser;
 import es.project.domain.Image;
+import es.project.domain.LikeImage;
+import es.project.errors.CurrentUserNotFoundException;
 import es.project.errors.ValidationException;
 import es.project.repository.ImageRepository;
+import es.project.repository.ImageRepositoryCustom;
+import es.project.service.ExtendedUserService;
 import es.project.service.ImageService;
+import es.project.service.LikeImageService;
+import es.project.service.dto.ExtendedUserDTO;
 import es.project.service.dto.ImageDTO;
+import es.project.service.dto.LikeImageDTO;
+import es.project.service.mapper.ImageExtMapper;
 import es.project.service.mapper.ImageMapper;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import es.project.service.util.FileUtil;
@@ -28,14 +39,19 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageServiceImpl implements ImageService {
 
     private final Logger log = LoggerFactory.getLogger(ImageServiceImpl.class);
-
     private final ImageRepository imageRepository;
-
+    private final ImageRepositoryCustom imageRepositoryCustom;
     private final ImageMapper imageMapper;
-
-    public ImageServiceImpl(ImageRepository imageRepository, ImageMapper imageMapper) {
+    private final ImageExtMapper imageExtMapper;
+    private final ExtendedUserService extendedUserService;
+    private final LikeImageService likeImageService;
+    public ImageServiceImpl(ImageRepository imageRepository, ImageRepositoryCustom imageRepositoryCustom, ImageMapper imageMapper, ImageExtMapper imageExtMapper, ExtendedUserService extendedUserService, LikeImageService likeImageService) {
         this.imageRepository = imageRepository;
+        this.imageRepositoryCustom = imageRepositoryCustom;
         this.imageMapper = imageMapper;
+        this.imageExtMapper = imageExtMapper;
+        this.extendedUserService = extendedUserService;
+        this.likeImageService = likeImageService;
     }
 
     @Override
@@ -51,10 +67,26 @@ public class ImageServiceImpl implements ImageService {
         log.debug("Request to save Image : {}", imageDTO);
         Image image = imageMapper.toEntity(imageDTO);
         image.setFileName(file.getOriginalFilename());
+        image.setCreationDate(Instant.now());
         Path pathImage = FileUtil.getImagePath(imageDTO.getExtendedUser().getId()).resolve(image.getFileName());
         image.setPath(pathImage.toString());
         image = imageRepository.save(image);
-        saveFile(image.getId(), file, pathImage);
+        saveFile(file, pathImage);
+        return imageMapper.toDto(image);
+    }
+
+    @Override
+    public ImageDTO updateImage(ImageDTO imageDTO, MultipartFile file) {
+        log.debug("Request to save Image : {}", imageDTO);
+        Image image = imageMapper.toEntity(imageDTO);
+        image.setModificationDate(Instant.now());
+        if (file != null) {
+            image.setFileName(file.getOriginalFilename());
+            Path pathImage = FileUtil.getImagePath(imageDTO.getExtendedUser().getId()).resolve(image.getFileName());
+            image.setPath(pathImage.toString());
+            saveFile(file, pathImage);
+        }
+        image = imageRepository.save(image);
         return imageMapper.toDto(image);
     }
 
@@ -101,7 +133,53 @@ public class ImageServiceImpl implements ImageService {
         imageRepository.deleteById(id);
     }
 
-    private String saveFile(Long id, MultipartFile file, Path target) {
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ImageDTO> findPopularImages(Pageable page) {
+        log.debug("find by page: {}", page);
+        Optional<ExtendedUserDTO> currentExtendedUserDTO = extendedUserService.getCurrentExtendedUser();
+        if (currentExtendedUserDTO.isPresent()) {
+            return imageRepositoryCustom.findPopularImagesForUser(page, currentExtendedUserDTO.get().getId()).map(imageExtMapper::toDto);
+        }
+        return imageRepositoryCustom.findPopularImages(page).map(imageExtMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ImageDTO> findRecentImages(Pageable page) {
+        log.debug("find by page: {}", page);
+        Optional<ExtendedUserDTO> currentExtendedUserDTO = extendedUserService.getCurrentExtendedUser();
+        if (currentExtendedUserDTO.isPresent()) {
+            return imageRepositoryCustom.findRecentImagesForUser(page, currentExtendedUserDTO.get().getId()).map(imageExtMapper::toDto);
+        }
+        return imageRepositoryCustom.findRecentImages(page).map(imageExtMapper::toDto);
+    }
+
+    @Override
+    public void likeImage(ImageDTO imageDTO) {
+        ExtendedUserDTO currentExtendedUserDTO = extendedUserService.getCurrentExtendedUser()
+            .orElseThrow(CurrentUserNotFoundException::new);
+
+        Optional<LikeImageDTO> likeImageDTOOptional = likeImageService.findByExtendedUserIdAndImageId(currentExtendedUserDTO.getId(), imageDTO.getId());
+
+        if (!likeImageDTOOptional.isPresent()) {
+            LikeImageDTO likeImageDTO = new LikeImageDTO();
+            likeImageDTO.setImage(imageDTO);
+            likeImageDTO.setCreationDate(Instant.now());
+            likeImageDTO.setExtendedUser(currentExtendedUserDTO);
+            likeImageService.save(likeImageDTO);
+        } else {
+            likeImageService.delete(likeImageDTOOptional.get().getId());
+        }
+    }
+
+    @Override
+    public void deleteImage(Long id) {
+        likeImageService.removeFromImageId(id);
+        likeImageService.delete(id);
+    }
+
+    private String saveFile(MultipartFile file, Path target) {
         try {
             String filename = file.getOriginalFilename();
             if (filename == null) {

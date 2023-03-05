@@ -3,6 +3,7 @@ package es.project.service;
 import es.project.service.dto.ImageDTO;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,4 +61,14 @@ public interface ImageService {
     void delete(Long id);
 
     ImageDTO createImage(ImageDTO imageDTO, MultipartFile file);
+
+    ImageDTO updateImage(ImageDTO imageDTO, MultipartFile file);
+
+    Page<ImageDTO> findPopularImages(Pageable page);
+
+    Page<ImageDTO> findRecentImages(Pageable pageable);
+
+    void likeImage(ImageDTO imageDTO);
+
+    void deleteImage(Long id);
 }

@@ -2,22 +2,28 @@
 Main page styles
 ========================================================================== */
 
-.hipster {
-  display: inline-block;
-  width: 347px;
-  height: 497px;
-  background: url('../../content/images/shiticon.webp') no-repeat center top;
-  background-size: contain;
+.gallery > div {
+  padding: 1rem;
 }
 
-/* wait autoprefixer update to allow simple generation of high pixel density media query */
-@media only screen and (-webkit-min-device-pixel-ratio: 2),
-  only screen and (-moz-min-device-pixel-ratio: 2),
-  only screen and (-o-min-device-pixel-ratio: 2/1),
-  only screen and (min-resolution: 192dpi),
-  only screen and (min-resolution: 2dppx) {
-  .hipster {
-    background: url('../../content/images/shiticon.webp') no-repeat center top;
-    background-size: contain;
+.gallery > .gallery-title {
+  border: 1px solid #313131
+}
+
+.grid-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
+  gap: 5px;
+}
+
+@media (max-width: 768px) {
+  .grid-gallery {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-gallery {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 }

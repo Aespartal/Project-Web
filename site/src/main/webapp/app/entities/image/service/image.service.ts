@@ -27,6 +27,7 @@ export type EntityArrayResponseType = HttpResponse<IImage[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ImageService {
+
   public resourceUrl = this.applicationConfigService.getEndpointFor('api/images');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
@@ -35,15 +36,18 @@ export class ImageService {
     const copy = this.convertDateFromClient(image);
     formData.append('image', new Blob([JSON.stringify(copy)], {
       type: "application/json"
-  }));
+    }));
     return this.http.post<RestImage>(this.resourceUrl, formData, { observe: 'response' })
     .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  update(image: IImage): Observable<EntityResponseType> {
+  update(image: IImage, formData: FormData): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(image);
+    formData.append('image', new Blob([JSON.stringify(copy)], {
+      type: "application/json"
+    }));
     return this.http
-      .put<RestImage>(`${this.resourceUrl}/${this.getImageIdentifier(image)}`, copy, { observe: 'response' })
+      .put<RestImage>(`${this.resourceUrl}/${this.getImageIdentifier(image)}`, formData, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
@@ -73,6 +77,25 @@ export class ImageService {
 
   getImage(id: number, fileName: string): Observable<Blob> {
     return this.http.get(`${this.resourceUrl}/base64/${id}/${fileName}`, { responseType: 'blob' });
+  }
+
+  getPopularImages(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<RestImage[]>(`${this.resourceUrl}/popular`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  getRecentImages(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<RestImage[]>(`${this.resourceUrl}/recent`, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  likeImage(id: number): Observable<HttpResponse<{}>> {
+    return this.http
+    .get<{}>(`${this.resourceUrl}/${id}/like`, { observe: 'response' })
   }
 
   getImageIdentifier(image: Pick<IImage, 'id'>): number {

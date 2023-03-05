@@ -10,6 +10,8 @@ export interface IImage {
   creationDate?: dayjs.Dayjs | null;
   modificationDate?: dayjs.Dayjs | null;
   isPrivate?: boolean | null;
+  likes?: number;
+  favourited?: boolean;
   extendedUser?: Pick<IExtendedUser, 'id'> | null;
 }
 

@@ -65,6 +65,10 @@ public class ImageDTO implements Serializable {
     @Schema(description = "isPrivate", required = true)
     private Boolean isPrivate;
 
+    private Integer likes;
+
+    private Boolean isFavourited;
+
     private ExtendedUserDTO extendedUser;
 
     public Long getId() {
@@ -137,6 +141,22 @@ public class ImageDTO implements Serializable {
 
     public void setExtendedUser(ExtendedUserDTO extendedUser) {
         this.extendedUser = extendedUser;
+    }
+
+    public Boolean getFavourited() {
+        return isFavourited;
+    }
+
+    public void setFavourited(Boolean favourited) {
+        isFavourited = favourited;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
     }
 
     @Override

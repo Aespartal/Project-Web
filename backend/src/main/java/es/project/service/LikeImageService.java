@@ -55,4 +55,8 @@ public interface LikeImageService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Optional<LikeImageDTO> findByExtendedUserIdAndImageId(Long id, Long id1);
+
+    void removeFromImageId(Long id);
 }

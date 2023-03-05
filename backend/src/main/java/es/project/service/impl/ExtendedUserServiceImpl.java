@@ -8,7 +8,6 @@ import es.project.repository.UserRepository;
 import es.project.service.ExtendedUserService;
 import es.project.service.UserService;
 import es.project.service.dto.ExtendedUserDTO;
-import es.project.service.dto.UserDTO;
 import es.project.service.mapper.ExtendedUserMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -101,5 +100,13 @@ public class ExtendedUserServiceImpl implements ExtendedUserService {
             .orElseThrow(() -> new ValidationException("User not exist", "userNotExist"));
         extendedUserRepository.deleteById(id);
         userRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<ExtendedUserDTO> getCurrentExtendedUser() {
+        return userService.getUserWithAuthorities().flatMap(
+            user -> extendedUserRepository.findById(user.getId()).map(extendedUserMapper::toDto)
+        );
     }
 }
