@@ -9,8 +9,8 @@
     <!--
         Added the entity ExtendedUser.
     -->
-    <changeSet id="20230727104600-1" author="jhipster">
-        <addColumn tableName="extended_user">
+    <changeSet id="20230727104700-1" author="jhipster">
+        <addColumn tableName="image">
             <column name="total_likes" type="integer" remarks="totalLikes" defaultValueNumeric="0">
                 <constraints nullable="true" />
             </column>

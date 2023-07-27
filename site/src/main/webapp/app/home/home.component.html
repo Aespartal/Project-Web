@@ -5,7 +5,6 @@
 <div class="container-fluid">
   <section class="w-100" [ngClass]="{'gallery-container': extendedUser}">
     <article>
-        <!-- carrousel -->
         <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
             <div *ngFor="let image of carouselImages; let i = index; trackBy: trackId" class="carousel-item" [ngClass]="{'active': i === activeIndex}">

@@ -65,17 +65,16 @@
 .gallery-container {
   margin-left: 320px;
   width: calc(100% - 320px);
+}
 
-  /* Gallery grid */
-  article > div {
-    padding: 1rem;
+article > div {
+  padding: 1rem;
+}
 
-    .grid-gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
-      gap: 5px;
-    }
-  }
+.grid-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
+  gap: 10px;
 }
 
 /* Media queries */
