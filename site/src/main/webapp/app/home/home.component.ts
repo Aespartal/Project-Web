@@ -14,13 +14,23 @@ import { IImage } from 'app/entities/image/image.model';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  account: IExtendedUser | null = null;
+  extendedUser: IExtendedUser | null = null;
 
   popularImages: IImage[] = [];
   recentImages: IImage[] = [];
+  carouselImages: IImage[] = [];
 
   predicate!: string;
   ascending!: boolean;
+
+  recentTitle = 'global.home.bar.recentImages';
+  popularTitle = 'global.home.bar.popularImages';
+
+  activeIndex = 0;
+
+  url = this.imageService.resourceUrl.concat('/base64/');
+
+  MAX_CAROUSEL_IMAGES = 3;
 
   private readonly destroy$ = new Subject<void>();
 
@@ -35,10 +45,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.accountService
       .getAuthenticationState()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(account => (this.account = account));
+      .subscribe(account => (this.extendedUser = account));
 
     this.getPopularImages();
     this.getRecentImages();
+
+    // Hacer que el carousel cambie de imagen cada 5 segundos
+    setInterval(() => {
+      this.nextSlide();
+    }
+    , 5000);
   }
 
   ngOnDestroy(): void {
@@ -51,9 +67,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       page: -1,
       size: 20
     }).subscribe((res) => {
-      if (res.body) {
-        this.popularImages = res.body;
+      if (!res.body) {
+        return;
       }
+      this.popularImages = res.body;
+      this.carouselImages = this.popularImages.slice(0, this.MAX_CAROUSEL_IMAGES);
+      this.carouselImages.sort((a, b) => b.totalLikes! - a.totalLikes!);
+      this.carouselImages = this.carouselImages.map((image, index) => ({
+        ...image,
+        order: index,
+      }));
     })
   }
 
@@ -77,6 +100,18 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.getPopularImages();
         this.getRecentImages();
     });
+  }
+
+  onCommentClick(image: IImage): void {
+    this.router.navigate(['/image', image.id, 'view']);
+  }
+
+  prevSlide(): void {
+    this.activeIndex = (this.activeIndex - 1 + this.carouselImages.length) % this.carouselImages.length;
+  }
+
+  nextSlide(): void  {
+    this.activeIndex = (this.activeIndex + 1) % this.carouselImages.length;
   }
 
   protected sort(): string[] {

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added functions images.
+    -->
+    <changeSet id="20230715114500-1" author="jhipster" context="!test">
+        <createProcedure>
+        CREATE OR REPLACE FUNCTION f_images(
+            user_id bigint,
+            is_privated boolean,
+            page int,
+            size int,
+            all_users boolean,
+            is_popular boolean
+        )
+        RETURNS TABLE (
+            id bigint,
+            title varchar(255),
+            description varchar(255),
+            file_name varchar(255),
+            path varchar(255),
+            creation_date timestamp without time zone,
+            modification_date timestamp without time zone,
+            is_private boolean,
+            extended_user_id bigint,
+            total_likes bigint,
+            total_commentaries bigint,
+            is_favourited boolean
+        ) AS
+        $func$
+        BEGIN
+        if (page = -1 OR size = -1) then
+            return QUERY SELECT
+                i.id,
+                i.title,
+                i.description,
+                i.file_name,
+                i.path,
+                i.creation_date,
+                i.modification_date,
+                i.is_private,
+                i.extended_user_id,
+                (SELECT COUNT(*) FROM public.like_image lc WHERE lc.image_id = i.id) as total_likes,
+                (SELECT COUNT(*) FROM public.commentary c WHERE c.image_id = i.id) as total_commentaries,
+                CASE
+                    WHEN user_id IS NULL THEN false
+                    ELSE EXISTS (SELECT 1 FROM public.like_image li WHERE li.image_id = i.id AND li.extended_user_id = user_id)
+                END as is_favourited
+            FROM public.Image i
+            WHERE (is_privated IS NULL OR i.is_private = is_privated)
+            AND (all_users IS TRUE OR i.extended_user_id = user_id)
+            ORDER BY CASE WHEN is_popular IS TRUE
+                THEN (SELECT COUNT(*) FROM public.like_image lc WHERE lc.image_id = i.id)
+                ELSE EXTRACT(EPOCH FROM i.creation_date)
+            END DESC;
+        else
+            return QUERY SELECT
+                i.id,
+                i.title,
+                i.description,
+                i.file_name,
+                i.path,
+                i.creation_date,
+                i.modification_date,
+                i.is_private,
+                i.extended_user_id,
+                (SELECT COUNT(*) FROM public.like_image lc WHERE lc.image_id = i.id) as total_likes,
+                (SELECT COUNT(*) FROM public.commentary c WHERE c.image_id = i.id) as total_commentaries,
+                CASE
+                    WHEN user_id IS NULL THEN false
+                    ELSE EXISTS (SELECT 1 FROM public.like_image li WHERE li.image_id = i.id AND li.extended_user_id = user_id)
+                END as is_favourited
+            FROM public.Image i
+            WHERE (is_privated IS NULL OR i.is_private = is_privated)
+            AND (all_users IS TRUE OR i.extended_user_id = user_id)
+            ORDER BY CASE WHEN is_popular IS TRUE
+                THEN (SELECT COUNT(*) FROM public.like_image lc WHERE lc.image_id = i.id)
+                ELSE EXTRACT(EPOCH FROM i.creation_date)
+            END DESC
+            LIMIT size OFFSET page * size;
+        end if;
+        END
+        $func$ LANGUAGE plpgsql;
+        </createProcedure>
+    </changeSet>
+
+    <changeSet id="20230715114500-2" author="jhipster" context="!test">
+    <createProcedure>
+        CREATE OR REPLACE FUNCTION f_count_images(
+            user_id bigint,
+            is_privated boolean,
+            all_users boolean
+        )
+        RETURNS TABLE (
+            total bigint
+        ) AS
+        $func$
+        BEGIN
+        return query SELECT COUNT(*) AS total FROM (SELECT
+            count(*)
+            FROM public.Image i
+            WHERE (is_privated IS NULL OR i.is_private = is_privated)
+            AND (all_users IS TRUE OR i.extended_user_id = user_id)
+            GROUP BY i.id
+        ) as subquery;
+        END
+        $func$ LANGUAGE plpgsql;
+    </createProcedure>
+    </changeSet>
+</databaseChangeLog>

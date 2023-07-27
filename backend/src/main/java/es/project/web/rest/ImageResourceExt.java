@@ -1,20 +1,18 @@
 package es.project.web.rest;
 
+import es.project.config.ApplicationProperties;
 import es.project.errors.BadRequestAlertException;
 import es.project.repository.ImageRepository;
-import es.project.service.ImageQueryService;
 import es.project.service.ImageService;
-import es.project.service.criteria.ImageCriteria;
 import es.project.service.dto.ImageDTO;
 import es.project.service.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -47,10 +45,12 @@ public class ImageResourceExt {
     private final ImageService imageService;
 
     private final ImageRepository imageRepository;
+    private final ApplicationProperties applicationProperties;
 
-    public ImageResourceExt(ImageService imageService, ImageRepository imageRepository) {
+    public ImageResourceExt(ImageService imageService, ImageRepository imageRepository, ApplicationProperties applicationProperties) {
         this.imageService = imageService;
         this.imageRepository = imageRepository;
+        this.applicationProperties = applicationProperties;
     }
 
     /**
@@ -119,7 +119,7 @@ public class ImageResourceExt {
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of images in body.
      */
-    @GetMapping("/images/recent")
+   @GetMapping("/images/recent")
     public ResponseEntity<List<ImageDTO>> getRecentImages(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
@@ -178,5 +178,28 @@ public class ImageResourceExt {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping(value = "/file-system/images/{id}/download-file")
+    public ResponseEntity<ResourceRegion> downloadFile(@PathVariable Long id, @RequestHeader HttpHeaders headers) {
+        log.debug("REST request to download file Product : {}", id);
+
+        List<HttpRange> rangeList = headers.getRange();
+        Optional<ResourceRegion> result;
+        HttpStatus status;
+        long maxChunkSize = applicationProperties.getMedia().getMaxChunkSize();
+        if(rangeList.isEmpty()){
+            result = imageService.findData(id,null,maxChunkSize);
+            status = HttpStatus.OK;
+        }else {
+            result = imageService.findData(id, rangeList.get(0),maxChunkSize);
+            status = HttpStatus.PARTIAL_CONTENT;
+        }
+        return result
+            .map(body -> ResponseEntity
+                .status(status)
+                .contentType(MediaTypeFactory.getMediaType(body.getResource()).orElse(MediaType.APPLICATION_OCTET_STREAM))
+                .body(body))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

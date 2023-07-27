@@ -21,7 +21,8 @@ public interface ImageExtMapper extends EntityMapper<ImageDTO, ImageExt> {
     ImageDTO toDto(ImageExt s);
 
     @Mapping(target = "commentaries", ignore = true)
-    @Mapping(target = "likes", ignore = true)
+    @Mapping(target = "totalLikes", ignore = true)
+    @Mapping(target = "totalCommentaries", ignore = true)
     ImageExt toEntity(ImageDTO dto);
 
     @Named("extendedUserIdForImage")

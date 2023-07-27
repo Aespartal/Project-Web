@@ -1,8 +1,7 @@
 package es.project.service.impl;
 
-import es.project.domain.ExtendedUser;
 import es.project.domain.Image;
-import es.project.domain.LikeImage;
+import es.project.domain.ImageExt;
 import es.project.errors.CurrentUserNotFoundException;
 import es.project.errors.ValidationException;
 import es.project.repository.ImageRepository;
@@ -16,6 +15,7 @@ import es.project.service.dto.LikeImageDTO;
 import es.project.service.mapper.ImageExtMapper;
 import es.project.service.mapper.ImageMapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -25,8 +25,13 @@ import java.util.Optional;
 import es.project.service.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpRange;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -136,12 +141,21 @@ public class ImageServiceImpl implements ImageService {
     @Override
     @Transactional(readOnly = true)
     public Page<ImageDTO> findPopularImages(Pageable page) {
-        log.debug("find by page: {}", page);
         Optional<ExtendedUserDTO> currentExtendedUserDTO = extendedUserService.getCurrentExtendedUser();
+        List<ImageExt> imageExtList;
+        long total;
+        boolean allUsers = true;
+        boolean isPrivate = false;
+        boolean isPopular = true;
         if (currentExtendedUserDTO.isPresent()) {
-            return imageRepositoryCustom.findPopularImagesForUser(page, currentExtendedUserDTO.get().getId()).map(imageExtMapper::toDto);
+            Long id = currentExtendedUserDTO.get().getId();
+            imageExtList = imageRepositoryCustom.findImages(id, isPrivate, page.getPageNumber(), page.getPageSize(), allUsers, isPopular);
+            total = imageRepositoryCustom.countImages(id, isPrivate, allUsers);
+        } else {
+            imageExtList = imageRepositoryCustom.findImages(null, isPrivate, page.getPageNumber(), page.getPageSize(), allUsers, isPopular);
+            total = imageRepositoryCustom.countImages( null, isPrivate, allUsers);
         }
-        return imageRepositoryCustom.findPopularImages(page).map(imageExtMapper::toDto);
+        return new PageImpl<>(imageExtMapper.toDto(imageExtList), page, total);
     }
 
     @Override
@@ -149,10 +163,20 @@ public class ImageServiceImpl implements ImageService {
     public Page<ImageDTO> findRecentImages(Pageable page) {
         log.debug("find by page: {}", page);
         Optional<ExtendedUserDTO> currentExtendedUserDTO = extendedUserService.getCurrentExtendedUser();
+        List<ImageExt> imageExtList;
+        long total;
+        boolean allUsers = true;
+        boolean isPrivate = false;
+        boolean isPopular = false;
         if (currentExtendedUserDTO.isPresent()) {
-            return imageRepositoryCustom.findRecentImagesForUser(page, currentExtendedUserDTO.get().getId()).map(imageExtMapper::toDto);
+            Long id = currentExtendedUserDTO.get().getId();
+            imageExtList = imageRepositoryCustom.findImages(id, isPrivate, page.getPageNumber(), page.getPageSize(), allUsers, isPopular);
+            total = imageRepositoryCustom.countImages(id, isPrivate, allUsers);
+        } else {
+            imageExtList = imageRepositoryCustom.findImages(null, isPrivate, page.getPageNumber(), page.getPageSize(), allUsers, isPopular);
+            total = imageRepositoryCustom.countImages( null, isPrivate, allUsers);
         }
-        return imageRepositoryCustom.findRecentImages(page).map(imageExtMapper::toDto);
+        return new PageImpl<>(imageExtMapper.toDto(imageExtList), page, total);
     }
 
     @Override
@@ -177,6 +201,28 @@ public class ImageServiceImpl implements ImageService {
     public void deleteImage(Long id) {
         likeImageService.removeFromImageId(id);
         likeImageService.delete(id);
+    }
+
+    @Override
+    public Optional<ResourceRegion> findData(Long id, HttpRange range, long maxChunkSize) {
+        Optional<ImageDTO> imageOpt = findOne(id);
+        if (!imageOpt.isPresent()) {
+            return Optional.empty();
+        }
+        ImageDTO imageDTO = imageOpt.get();
+        try {
+            Resource resource = new FileSystemResource(new File(imageDTO.getPath()));
+            long contentLength = resource.contentLength();
+            long position = 0;
+            long count = contentLength;
+            if (range != null) {
+                position = range.getRangeStart(contentLength);
+                count = Math.min(maxChunkSize, range.getRangeEnd(contentLength) - position + 1);
+            }
+            return Optional.of(new ResourceRegion(resource, position, count));
+        } catch (IOException e) {
+            return Optional.empty();
+        }
     }
 
     private String saveFile(MultipartFile file, Path target) {

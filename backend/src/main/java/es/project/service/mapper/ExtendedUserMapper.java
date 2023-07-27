@@ -12,12 +12,8 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses= { UserMapper.class })
 public interface ExtendedUserMapper extends EntityMapper<ExtendedUserDTO, ExtendedUser> {
 
+    @Mapping(source = "user.login", target = "userLogin")
     ExtendedUserDTO toDto(ExtendedUser s);
 
     ExtendedUser toEntity(ExtendedUserDTO dto);
-
-    @Named("userId")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    UserDTO toDtoUserId(User user);
 }

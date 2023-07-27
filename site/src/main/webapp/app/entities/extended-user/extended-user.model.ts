@@ -9,6 +9,7 @@ export interface IExtendedUser {
   weight?: number | null;
   birthDate?: dayjs.Dayjs | null;
   user?: IUser | null;
+  userLogin? : string | null;
 }
 
 export type NewExtendedUser = Omit<IExtendedUser, 'id'> & { id: null };

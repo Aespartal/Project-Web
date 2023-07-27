@@ -38,6 +38,12 @@
       },
       "language": "Idioma"
     },
+    "home": {
+      "bar": {
+        "recentImages": "Imágenes recientes",
+        "popularImages": "Imágenes populares"
+      }
+    },
     "form": {
       "username.label": "Usuario",
       "username.placeholder": "Nombre de usuario",

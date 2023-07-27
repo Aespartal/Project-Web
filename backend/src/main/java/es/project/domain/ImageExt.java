@@ -43,8 +43,11 @@ public class ImageExt implements Serializable {
     @Column(name = "is_private")
     private Boolean isPrivate;
 
-    @Column(name = "likes")
-    private Integer likes;
+    @Column(name = "total_likes")
+    private Integer totalLikes;
+
+    @Column(name = "total_commentaries")
+    private Integer totalCommentaries;
 
     @Column(name = "is_favourited")
     private Boolean isFavourited;
@@ -180,12 +183,20 @@ public class ImageExt implements Serializable {
         return this;
     }
 
-    public Integer getLikes() {
-        return likes;
+    public Integer getTotalLikes() {
+        return totalLikes;
     }
 
-    public void setLikes(Integer likes) {
-        this.likes = likes;
+    public void setTotalLikes(Integer totalLikes) {
+        this.totalLikes = totalLikes;
+    }
+
+    public Integer getTotalCommentaries() {
+        return totalCommentaries;
+    }
+
+    public void setTotalCommentaries(Integer totalCommentaries) {
+        this.totalCommentaries = totalCommentaries;
     }
 
     public Boolean getFavourited() {

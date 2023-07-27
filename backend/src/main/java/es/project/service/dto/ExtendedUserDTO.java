@@ -54,6 +54,8 @@ public class ExtendedUserDTO implements Serializable {
 
     private AdminUserDTO user;
 
+    private String userLogin;
+
     public Long getId() {
         return id;
     }
@@ -108,6 +110,14 @@ public class ExtendedUserDTO implements Serializable {
 
     public void setUser(AdminUserDTO user) {
         this.user = user;
+    }
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
     }
 
     @Override

@@ -7,6 +7,7 @@ import { ImageDetailComponent } from '../detail/image-detail.component';
 import { ImageUpdateComponent } from '../update/image-update.component';
 import { ImageRoutingResolveService } from './image-routing-resolve.service';
 import { ASC } from 'app/config/navigation.constants';
+import { ImageViewComponent } from '../view/image-view.component';
 
 const imageRoute: Routes = [
   {
@@ -36,6 +37,14 @@ const imageRoute: Routes = [
   {
     path: ':id/edit',
     component: ImageUpdateComponent,
+    resolve: {
+      image: ImageRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/photo-view',
+    component: ImageViewComponent,
     resolve: {
       image: ImageRoutingResolveService,
     },

@@ -1,29 +1,98 @@
-/* ==========================================================================
-Main page styles
-========================================================================== */
+@import '../../content/scss/bootstrap-variables';
 
-.gallery > div {
-  padding: 1rem;
+/* General styles */
+.carousel {
+  overflow: hidden;
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+
+  .carousel-container {
+    width: 400px;
+    overflow: hidden;
+  }
+
+  .carousel-inner {
+    max-height: 450px;
+    text-align: center;
+    border-radius: 8px;
+  }
+
+  .carousel-item {
+    height: 100%;
+    max-height: 550px;
+    position: relative;
+  }
+
+  img {
+    object-fit: cover;
+    object-position: 50% 50%;
+    max-width: 50%;
+    height: 500px;
+  }
+
+  &__caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro transparente */
+    padding: 10px;
+    color: #fff; /* Color del texto en el caption */
+  }
 }
 
-.gallery > .gallery-title {
-  border: 1px solid #313131
+/* Account container */
+.account-container {
+  width: 300px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  background-color: #151515;
+  padding: 20px;
+  padding-top: 5rem;
+  border-right: 1px solid #333;
 }
 
-.grid-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
-  gap: 5px;
+/* Main container */
+.container-fluid {
+  display: flex;
+  justify-content: flex-start;
 }
 
+/* Gallery container */
+.gallery-container {
+  margin-left: 320px;
+  width: calc(100% - 320px);
+
+  /* Gallery grid */
+  article > div {
+    padding: 1rem;
+
+    .grid-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
+      gap: 5px;
+    }
+  }
+}
+
+/* Media queries */
 @media (max-width: 768px) {
-  .grid-gallery {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  .gallery-container {
+    /* Adjust grid on smaller screens */
+    article > div .grid-gallery {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
   }
 }
 
 @media (max-width: 480px) {
-  .grid-gallery {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  .gallery-container {
+    /* Further adjust grid on even smaller screens */
+    article > div .grid-gallery {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
   }
 }

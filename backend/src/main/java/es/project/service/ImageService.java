@@ -2,11 +2,12 @@ package es.project.service;
 
 import es.project.service.dto.ImageDTO;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
+
+import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpRange;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -64,11 +65,13 @@ public interface ImageService {
 
     ImageDTO updateImage(ImageDTO imageDTO, MultipartFile file);
 
-    Page<ImageDTO> findPopularImages(Pageable page);
+    Page<ImageDTO> findPopularImages(Pageable pageable);
 
     Page<ImageDTO> findRecentImages(Pageable pageable);
 
     void likeImage(ImageDTO imageDTO);
 
     void deleteImage(Long id);
+
+    Optional<ResourceRegion> findData(Long id, HttpRange range, long maxChunkSize);
 }

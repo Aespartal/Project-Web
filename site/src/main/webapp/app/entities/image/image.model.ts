@@ -10,9 +10,11 @@ export interface IImage {
   creationDate?: dayjs.Dayjs | null;
   modificationDate?: dayjs.Dayjs | null;
   isPrivate?: boolean | null;
-  likes?: number;
+  totalLikes?: number;
+  totalCommentaries?: number;
   favourited?: boolean;
-  extendedUser?: Pick<IExtendedUser, 'id'> | null;
+  extendedUser?: Pick<IExtendedUser, 'id' |  'userLogin'> | null;
+  order?: number | null;
 }
 
 export type NewImage = Omit<IImage, 'id'> & { id: null };

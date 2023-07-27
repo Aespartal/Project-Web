@@ -29,6 +29,7 @@ export type EntityArrayResponseType = HttpResponse<IImage[]>;
 export class ImageService {
 
   public resourceUrl = this.applicationConfigService.getEndpointFor('api/images');
+  protected resourceFileSystemUrl = this.applicationConfigService.getEndpointFor('api/file-system/images');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -96,6 +97,11 @@ export class ImageService {
   likeImage(id: number): Observable<HttpResponse<{}>> {
     return this.http
     .get<{}>(`${this.resourceUrl}/${id}/like`, { observe: 'response' })
+  }
+
+
+  getDataUrl(imageId: number): string {
+    return `${this.resourceFileSystemUrl}/${imageId}/download-file`;
   }
 
   getImageIdentifier(image: Pick<IImage, 'id'>): number {

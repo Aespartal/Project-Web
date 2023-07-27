@@ -1,0 +1,29 @@
+<div class="grid-container" *ngIf="image">
+  <div class="image-comments">
+    <div class="image-container">
+      <img *ngIf="image.extendedUser" class="image" [src]="url + image.extendedUser.id + '/' + image.fileName" alt="image" />
+    </div>
+    <div class="comments">
+      <div class="comment-title">
+        <h5>Comentarios (<span>{{commentaries.length}}</span>)</h5>
+      </div>
+      <div class="comment" *ngFor="let commentary of commentaries">
+        <span class="comment-user">Usuario 1 </span><span  class="comment-date">{{ commentary.creationDate | formatMediumDatetime }}</span>
+        <p class="comment-description">
+          {{commentary.description}}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="image-info">
+    <h5 class="image-title" *ngIf="image.title">{{ image.title }}</h5>
+    <p class="image-description">{{ image.description }}</p>
+    <div class="image-details">
+      <p><strong>Fecha de creación:</strong> {{ image.creationDate | formatMediumDatetime }}</p>
+      <p><strong>Última modificación:</strong> {{ image.modificationDate | formatMediumDatetime }}</p>
+      <p><strong>Likes:</strong> {{ image.totalLikes }}</p>
+      <p><strong>Comentarios:</strong> {{ image.totalCommentaries }}</p>
+      <p><strong>Usuario:</strong> {{ image.extendedUser?.userLogin }}</p>
+    </div>
+  </div>
+</div>

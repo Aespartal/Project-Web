@@ -74,6 +74,7 @@ public class SecurityConfiguration {
             .antMatchers("/api/images/popular").permitAll()
             .antMatchers("/api/images/recent").permitAll()
             .antMatchers("/api/images").permitAll()
+            .antMatchers("/api/file-system/images/**}").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/health/**").permitAll()

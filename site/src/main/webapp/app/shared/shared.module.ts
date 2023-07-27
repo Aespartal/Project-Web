@@ -13,7 +13,8 @@ import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
 import { FilterComponent } from './filter/filter.component';
-import { ImageCardComponent } from './components/image-card.component';
+import { ImageCardComponent } from './components/image-card/image-card.component';
+import { BarTitleComponent } from './components/bar-title/bar-title.component';
 
 @NgModule({
   imports: [SharedLibsModule],
@@ -30,7 +31,8 @@ import { ImageCardComponent } from './components/image-card.component';
     SortDirective,
     ItemCountComponent,
     FilterComponent,
-    ImageCardComponent
+    ImageCardComponent,
+    BarTitleComponent
   ],
   exports: [
     SharedLibsModule,
@@ -46,7 +48,8 @@ import { ImageCardComponent } from './components/image-card.component';
     SortDirective,
     ItemCountComponent,
     FilterComponent,
-    ImageCardComponent
+    ImageCardComponent,
+    BarTitleComponent
   ],
 })
 export class SharedModule {}

@@ -211,4 +211,6 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+  media:
+    maxChunkSize: 1048576

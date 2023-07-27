@@ -65,7 +65,9 @@ public class ImageDTO implements Serializable {
     @Schema(description = "isPrivate", required = true)
     private Boolean isPrivate;
 
-    private Integer likes;
+    private Integer totalLikes;
+
+    private Integer totalCommentaries;
 
     private Boolean isFavourited;
 
@@ -151,12 +153,20 @@ public class ImageDTO implements Serializable {
         isFavourited = favourited;
     }
 
-    public Integer getLikes() {
-        return likes;
+    public Integer getTotalLikes() {
+        return totalLikes;
     }
 
-    public void setLikes(Integer likes) {
-        this.likes = likes;
+    public void setTotalLikes(Integer totalLikes) {
+        this.totalLikes = totalLikes;
+    }
+
+    public Integer getTotalCommentaries() {
+        return totalCommentaries;
+    }
+
+    public void setTotalCommentaries(Integer totalCommentaries) {
+        this.totalCommentaries = totalCommentaries;
     }
 
     @Override

@@ -51,9 +51,6 @@ export class AccountService {
   identity(force?: boolean): Observable<IExtendedUser | null> {
     if (!this.accountCache$ || force || !this.isAuthenticated()) {
       this.accountCache$ = this.fetch().pipe(
-        catchError(() => {
-          return of(null);
-        }),
         tap((account: IExtendedUser | null) => {
           this.authenticate(account);
 
@@ -67,7 +64,7 @@ export class AccountService {
         shareReplay()
       );
     }
-    return this.accountCache$;
+    return this.accountCache$.pipe(catchError(() => of(null)));
   }
 
   isAuthenticated(): boolean {
