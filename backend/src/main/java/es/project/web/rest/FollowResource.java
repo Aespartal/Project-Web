@@ -1,11 +1,11 @@
 package es.project.web.rest;
 
+import es.project.errors.BadRequestAlertException;
 import es.project.repository.FollowRepository;
 import es.project.service.FollowQueryService;
 import es.project.service.FollowService;
 import es.project.service.criteria.FollowCriteria;
 import es.project.service.dto.FollowDTO;
-import es.project.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;

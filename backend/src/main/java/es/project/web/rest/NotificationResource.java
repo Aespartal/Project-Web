@@ -5,7 +5,7 @@ import es.project.service.NotificationQueryService;
 import es.project.service.NotificationService;
 import es.project.service.criteria.NotificationCriteria;
 import es.project.service.dto.NotificationDTO;
-import es.project.web.rest.errors.BadRequestAlertException;
+import es.project.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;

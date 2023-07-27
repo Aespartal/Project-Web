@@ -27,6 +27,8 @@
       "isPrivate": "Privada",
       "commentaries": "Comentarios",
       "extendedUser": "Usuario",
+      "totalLikes": "Total de Me gustas",
+      "totalCommentaries": "Nº de comentarios",
       "help": {
         "title": "título",
         "description": "descripción",
@@ -34,7 +36,9 @@
         "path": "ruta",
         "creationDate": "fecha de creación",
         "modificationDate": "fecha de modificación",
-        "isPrivate": "privada"
+        "isPrivate": "privada",
+        "totalLikes": "Total de Me gustas",
+        "totalCommentaries": "Nº de comentarios"
       }
     }
   }

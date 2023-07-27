@@ -11,10 +11,9 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link LikeCommentary} and its DTO {@link LikeCommentaryDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {CommentaryMapper.class, ExtendedUserMapper.class})
 public interface LikeCommentaryMapper extends EntityMapper<LikeCommentaryDTO, LikeCommentary> {
-    @Mapping(target = "commentary", source = "commentary", qualifiedByName = "commentaryId")
-    @Mapping(target = "extendedUser", source = "extendedUser", qualifiedByName = "extendedUserId")
+
     LikeCommentaryDTO toDto(LikeCommentary s);
 
     @Named("commentaryId")

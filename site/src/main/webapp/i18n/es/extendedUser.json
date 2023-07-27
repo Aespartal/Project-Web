@@ -23,12 +23,20 @@
       "weight": "Peso (kg)",
       "birthDate": "Fecha de nacimiento",
       "user": "User",
+      "totalFollowers": "Seguidores",
+      "totalFollowing": "Siguiendo",
+      "totalImages": "Nº de imagenes subidas",
+      "totalNotifications": "Nº de notificaciones",
       "help": {
         "description": "descripción",
         "location": "localidad",
         "height": "altura (cm)",
         "weight": "peso (kg)",
-        "birthDate": "fecha de nacimiento"
+        "birthDate": "fecha de nacimiento",
+        "totalFollowers": "Seguidores",
+        "totalFollowing": "Siguiendo",
+        "totalImages": "Nº de imagenes subidas",
+        "totalNotifications": "Nº de notificaciones"
       }
     }
   }

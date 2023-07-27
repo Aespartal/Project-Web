@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Follow} and its DTO {@link FollowDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ExtendedUserMapper.class})
 public interface FollowMapper extends EntityMapper<FollowDTO, Follow> {
     @Mapping(target = "follower", source = "follower", qualifiedByName = "extendedUserId")
     @Mapping(target = "following", source = "following", qualifiedByName = "extendedUserId")

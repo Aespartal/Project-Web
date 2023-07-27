@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Notification} and its DTO {@link NotificationDTO}.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ExtendedUserMapper.class})
 public interface NotificationMapper extends EntityMapper<NotificationDTO, Notification> {
     @Mapping(target = "image", source = "image", qualifiedByName = "extendedUserId")
     @Mapping(target = "commentary", source = "commentary", qualifiedByName = "extendedUserId")
