@@ -57,6 +57,14 @@ class ImageResourceIT {
     private static final Boolean DEFAULT_IS_PRIVATE = false;
     private static final Boolean UPDATED_IS_PRIVATE = true;
 
+    private static final Integer DEFAULT_TOTAL_LIKES = 0;
+    private static final Integer UPDATED_TOTAL_LIKES = 1;
+    private static final Integer SMALLER_TOTAL_LIKES = 0 - 1;
+
+    private static final Integer DEFAULT_TOTAL_COMMENTARIES = 0;
+    private static final Integer UPDATED_TOTAL_COMMENTARIES = 1;
+    private static final Integer SMALLER_TOTAL_COMMENTARIES = 0 - 1;
+
     private static final String ENTITY_API_URL = "/api/images";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -91,7 +99,9 @@ class ImageResourceIT {
             .path(DEFAULT_PATH)
             .creationDate(DEFAULT_CREATION_DATE)
             .modificationDate(DEFAULT_MODIFICATION_DATE)
-            .isPrivate(DEFAULT_IS_PRIVATE);
+            .isPrivate(DEFAULT_IS_PRIVATE)
+            .totalLikes(DEFAULT_TOTAL_LIKES)
+            .totalCommentaries(DEFAULT_TOTAL_COMMENTARIES);
         // Add required entity
         ExtendedUser extendedUser;
         if (TestUtil.findAll(em, ExtendedUser.class).isEmpty()) {
@@ -119,7 +129,9 @@ class ImageResourceIT {
             .path(UPDATED_PATH)
             .creationDate(UPDATED_CREATION_DATE)
             .modificationDate(UPDATED_MODIFICATION_DATE)
-            .isPrivate(UPDATED_IS_PRIVATE);
+            .isPrivate(UPDATED_IS_PRIVATE)
+            .totalLikes(UPDATED_TOTAL_LIKES)
+            .totalCommentaries(UPDATED_TOTAL_COMMENTARIES);
         // Add required entity
         ExtendedUser extendedUser;
         if (TestUtil.findAll(em, ExtendedUser.class).isEmpty()) {
@@ -159,6 +171,8 @@ class ImageResourceIT {
         assertThat(testImage.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
         assertThat(testImage.getModificationDate()).isEqualTo(DEFAULT_MODIFICATION_DATE);
         assertThat(testImage.getIsPrivate()).isEqualTo(DEFAULT_IS_PRIVATE);
+        assertThat(testImage.getTotalLikes()).isEqualTo(DEFAULT_TOTAL_LIKES);
+        assertThat(testImage.getTotalCommentaries()).isEqualTo(DEFAULT_TOTAL_COMMENTARIES);
     }
 
     @Test
@@ -306,7 +320,9 @@ class ImageResourceIT {
             .andExpect(jsonPath("$.[*].path").value(hasItem(DEFAULT_PATH)))
             .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].modificationDate").value(hasItem(DEFAULT_MODIFICATION_DATE.toString())))
-            .andExpect(jsonPath("$.[*].isPrivate").value(hasItem(DEFAULT_IS_PRIVATE.booleanValue())));
+            .andExpect(jsonPath("$.[*].isPrivate").value(hasItem(DEFAULT_IS_PRIVATE.booleanValue())))
+            .andExpect(jsonPath("$.[*].totalLikes").value(hasItem(DEFAULT_TOTAL_LIKES)))
+            .andExpect(jsonPath("$.[*].totalCommentaries").value(hasItem(DEFAULT_TOTAL_COMMENTARIES)));
     }
 
     @Test
@@ -327,7 +343,9 @@ class ImageResourceIT {
             .andExpect(jsonPath("$.path").value(DEFAULT_PATH))
             .andExpect(jsonPath("$.creationDate").value(DEFAULT_CREATION_DATE.toString()))
             .andExpect(jsonPath("$.modificationDate").value(DEFAULT_MODIFICATION_DATE.toString()))
-            .andExpect(jsonPath("$.isPrivate").value(DEFAULT_IS_PRIVATE.booleanValue()));
+            .andExpect(jsonPath("$.isPrivate").value(DEFAULT_IS_PRIVATE.booleanValue()))
+            .andExpect(jsonPath("$.totalLikes").value(DEFAULT_TOTAL_LIKES))
+            .andExpect(jsonPath("$.totalCommentaries").value(DEFAULT_TOTAL_COMMENTARIES));
     }
 
     @Test
@@ -727,6 +745,188 @@ class ImageResourceIT {
 
     @Test
     @Transactional
+    void getAllImagesByTotalLikesIsEqualToSomething() throws Exception {
+        // Initialize the database
+        imageRepository.saveAndFlush(image);
+
+        // Get all the imageList where totalLikes equals to DEFAULT_TOTAL_LIKES
+        defaultImageShouldBeFound("totalLikes.equals=" + DEFAULT_TOTAL_LIKES);
+
+        // Get all the imageList where totalLikes equals to UPDATED_TOTAL_LIKES
+        defaultImageShouldNotBeFound("totalLikes.equals=" + UPDATED_TOTAL_LIKES);
+    }
+
+    @Test
+    @Transactional
+    void getAllImagesByTotalLikesIsInShouldWork() throws Exception {
+        // Initialize the database
+        imageRepository.saveAndFlush(image);
+
+        // Get all the imageList where totalLikes in DEFAULT_TOTAL_LIKES or UPDATED_TOTAL_LIKES
+        defaultImageShouldBeFound("totalLikes.in=" + DEFAULT_TOTAL_LIKES + "," + UPDATED_TOTAL_LIKES);
+
+        // Get all the imageList where totalLikes equals to UPDATED_TOTAL_LIKES
+        defaultImageShouldNotBeFound("totalLikes.in=" + UPDATED_TOTAL_LIKES);
+    }
+
+    @Test
+    @Transactional
+    void getAllImagesByTotalLikesIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        imageRepository.saveAndFlush(image);
+
+        // Get all the imageList where totalLikes is not null
+        defaultImageShouldBeFound("totalLikes.specified=true");
+
+        // Get all the imageList where totalLikes is null
+        defaultImageShouldNotBeFound("totalLikes.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllImagesByTotalLikesIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        imageRepository.saveAndFlush(image);
+
+        // Get all the imageList where totalLikes is greater than or equal to DEFAULT_TOTAL_LIKES
+        defaultImageShouldBeFound("totalLikes.greaterThanOrEqual=" + DEFAULT_TOTAL_LIKES);
+
+        // Get all the imageList where totalLikes is greater than or equal to UPDATED_TOTAL_LIKES
+        defaultImageShouldNotBeFound("totalLikes.greaterThanOrEqual=" + UPDATED_TOTAL_LIKES);
+    }
+
+    @Test
+    @Transactional
+    void getAllImagesByTotalLikesIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        imageRepository.saveAndFlush(image);
+
+        // Get all the imageList where totalLikes is less than or equal to DEFAULT_TOTAL_LIKES
+        defaultImageShouldBeFound("totalLikes.lessThanOrEqual=" + DEFAULT_TOTAL_LIKES);
+
+        // Get all the imageList where totalLikes is less than or equal to SMALLER_TOTAL_LIKES
+        defaultImageShouldNotBeFound("totalLikes.lessThanOrEqual=" + SMALLER_TOTAL_LIKES);
+    }
+
+    @Test
+    @Transactional
+    void getAllImagesByTotalLikesIsLessThanSomething() throws Exception {
+        // Initialize the database
+        imageRepository.saveAndFlush(image);
+
+        // Get all the imageList where totalLikes is less than DEFAULT_TOTAL_LIKES
+        defaultImageShouldNotBeFound("totalLikes.lessThan=" + DEFAULT_TOTAL_LIKES);
+
+        // Get all the imageList where totalLikes is less than UPDATED_TOTAL_LIKES
+        defaultImageShouldBeFound("totalLikes.lessThan=" + UPDATED_TOTAL_LIKES);
+    }
+
+    @Test
+    @Transactional
+    void getAllImagesByTotalLikesIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        imageRepository.saveAndFlush(image);
+
+        // Get all the imageList where totalLikes is greater than DEFAULT_TOTAL_LIKES
+        defaultImageShouldNotBeFound("totalLikes.greaterThan=" + DEFAULT_TOTAL_LIKES);
+
+        // Get all the imageList where totalLikes is greater than SMALLER_TOTAL_LIKES
+        defaultImageShouldBeFound("totalLikes.greaterThan=" + SMALLER_TOTAL_LIKES);
+    }
+
+    @Test
+    @Transactional
+    void getAllImagesByTotalCommentariesIsEqualToSomething() throws Exception {
+        // Initialize the database
+        imageRepository.saveAndFlush(image);
+
+        // Get all the imageList where totalCommentaries equals to DEFAULT_TOTAL_COMMENTARIES
+        defaultImageShouldBeFound("totalCommentaries.equals=" + DEFAULT_TOTAL_COMMENTARIES);
+
+        // Get all the imageList where totalCommentaries equals to UPDATED_TOTAL_COMMENTARIES
+        defaultImageShouldNotBeFound("totalCommentaries.equals=" + UPDATED_TOTAL_COMMENTARIES);
+    }
+
+    @Test
+    @Transactional
+    void getAllImagesByTotalCommentariesIsInShouldWork() throws Exception {
+        // Initialize the database
+        imageRepository.saveAndFlush(image);
+
+        // Get all the imageList where totalCommentaries in DEFAULT_TOTAL_COMMENTARIES or UPDATED_TOTAL_COMMENTARIES
+        defaultImageShouldBeFound("totalCommentaries.in=" + DEFAULT_TOTAL_COMMENTARIES + "," + UPDATED_TOTAL_COMMENTARIES);
+
+        // Get all the imageList where totalCommentaries equals to UPDATED_TOTAL_COMMENTARIES
+        defaultImageShouldNotBeFound("totalCommentaries.in=" + UPDATED_TOTAL_COMMENTARIES);
+    }
+
+    @Test
+    @Transactional
+    void getAllImagesByTotalCommentariesIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        imageRepository.saveAndFlush(image);
+
+        // Get all the imageList where totalCommentaries is not null
+        defaultImageShouldBeFound("totalCommentaries.specified=true");
+
+        // Get all the imageList where totalCommentaries is null
+        defaultImageShouldNotBeFound("totalCommentaries.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllImagesByTotalCommentariesIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        imageRepository.saveAndFlush(image);
+
+        // Get all the imageList where totalCommentaries is greater than or equal to DEFAULT_TOTAL_COMMENTARIES
+        defaultImageShouldBeFound("totalCommentaries.greaterThanOrEqual=" + DEFAULT_TOTAL_COMMENTARIES);
+
+        // Get all the imageList where totalCommentaries is greater than or equal to UPDATED_TOTAL_COMMENTARIES
+        defaultImageShouldNotBeFound("totalCommentaries.greaterThanOrEqual=" + UPDATED_TOTAL_COMMENTARIES);
+    }
+
+    @Test
+    @Transactional
+    void getAllImagesByTotalCommentariesIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        imageRepository.saveAndFlush(image);
+
+        // Get all the imageList where totalCommentaries is less than or equal to DEFAULT_TOTAL_COMMENTARIES
+        defaultImageShouldBeFound("totalCommentaries.lessThanOrEqual=" + DEFAULT_TOTAL_COMMENTARIES);
+
+        // Get all the imageList where totalCommentaries is less than or equal to SMALLER_TOTAL_COMMENTARIES
+        defaultImageShouldNotBeFound("totalCommentaries.lessThanOrEqual=" + SMALLER_TOTAL_COMMENTARIES);
+    }
+
+    @Test
+    @Transactional
+    void getAllImagesByTotalCommentariesIsLessThanSomething() throws Exception {
+        // Initialize the database
+        imageRepository.saveAndFlush(image);
+
+        // Get all the imageList where totalCommentaries is less than DEFAULT_TOTAL_COMMENTARIES
+        defaultImageShouldNotBeFound("totalCommentaries.lessThan=" + DEFAULT_TOTAL_COMMENTARIES);
+
+        // Get all the imageList where totalCommentaries is less than UPDATED_TOTAL_COMMENTARIES
+        defaultImageShouldBeFound("totalCommentaries.lessThan=" + UPDATED_TOTAL_COMMENTARIES);
+    }
+
+    @Test
+    @Transactional
+    void getAllImagesByTotalCommentariesIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        imageRepository.saveAndFlush(image);
+
+        // Get all the imageList where totalCommentaries is greater than DEFAULT_TOTAL_COMMENTARIES
+        defaultImageShouldNotBeFound("totalCommentaries.greaterThan=" + DEFAULT_TOTAL_COMMENTARIES);
+
+        // Get all the imageList where totalCommentaries is greater than SMALLER_TOTAL_COMMENTARIES
+        defaultImageShouldBeFound("totalCommentaries.greaterThan=" + SMALLER_TOTAL_COMMENTARIES);
+    }
+
+    @Test
+    @Transactional
     void getAllImagesByCommentariesIsEqualToSomething() throws Exception {
         Commentary commentaries;
         if (TestUtil.findAll(em, Commentary.class).isEmpty()) {
@@ -786,7 +986,9 @@ class ImageResourceIT {
             .andExpect(jsonPath("$.[*].path").value(hasItem(DEFAULT_PATH)))
             .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].modificationDate").value(hasItem(DEFAULT_MODIFICATION_DATE.toString())))
-            .andExpect(jsonPath("$.[*].isPrivate").value(hasItem(DEFAULT_IS_PRIVATE.booleanValue())));
+            .andExpect(jsonPath("$.[*].isPrivate").value(hasItem(DEFAULT_IS_PRIVATE.booleanValue())))
+            .andExpect(jsonPath("$.[*].totalLikes").value(hasItem(DEFAULT_TOTAL_LIKES)))
+            .andExpect(jsonPath("$.[*].totalCommentaries").value(hasItem(DEFAULT_TOTAL_COMMENTARIES)));
 
         // Check, that the count call also returns 1
         restImageMockMvc
@@ -841,7 +1043,9 @@ class ImageResourceIT {
             .path(UPDATED_PATH)
             .creationDate(UPDATED_CREATION_DATE)
             .modificationDate(UPDATED_MODIFICATION_DATE)
-            .isPrivate(UPDATED_IS_PRIVATE);
+            .isPrivate(UPDATED_IS_PRIVATE)
+            .totalLikes(UPDATED_TOTAL_LIKES)
+            .totalCommentaries(UPDATED_TOTAL_COMMENTARIES);
         ImageDTO imageDTO = imageMapper.toDto(updatedImage);
 
         restImageMockMvc
@@ -863,6 +1067,8 @@ class ImageResourceIT {
         assertThat(testImage.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
         assertThat(testImage.getModificationDate()).isEqualTo(UPDATED_MODIFICATION_DATE);
         assertThat(testImage.getIsPrivate()).isEqualTo(UPDATED_IS_PRIVATE);
+        assertThat(testImage.getTotalLikes()).isEqualTo(UPDATED_TOTAL_LIKES);
+        assertThat(testImage.getTotalCommentaries()).isEqualTo(UPDATED_TOTAL_COMMENTARIES);
     }
 
     @Test
@@ -947,7 +1153,8 @@ class ImageResourceIT {
             .fileName(UPDATED_FILE_NAME)
             .creationDate(UPDATED_CREATION_DATE)
             .modificationDate(UPDATED_MODIFICATION_DATE)
-            .isPrivate(UPDATED_IS_PRIVATE);
+            .isPrivate(UPDATED_IS_PRIVATE)
+            .totalLikes(UPDATED_TOTAL_LIKES);
 
         restImageMockMvc
             .perform(
@@ -968,6 +1175,8 @@ class ImageResourceIT {
         assertThat(testImage.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
         assertThat(testImage.getModificationDate()).isEqualTo(UPDATED_MODIFICATION_DATE);
         assertThat(testImage.getIsPrivate()).isEqualTo(UPDATED_IS_PRIVATE);
+        assertThat(testImage.getTotalLikes()).isEqualTo(UPDATED_TOTAL_LIKES);
+        assertThat(testImage.getTotalCommentaries()).isEqualTo(DEFAULT_TOTAL_COMMENTARIES);
     }
 
     @Test
@@ -989,7 +1198,9 @@ class ImageResourceIT {
             .path(UPDATED_PATH)
             .creationDate(UPDATED_CREATION_DATE)
             .modificationDate(UPDATED_MODIFICATION_DATE)
-            .isPrivate(UPDATED_IS_PRIVATE);
+            .isPrivate(UPDATED_IS_PRIVATE)
+            .totalLikes(UPDATED_TOTAL_LIKES)
+            .totalCommentaries(UPDATED_TOTAL_COMMENTARIES);
 
         restImageMockMvc
             .perform(
@@ -1010,6 +1221,8 @@ class ImageResourceIT {
         assertThat(testImage.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
         assertThat(testImage.getModificationDate()).isEqualTo(UPDATED_MODIFICATION_DATE);
         assertThat(testImage.getIsPrivate()).isEqualTo(UPDATED_IS_PRIVATE);
+        assertThat(testImage.getTotalLikes()).isEqualTo(UPDATED_TOTAL_LIKES);
+        assertThat(testImage.getTotalCommentaries()).isEqualTo(UPDATED_TOTAL_COMMENTARIES);
     }
 
     @Test

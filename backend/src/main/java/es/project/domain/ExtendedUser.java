@@ -56,6 +56,34 @@ public class ExtendedUser implements Serializable {
     @Column(name = "birth_date", nullable = false)
     private Instant birthDate;
 
+    /**
+     * totalFollowers
+     */
+    @Min(value = 0)
+    @Column(name = "total_followers")
+    private Integer totalFollowers;
+
+    /**
+     * totalFollowing
+     */
+    @Min(value = 0)
+    @Column(name = "total_following")
+    private Integer totalFollowing;
+
+    /**
+     * totalImages
+     */
+    @Min(value = 0)
+    @Column(name = "total_images")
+    private Integer totalImages;
+
+    /**
+     * totalNotifications
+     */
+    @Min(value = 0)
+    @Column(name = "total_notifications")
+    private Integer totalNotifications;
+
     @OneToOne
     @MapsId
     @JoinColumn(name = "id")
@@ -141,6 +169,58 @@ public class ExtendedUser implements Serializable {
         this.birthDate = birthDate;
     }
 
+    public Integer getTotalFollowers() {
+        return this.totalFollowers;
+    }
+
+    public ExtendedUser totalFollowers(Integer totalFollowers) {
+        this.setTotalFollowers(totalFollowers);
+        return this;
+    }
+
+    public void setTotalFollowers(Integer totalFollowers) {
+        this.totalFollowers = totalFollowers;
+    }
+
+    public Integer getTotalFollowing() {
+        return this.totalFollowing;
+    }
+
+    public ExtendedUser totalFollowing(Integer totalFollowing) {
+        this.setTotalFollowing(totalFollowing);
+        return this;
+    }
+
+    public void setTotalFollowing(Integer totalFollowing) {
+        this.totalFollowing = totalFollowing;
+    }
+
+    public Integer getTotalImages() {
+        return this.totalImages;
+    }
+
+    public ExtendedUser totalImages(Integer totalImages) {
+        this.setTotalImages(totalImages);
+        return this;
+    }
+
+    public void setTotalImages(Integer totalImages) {
+        this.totalImages = totalImages;
+    }
+
+    public Integer getTotalNotifications() {
+        return this.totalNotifications;
+    }
+
+    public ExtendedUser totalNotifications(Integer totalNotifications) {
+        this.setTotalNotifications(totalNotifications);
+        return this;
+    }
+
+    public void setTotalNotifications(Integer totalNotifications) {
+        this.totalNotifications = totalNotifications;
+    }
+
     public User getUser() {
         return this.user;
     }
@@ -183,6 +263,10 @@ public class ExtendedUser implements Serializable {
             ", height=" + getHeight() +
             ", weight=" + getWeight() +
             ", birthDate='" + getBirthDate() + "'" +
+            ", totalFollowers=" + getTotalFollowers() +
+            ", totalFollowing=" + getTotalFollowing() +
+            ", totalImages=" + getTotalImages() +
+            ", totalNotifications=" + getTotalNotifications() +
             "}";
     }
 }

@@ -52,9 +52,37 @@ public class ExtendedUserDTO implements Serializable {
     @Schema(description = "birthDate", required = true)
     private Instant birthDate;
 
-    private AdminUserDTO user;
+    /**
+     * totalFollowers
+     */
+    @Min(value = 0)
+    @Schema(description = "totalFollowers")
+    private Integer totalFollowers;
 
-    private String userLogin;
+    /**
+     * totalFollowing
+     */
+    @Min(value = 0)
+    @Schema(description = "totalFollowing")
+    private Integer totalFollowing;
+
+    /**
+     * totalImages
+     */
+    @NotNull
+    @Min(value = 0)
+    @Schema(description = "totalImages", required = true)
+    private Integer totalImages;
+
+    /**
+     * totalNotifications
+     */
+    @NotNull
+    @Min(value = 0)
+    @Schema(description = "totalNotifications", required = true)
+    private Integer totalNotifications;
+
+    private AdminUserDTO user;
 
     public Long getId() {
         return id;
@@ -104,20 +132,44 @@ public class ExtendedUserDTO implements Serializable {
         this.birthDate = birthDate;
     }
 
+    public Integer getTotalFollowers() {
+        return totalFollowers;
+    }
+
+    public void setTotalFollowers(Integer totalFollowers) {
+        this.totalFollowers = totalFollowers;
+    }
+
+    public Integer getTotalFollowing() {
+        return totalFollowing;
+    }
+
+    public void setTotalFollowing(Integer totalFollowing) {
+        this.totalFollowing = totalFollowing;
+    }
+
+    public Integer getTotalImages() {
+        return totalImages;
+    }
+
+    public void setTotalImages(Integer totalImages) {
+        this.totalImages = totalImages;
+    }
+
+    public Integer getTotalNotifications() {
+        return totalNotifications;
+    }
+
+    public void setTotalNotifications(Integer totalNotifications) {
+        this.totalNotifications = totalNotifications;
+    }
+
     public AdminUserDTO getUser() {
         return user;
     }
 
     public void setUser(AdminUserDTO user) {
         this.user = user;
-    }
-
-    public String getUserLogin() {
-        return userLogin;
-    }
-
-    public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
     }
 
     @Override
@@ -151,6 +203,10 @@ public class ExtendedUserDTO implements Serializable {
             ", height=" + getHeight() +
             ", weight=" + getWeight() +
             ", birthDate='" + getBirthDate() + "'" +
+            ", totalFollowers=" + getTotalFollowers() +
+            ", totalFollowing=" + getTotalFollowing() +
+            ", totalImages=" + getTotalImages() +
+            ", totalNotifications=" + getTotalNotifications() +
             ", user=" + getUser() +
             "}";
     }

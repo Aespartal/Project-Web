@@ -9,15 +9,12 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Project} and its DTO {@link ProjectDTO}.
  */
-@Mapper(componentModel = "spring", uses= { ExtendedUserMapper.class })
+@Mapper(componentModel = "spring")
 public interface ProjectMapper extends EntityMapper<ProjectDTO, Project> {
-
-    @Mapping(target = "extendedUser", source = "extendedUser", qualifiedByName = "extendedUserIdForProject")
+    @Mapping(target = "extendedUser", source = "extendedUser", qualifiedByName = "extendedUserId")
     ProjectDTO toDto(Project s);
 
-    Project toEntity(ProjectDTO dto);
-
-    @Named("extendedUserIdForProject")
+    @Named("extendedUserId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     ExtendedUserDTO toDtoExtendedUserId(ExtendedUser extendedUser);

@@ -37,6 +37,10 @@ public class ImageCriteria implements Serializable, Criteria {
 
     private BooleanFilter isPrivate;
 
+    private IntegerFilter totalLikes;
+
+    private IntegerFilter totalCommentaries;
+
     private LongFilter commentariesId;
 
     private LongFilter extendedUserId;
@@ -54,6 +58,8 @@ public class ImageCriteria implements Serializable, Criteria {
         this.creationDate = other.creationDate == null ? null : other.creationDate.copy();
         this.modificationDate = other.modificationDate == null ? null : other.modificationDate.copy();
         this.isPrivate = other.isPrivate == null ? null : other.isPrivate.copy();
+        this.totalLikes = other.totalLikes == null ? null : other.totalLikes.copy();
+        this.totalCommentaries = other.totalCommentaries == null ? null : other.totalCommentaries.copy();
         this.commentariesId = other.commentariesId == null ? null : other.commentariesId.copy();
         this.extendedUserId = other.extendedUserId == null ? null : other.extendedUserId.copy();
         this.distinct = other.distinct;
@@ -184,6 +190,36 @@ public class ImageCriteria implements Serializable, Criteria {
         this.isPrivate = isPrivate;
     }
 
+    public IntegerFilter getTotalLikes() {
+        return totalLikes;
+    }
+
+    public IntegerFilter totalLikes() {
+        if (totalLikes == null) {
+            totalLikes = new IntegerFilter();
+        }
+        return totalLikes;
+    }
+
+    public void setTotalLikes(IntegerFilter totalLikes) {
+        this.totalLikes = totalLikes;
+    }
+
+    public IntegerFilter getTotalCommentaries() {
+        return totalCommentaries;
+    }
+
+    public IntegerFilter totalCommentaries() {
+        if (totalCommentaries == null) {
+            totalCommentaries = new IntegerFilter();
+        }
+        return totalCommentaries;
+    }
+
+    public void setTotalCommentaries(IntegerFilter totalCommentaries) {
+        this.totalCommentaries = totalCommentaries;
+    }
+
     public LongFilter getCommentariesId() {
         return commentariesId;
     }
@@ -240,6 +276,8 @@ public class ImageCriteria implements Serializable, Criteria {
             Objects.equals(creationDate, that.creationDate) &&
             Objects.equals(modificationDate, that.modificationDate) &&
             Objects.equals(isPrivate, that.isPrivate) &&
+            Objects.equals(totalLikes, that.totalLikes) &&
+            Objects.equals(totalCommentaries, that.totalCommentaries) &&
             Objects.equals(commentariesId, that.commentariesId) &&
             Objects.equals(extendedUserId, that.extendedUserId) &&
             Objects.equals(distinct, that.distinct)
@@ -257,6 +295,8 @@ public class ImageCriteria implements Serializable, Criteria {
             creationDate,
             modificationDate,
             isPrivate,
+            totalLikes,
+            totalCommentaries,
             commentariesId,
             extendedUserId,
             distinct
@@ -275,6 +315,8 @@ public class ImageCriteria implements Serializable, Criteria {
             (creationDate != null ? "creationDate=" + creationDate + ", " : "") +
             (modificationDate != null ? "modificationDate=" + modificationDate + ", " : "") +
             (isPrivate != null ? "isPrivate=" + isPrivate + ", " : "") +
+            (totalLikes != null ? "totalLikes=" + totalLikes + ", " : "") +
+            (totalCommentaries != null ? "totalCommentaries=" + totalCommentaries + ", " : "") +
             (commentariesId != null ? "commentariesId=" + commentariesId + ", " : "") +
             (extendedUserId != null ? "extendedUserId=" + extendedUserId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +

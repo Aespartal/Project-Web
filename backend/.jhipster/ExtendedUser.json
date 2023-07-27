@@ -38,6 +38,34 @@
       "fieldType": "Instant",
       "fieldValidateRules": ["required"],
       "javadoc": "birthDate"
+    },
+    {
+      "fieldName": "totalFollowers",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0",
+      "javadoc": "totalFollowers"
+    },
+    {
+      "fieldName": "totalFollowing",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0",
+      "javadoc": "totalFollowing"
+    },
+    {
+      "fieldName": "totalImages",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min", "required"],
+      "fieldValidateRulesMin": "0",
+      "javadoc": "totalImages"
+    },
+    {
+      "fieldName": "totalNotifications",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min", "required"],
+      "fieldValidateRulesMin": "0",
+      "javadoc": "totalNotifications"
     }
   ],
   "fluentMethods": true,

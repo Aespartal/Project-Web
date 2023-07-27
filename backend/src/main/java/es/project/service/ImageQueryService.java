@@ -96,6 +96,9 @@ public class ImageQueryService extends QueryService<Image> {
             if (criteria.getDescription() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDescription(), Image_.description));
             }
+            if (criteria.getFileName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getFileName(), Image_.fileName));
+            }
             if (criteria.getPath() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getPath(), Image_.path));
             }
@@ -107,6 +110,12 @@ public class ImageQueryService extends QueryService<Image> {
             }
             if (criteria.getIsPrivate() != null) {
                 specification = specification.and(buildSpecification(criteria.getIsPrivate(), Image_.isPrivate));
+            }
+            if (criteria.getTotalLikes() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTotalLikes(), Image_.totalLikes));
+            }
+            if (criteria.getTotalCommentaries() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTotalCommentaries(), Image_.totalCommentaries));
             }
             if (criteria.getCommentariesId() != null) {
                 specification =

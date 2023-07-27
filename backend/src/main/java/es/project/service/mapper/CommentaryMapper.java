@@ -13,16 +13,15 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses= { ExtendedUserMapper.class })
 public interface CommentaryMapper extends EntityMapper<CommentaryDTO, Commentary> {
-    @Mapping(target = "extendedUser", source = "extendedUser", qualifiedByName = "extendedUserIdForCommentary")
-    @Mapping(target = "image", source = "image", qualifiedByName = "imageIdForCommentary")
+    @Mapping(target = "extendedUser", source = "extendedUser", qualifiedByName = "extendedUserId")
+    @Mapping(target = "image", source = "image", qualifiedByName = "imageId")
     CommentaryDTO toDto(Commentary s);
 
-    @Named("extendedUserIdForCommentary")
+    @Named("extendedUserId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     ExtendedUserDTO toDtoExtendedUserId(ExtendedUser extendedUser);
-
-    @Named("imageIdForCommentary")
+    @Named("imageId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     ImageDTO toDtoImageId(Image image);

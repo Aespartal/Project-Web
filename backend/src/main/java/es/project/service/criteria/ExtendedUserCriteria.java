@@ -33,6 +33,14 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
 
     private InstantFilter birthDate;
 
+    private IntegerFilter totalFollowers;
+
+    private IntegerFilter totalFollowing;
+
+    private IntegerFilter totalImages;
+
+    private IntegerFilter totalNotifications;
+
     private LongFilter userId;
 
     private Boolean distinct;
@@ -46,6 +54,10 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
         this.height = other.height == null ? null : other.height.copy();
         this.weight = other.weight == null ? null : other.weight.copy();
         this.birthDate = other.birthDate == null ? null : other.birthDate.copy();
+        this.totalFollowers = other.totalFollowers == null ? null : other.totalFollowers.copy();
+        this.totalFollowing = other.totalFollowing == null ? null : other.totalFollowing.copy();
+        this.totalImages = other.totalImages == null ? null : other.totalImages.copy();
+        this.totalNotifications = other.totalNotifications == null ? null : other.totalNotifications.copy();
         this.userId = other.userId == null ? null : other.userId.copy();
         this.distinct = other.distinct;
     }
@@ -145,6 +157,66 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
         this.birthDate = birthDate;
     }
 
+    public IntegerFilter getTotalFollowers() {
+        return totalFollowers;
+    }
+
+    public IntegerFilter totalFollowers() {
+        if (totalFollowers == null) {
+            totalFollowers = new IntegerFilter();
+        }
+        return totalFollowers;
+    }
+
+    public void setTotalFollowers(IntegerFilter totalFollowers) {
+        this.totalFollowers = totalFollowers;
+    }
+
+    public IntegerFilter getTotalFollowing() {
+        return totalFollowing;
+    }
+
+    public IntegerFilter totalFollowing() {
+        if (totalFollowing == null) {
+            totalFollowing = new IntegerFilter();
+        }
+        return totalFollowing;
+    }
+
+    public void setTotalFollowing(IntegerFilter totalFollowing) {
+        this.totalFollowing = totalFollowing;
+    }
+
+    public IntegerFilter getTotalImages() {
+        return totalImages;
+    }
+
+    public IntegerFilter totalImages() {
+        if (totalImages == null) {
+            totalImages = new IntegerFilter();
+        }
+        return totalImages;
+    }
+
+    public void setTotalImages(IntegerFilter totalImages) {
+        this.totalImages = totalImages;
+    }
+
+    public IntegerFilter getTotalNotifications() {
+        return totalNotifications;
+    }
+
+    public IntegerFilter totalNotifications() {
+        if (totalNotifications == null) {
+            totalNotifications = new IntegerFilter();
+        }
+        return totalNotifications;
+    }
+
+    public void setTotalNotifications(IntegerFilter totalNotifications) {
+        this.totalNotifications = totalNotifications;
+    }
+
     public LongFilter getUserId() {
         return userId;
     }
@@ -184,6 +256,10 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
             Objects.equals(height, that.height) &&
             Objects.equals(weight, that.weight) &&
             Objects.equals(birthDate, that.birthDate) &&
+            Objects.equals(totalFollowers, that.totalFollowers) &&
+            Objects.equals(totalFollowing, that.totalFollowing) &&
+            Objects.equals(totalImages, that.totalImages) &&
+            Objects.equals(totalNotifications, that.totalNotifications) &&
             Objects.equals(userId, that.userId) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -191,7 +267,20 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, location, height, weight, birthDate, userId, distinct);
+        return Objects.hash(
+            id,
+            description,
+            location,
+            height,
+            weight,
+            birthDate,
+            totalFollowers,
+            totalFollowing,
+            totalImages,
+            totalNotifications,
+            userId,
+            distinct
+        );
     }
 
     // prettier-ignore
@@ -204,6 +293,10 @@ public class ExtendedUserCriteria implements Serializable, Criteria {
             (height != null ? "height=" + height + ", " : "") +
             (weight != null ? "weight=" + weight + ", " : "") +
             (birthDate != null ? "birthDate=" + birthDate + ", " : "") +
+            (totalFollowers != null ? "totalFollowers=" + totalFollowers + ", " : "") +
+            (totalFollowing != null ? "totalFollowing=" + totalFollowing + ", " : "") +
+            (totalImages != null ? "totalImages=" + totalImages + ", " : "") +
+            (totalNotifications != null ? "totalNotifications=" + totalNotifications + ", " : "") +
             (userId != null ? "userId=" + userId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";

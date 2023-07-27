@@ -105,6 +105,19 @@ public class ExtendedUserQueryService extends QueryService<ExtendedUser> {
             if (criteria.getBirthDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getBirthDate(), ExtendedUser_.birthDate));
             }
+            if (criteria.getTotalFollowers() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTotalFollowers(), ExtendedUser_.totalFollowers));
+            }
+            if (criteria.getTotalFollowing() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTotalFollowing(), ExtendedUser_.totalFollowing));
+            }
+            if (criteria.getTotalImages() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTotalImages(), ExtendedUser_.totalImages));
+            }
+            if (criteria.getTotalNotifications() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getTotalNotifications(), ExtendedUser_.totalNotifications));
+            }
             if (criteria.getUserId() != null) {
                 specification =
                     specification.and(

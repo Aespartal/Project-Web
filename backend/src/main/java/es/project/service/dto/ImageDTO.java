@@ -34,6 +34,7 @@ public class ImageDTO implements Serializable {
     /**
      * fileName
      */
+    @NotNull
     @Size(max = 3500)
     @Schema(description = "fileName", required = true)
     private String fileName;
@@ -41,6 +42,7 @@ public class ImageDTO implements Serializable {
     /**
      * path
      */
+    @NotNull
     @Size(max = 3500)
     @Schema(description = "path", required = true)
     private String path;
@@ -65,13 +67,23 @@ public class ImageDTO implements Serializable {
     @Schema(description = "isPrivate", required = true)
     private Boolean isPrivate;
 
+    /**
+     * totalLikes
+     */
+    @Min(value = 0)
+    @Schema(description = "totalLikes")
     private Integer totalLikes;
 
+    /**
+     * totalCommentaries
+     */
+    @Min(value = 0)
+    @Schema(description = "totalCommentaries")
     private Integer totalCommentaries;
 
-    private Boolean isFavourited;
-
     private ExtendedUserDTO extendedUser;
+
+    private Boolean isFavourited;
 
     public Long getId() {
         return id;
@@ -137,22 +149,6 @@ public class ImageDTO implements Serializable {
         this.isPrivate = isPrivate;
     }
 
-    public ExtendedUserDTO getExtendedUser() {
-        return extendedUser;
-    }
-
-    public void setExtendedUser(ExtendedUserDTO extendedUser) {
-        this.extendedUser = extendedUser;
-    }
-
-    public Boolean getFavourited() {
-        return isFavourited;
-    }
-
-    public void setFavourited(Boolean favourited) {
-        isFavourited = favourited;
-    }
-
     public Integer getTotalLikes() {
         return totalLikes;
     }
@@ -167,6 +163,22 @@ public class ImageDTO implements Serializable {
 
     public void setTotalCommentaries(Integer totalCommentaries) {
         this.totalCommentaries = totalCommentaries;
+    }
+
+    public ExtendedUserDTO getExtendedUser() {
+        return extendedUser;
+    }
+
+    public void setExtendedUser(ExtendedUserDTO extendedUser) {
+        this.extendedUser = extendedUser;
+    }
+
+    public Boolean getFavourited() {
+        return isFavourited;
+    }
+
+    public void setFavourited(Boolean favourited) {
+        isFavourited = favourited;
     }
 
     @Override
@@ -202,6 +214,8 @@ public class ImageDTO implements Serializable {
             ", creationDate='" + getCreationDate() + "'" +
             ", modificationDate='" + getModificationDate() + "'" +
             ", isPrivate='" + getIsPrivate() + "'" +
+            ", totalLikes=" + getTotalLikes() +
+            ", totalCommentaries=" + getTotalCommentaries() +
             ", extendedUser=" + getExtendedUser() +
             "}";
     }

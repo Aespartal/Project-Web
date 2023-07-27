@@ -76,7 +76,21 @@ public class Image implements Serializable {
     @Column(name = "is_private", nullable = false)
     private Boolean isPrivate;
 
-    @OneToMany(mappedBy = "image", cascade = CascadeType.REMOVE)
+    /**
+     * totalLikes
+     */
+    @Min(value = 0)
+    @Column(name = "total_likes")
+    private Integer totalLikes;
+
+    /**
+     * totalCommentaries
+     */
+    @Min(value = 0)
+    @Column(name = "total_commentaries")
+    private Integer totalCommentaries;
+
+    @OneToMany(mappedBy = "image")
     @JsonIgnoreProperties(value = { "extendedUser", "image" }, allowSetters = true)
     private Set<Commentary> commentaries = new HashSet<>();
 
@@ -191,6 +205,32 @@ public class Image implements Serializable {
         this.isPrivate = isPrivate;
     }
 
+    public Integer getTotalLikes() {
+        return this.totalLikes;
+    }
+
+    public Image totalLikes(Integer totalLikes) {
+        this.setTotalLikes(totalLikes);
+        return this;
+    }
+
+    public void setTotalLikes(Integer totalLikes) {
+        this.totalLikes = totalLikes;
+    }
+
+    public Integer getTotalCommentaries() {
+        return this.totalCommentaries;
+    }
+
+    public Image totalCommentaries(Integer totalCommentaries) {
+        this.setTotalCommentaries(totalCommentaries);
+        return this;
+    }
+
+    public void setTotalCommentaries(Integer totalCommentaries) {
+        this.totalCommentaries = totalCommentaries;
+    }
+
     public Set<Commentary> getCommentaries() {
         return this.commentaries;
     }
@@ -266,6 +306,8 @@ public class Image implements Serializable {
             ", creationDate='" + getCreationDate() + "'" +
             ", modificationDate='" + getModificationDate() + "'" +
             ", isPrivate='" + getIsPrivate() + "'" +
+            ", totalLikes=" + getTotalLikes() +
+            ", totalCommentaries=" + getTotalCommentaries() +
             "}";
     }
 }

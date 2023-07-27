@@ -11,6 +11,19 @@ STR_LONGITUD_MAXIMA = 3500
 STR_LONGITUD_CODIGO = 20
 STR_LONGITUD_DESCRIPCION = 50
 
+enum FollowState {
+    PENDING
+    ACCEPTED
+    REJECTED
+}
+
+enum NotificationType {
+    FOLLOW
+    LIKE_IMAGE
+    LIKE_COMMENTARY
+    COMMENTARY
+}
+
 /**
  * ENTITIES
  * =========
@@ -31,6 +44,14 @@ entity ExtendedUser {
     weight Double min(0) required
     /** birthDate */
     birthDate Instant required
+    /** totalFollowers */
+    totalFollowers Integer min(0)
+    /** totalFollowing */
+    totalFollowing Integer min(0)
+    /** totalImages */
+    totalImages Integer min(0) required
+    /** totalNotifications */
+    totalNotifications Integer min(0) required
 }
 
 /**
@@ -52,6 +73,10 @@ entity Image {
     modificationDate Instant
     /** isPrivate */
     isPrivate Boolean required
+    /** totalLikes */
+    totalLikes Integer min(0)
+    /** totalCommentaries */
+    totalCommentaries Integer min(0)
 }
 
 entity LikeImage {
@@ -67,6 +92,24 @@ entity Commentary {
 }
 
 entity LikeCommentary {
+    /** creationDate */
+    creationDate Instant required
+}
+
+entity Follow {
+    /** state */
+    state FollowState required
+    /** creationDate */
+    creationDate Instant required
+    /** acceptanceDate */
+    acceptanceDate Instant
+}
+
+entity Notification {
+    /** message */
+    message String required maxlength(STR_LONGITUD_MAXIMA)
+    /** type */
+    type NotificationType required
     /** creationDate */
     creationDate Instant required
 }
@@ -97,6 +140,14 @@ relationship ManyToOne {
 
     LikeCommentary{commentary required} to Commentary
     LikeCommentary{extendedUser required} to ExtendedUser
+
+    Follow{follower required} to ExtendedUser
+    Follow{following required} to ExtendedUser
+
+    Notification{image} to ExtendedUser
+    Notification{commentary} to ExtendedUser
+    Notification{notifier required} to ExtendedUser
+    Notification{notifying required} to ExtendedUser
 }
 
 /**

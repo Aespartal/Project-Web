@@ -52,6 +52,22 @@ class ExtendedUserResourceIT {
     private static final Instant DEFAULT_BIRTH_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_BIRTH_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
+    private static final Integer DEFAULT_TOTAL_FOLLOWERS = 0;
+    private static final Integer UPDATED_TOTAL_FOLLOWERS = 1;
+    private static final Integer SMALLER_TOTAL_FOLLOWERS = 0 - 1;
+
+    private static final Integer DEFAULT_TOTAL_FOLLOWING = 0;
+    private static final Integer UPDATED_TOTAL_FOLLOWING = 1;
+    private static final Integer SMALLER_TOTAL_FOLLOWING = 0 - 1;
+
+    private static final Integer DEFAULT_TOTAL_IMAGES = 0;
+    private static final Integer UPDATED_TOTAL_IMAGES = 1;
+    private static final Integer SMALLER_TOTAL_IMAGES = 0 - 1;
+
+    private static final Integer DEFAULT_TOTAL_NOTIFICATIONS = 0;
+    private static final Integer UPDATED_TOTAL_NOTIFICATIONS = 1;
+    private static final Integer SMALLER_TOTAL_NOTIFICATIONS = 0 - 1;
+
     private static final String ENTITY_API_URL = "/api/extended-users";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -84,7 +100,11 @@ class ExtendedUserResourceIT {
             .location(DEFAULT_LOCATION)
             .height(DEFAULT_HEIGHT)
             .weight(DEFAULT_WEIGHT)
-            .birthDate(DEFAULT_BIRTH_DATE);
+            .birthDate(DEFAULT_BIRTH_DATE)
+            .totalFollowers(DEFAULT_TOTAL_FOLLOWERS)
+            .totalFollowing(DEFAULT_TOTAL_FOLLOWING)
+            .totalImages(DEFAULT_TOTAL_IMAGES)
+            .totalNotifications(DEFAULT_TOTAL_NOTIFICATIONS);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -105,7 +125,11 @@ class ExtendedUserResourceIT {
             .location(UPDATED_LOCATION)
             .height(UPDATED_HEIGHT)
             .weight(UPDATED_WEIGHT)
-            .birthDate(UPDATED_BIRTH_DATE);
+            .birthDate(UPDATED_BIRTH_DATE)
+            .totalFollowers(UPDATED_TOTAL_FOLLOWERS)
+            .totalFollowing(UPDATED_TOTAL_FOLLOWING)
+            .totalImages(UPDATED_TOTAL_IMAGES)
+            .totalNotifications(UPDATED_TOTAL_NOTIFICATIONS);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -140,6 +164,10 @@ class ExtendedUserResourceIT {
         assertThat(testExtendedUser.getHeight()).isEqualTo(DEFAULT_HEIGHT);
         assertThat(testExtendedUser.getWeight()).isEqualTo(DEFAULT_WEIGHT);
         assertThat(testExtendedUser.getBirthDate()).isEqualTo(DEFAULT_BIRTH_DATE);
+        assertThat(testExtendedUser.getTotalFollowers()).isEqualTo(DEFAULT_TOTAL_FOLLOWERS);
+        assertThat(testExtendedUser.getTotalFollowing()).isEqualTo(DEFAULT_TOTAL_FOLLOWING);
+        assertThat(testExtendedUser.getTotalImages()).isEqualTo(DEFAULT_TOTAL_IMAGES);
+        assertThat(testExtendedUser.getTotalNotifications()).isEqualTo(DEFAULT_TOTAL_NOTIFICATIONS);
 
         // Validate the id for MapsId, the ids must be same
         assertThat(testExtendedUser.getId()).isEqualTo(extendedUserDTO.getUser().getId());
@@ -269,6 +297,46 @@ class ExtendedUserResourceIT {
 
     @Test
     @Transactional
+    void checkTotalImagesIsRequired() throws Exception {
+        int databaseSizeBeforeTest = extendedUserRepository.findAll().size();
+        // set the field null
+        extendedUser.setTotalImages(null);
+
+        // Create the ExtendedUser, which fails.
+        ExtendedUserDTO extendedUserDTO = extendedUserMapper.toDto(extendedUser);
+
+        restExtendedUserMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(extendedUserDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<ExtendedUser> extendedUserList = extendedUserRepository.findAll();
+        assertThat(extendedUserList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkTotalNotificationsIsRequired() throws Exception {
+        int databaseSizeBeforeTest = extendedUserRepository.findAll().size();
+        // set the field null
+        extendedUser.setTotalNotifications(null);
+
+        // Create the ExtendedUser, which fails.
+        ExtendedUserDTO extendedUserDTO = extendedUserMapper.toDto(extendedUser);
+
+        restExtendedUserMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(extendedUserDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<ExtendedUser> extendedUserList = extendedUserRepository.findAll();
+        assertThat(extendedUserList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllExtendedUsers() throws Exception {
         // Initialize the database
         extendedUserRepository.saveAndFlush(extendedUser);
@@ -283,7 +351,11 @@ class ExtendedUserResourceIT {
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION)))
             .andExpect(jsonPath("$.[*].height").value(hasItem(DEFAULT_HEIGHT.doubleValue())))
             .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())))
-            .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE.toString())));
+            .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE.toString())))
+            .andExpect(jsonPath("$.[*].totalFollowers").value(hasItem(DEFAULT_TOTAL_FOLLOWERS)))
+            .andExpect(jsonPath("$.[*].totalFollowing").value(hasItem(DEFAULT_TOTAL_FOLLOWING)))
+            .andExpect(jsonPath("$.[*].totalImages").value(hasItem(DEFAULT_TOTAL_IMAGES)))
+            .andExpect(jsonPath("$.[*].totalNotifications").value(hasItem(DEFAULT_TOTAL_NOTIFICATIONS)));
     }
 
     @Test
@@ -302,7 +374,11 @@ class ExtendedUserResourceIT {
             .andExpect(jsonPath("$.location").value(DEFAULT_LOCATION))
             .andExpect(jsonPath("$.height").value(DEFAULT_HEIGHT.doubleValue()))
             .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT.doubleValue()))
-            .andExpect(jsonPath("$.birthDate").value(DEFAULT_BIRTH_DATE.toString()));
+            .andExpect(jsonPath("$.birthDate").value(DEFAULT_BIRTH_DATE.toString()))
+            .andExpect(jsonPath("$.totalFollowers").value(DEFAULT_TOTAL_FOLLOWERS))
+            .andExpect(jsonPath("$.totalFollowing").value(DEFAULT_TOTAL_FOLLOWING))
+            .andExpect(jsonPath("$.totalImages").value(DEFAULT_TOTAL_IMAGES))
+            .andExpect(jsonPath("$.totalNotifications").value(DEFAULT_TOTAL_NOTIFICATIONS));
     }
 
     @Test
@@ -676,6 +752,370 @@ class ExtendedUserResourceIT {
 
     @Test
     @Transactional
+    void getAllExtendedUsersByTotalFollowersIsEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalFollowers equals to DEFAULT_TOTAL_FOLLOWERS
+        defaultExtendedUserShouldBeFound("totalFollowers.equals=" + DEFAULT_TOTAL_FOLLOWERS);
+
+        // Get all the extendedUserList where totalFollowers equals to UPDATED_TOTAL_FOLLOWERS
+        defaultExtendedUserShouldNotBeFound("totalFollowers.equals=" + UPDATED_TOTAL_FOLLOWERS);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalFollowersIsInShouldWork() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalFollowers in DEFAULT_TOTAL_FOLLOWERS or UPDATED_TOTAL_FOLLOWERS
+        defaultExtendedUserShouldBeFound("totalFollowers.in=" + DEFAULT_TOTAL_FOLLOWERS + "," + UPDATED_TOTAL_FOLLOWERS);
+
+        // Get all the extendedUserList where totalFollowers equals to UPDATED_TOTAL_FOLLOWERS
+        defaultExtendedUserShouldNotBeFound("totalFollowers.in=" + UPDATED_TOTAL_FOLLOWERS);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalFollowersIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalFollowers is not null
+        defaultExtendedUserShouldBeFound("totalFollowers.specified=true");
+
+        // Get all the extendedUserList where totalFollowers is null
+        defaultExtendedUserShouldNotBeFound("totalFollowers.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalFollowersIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalFollowers is greater than or equal to DEFAULT_TOTAL_FOLLOWERS
+        defaultExtendedUserShouldBeFound("totalFollowers.greaterThanOrEqual=" + DEFAULT_TOTAL_FOLLOWERS);
+
+        // Get all the extendedUserList where totalFollowers is greater than or equal to UPDATED_TOTAL_FOLLOWERS
+        defaultExtendedUserShouldNotBeFound("totalFollowers.greaterThanOrEqual=" + UPDATED_TOTAL_FOLLOWERS);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalFollowersIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalFollowers is less than or equal to DEFAULT_TOTAL_FOLLOWERS
+        defaultExtendedUserShouldBeFound("totalFollowers.lessThanOrEqual=" + DEFAULT_TOTAL_FOLLOWERS);
+
+        // Get all the extendedUserList where totalFollowers is less than or equal to SMALLER_TOTAL_FOLLOWERS
+        defaultExtendedUserShouldNotBeFound("totalFollowers.lessThanOrEqual=" + SMALLER_TOTAL_FOLLOWERS);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalFollowersIsLessThanSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalFollowers is less than DEFAULT_TOTAL_FOLLOWERS
+        defaultExtendedUserShouldNotBeFound("totalFollowers.lessThan=" + DEFAULT_TOTAL_FOLLOWERS);
+
+        // Get all the extendedUserList where totalFollowers is less than UPDATED_TOTAL_FOLLOWERS
+        defaultExtendedUserShouldBeFound("totalFollowers.lessThan=" + UPDATED_TOTAL_FOLLOWERS);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalFollowersIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalFollowers is greater than DEFAULT_TOTAL_FOLLOWERS
+        defaultExtendedUserShouldNotBeFound("totalFollowers.greaterThan=" + DEFAULT_TOTAL_FOLLOWERS);
+
+        // Get all the extendedUserList where totalFollowers is greater than SMALLER_TOTAL_FOLLOWERS
+        defaultExtendedUserShouldBeFound("totalFollowers.greaterThan=" + SMALLER_TOTAL_FOLLOWERS);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalFollowingIsEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalFollowing equals to DEFAULT_TOTAL_FOLLOWING
+        defaultExtendedUserShouldBeFound("totalFollowing.equals=" + DEFAULT_TOTAL_FOLLOWING);
+
+        // Get all the extendedUserList where totalFollowing equals to UPDATED_TOTAL_FOLLOWING
+        defaultExtendedUserShouldNotBeFound("totalFollowing.equals=" + UPDATED_TOTAL_FOLLOWING);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalFollowingIsInShouldWork() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalFollowing in DEFAULT_TOTAL_FOLLOWING or UPDATED_TOTAL_FOLLOWING
+        defaultExtendedUserShouldBeFound("totalFollowing.in=" + DEFAULT_TOTAL_FOLLOWING + "," + UPDATED_TOTAL_FOLLOWING);
+
+        // Get all the extendedUserList where totalFollowing equals to UPDATED_TOTAL_FOLLOWING
+        defaultExtendedUserShouldNotBeFound("totalFollowing.in=" + UPDATED_TOTAL_FOLLOWING);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalFollowingIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalFollowing is not null
+        defaultExtendedUserShouldBeFound("totalFollowing.specified=true");
+
+        // Get all the extendedUserList where totalFollowing is null
+        defaultExtendedUserShouldNotBeFound("totalFollowing.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalFollowingIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalFollowing is greater than or equal to DEFAULT_TOTAL_FOLLOWING
+        defaultExtendedUserShouldBeFound("totalFollowing.greaterThanOrEqual=" + DEFAULT_TOTAL_FOLLOWING);
+
+        // Get all the extendedUserList where totalFollowing is greater than or equal to UPDATED_TOTAL_FOLLOWING
+        defaultExtendedUserShouldNotBeFound("totalFollowing.greaterThanOrEqual=" + UPDATED_TOTAL_FOLLOWING);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalFollowingIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalFollowing is less than or equal to DEFAULT_TOTAL_FOLLOWING
+        defaultExtendedUserShouldBeFound("totalFollowing.lessThanOrEqual=" + DEFAULT_TOTAL_FOLLOWING);
+
+        // Get all the extendedUserList where totalFollowing is less than or equal to SMALLER_TOTAL_FOLLOWING
+        defaultExtendedUserShouldNotBeFound("totalFollowing.lessThanOrEqual=" + SMALLER_TOTAL_FOLLOWING);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalFollowingIsLessThanSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalFollowing is less than DEFAULT_TOTAL_FOLLOWING
+        defaultExtendedUserShouldNotBeFound("totalFollowing.lessThan=" + DEFAULT_TOTAL_FOLLOWING);
+
+        // Get all the extendedUserList where totalFollowing is less than UPDATED_TOTAL_FOLLOWING
+        defaultExtendedUserShouldBeFound("totalFollowing.lessThan=" + UPDATED_TOTAL_FOLLOWING);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalFollowingIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalFollowing is greater than DEFAULT_TOTAL_FOLLOWING
+        defaultExtendedUserShouldNotBeFound("totalFollowing.greaterThan=" + DEFAULT_TOTAL_FOLLOWING);
+
+        // Get all the extendedUserList where totalFollowing is greater than SMALLER_TOTAL_FOLLOWING
+        defaultExtendedUserShouldBeFound("totalFollowing.greaterThan=" + SMALLER_TOTAL_FOLLOWING);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalImagesIsEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalImages equals to DEFAULT_TOTAL_IMAGES
+        defaultExtendedUserShouldBeFound("totalImages.equals=" + DEFAULT_TOTAL_IMAGES);
+
+        // Get all the extendedUserList where totalImages equals to UPDATED_TOTAL_IMAGES
+        defaultExtendedUserShouldNotBeFound("totalImages.equals=" + UPDATED_TOTAL_IMAGES);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalImagesIsInShouldWork() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalImages in DEFAULT_TOTAL_IMAGES or UPDATED_TOTAL_IMAGES
+        defaultExtendedUserShouldBeFound("totalImages.in=" + DEFAULT_TOTAL_IMAGES + "," + UPDATED_TOTAL_IMAGES);
+
+        // Get all the extendedUserList where totalImages equals to UPDATED_TOTAL_IMAGES
+        defaultExtendedUserShouldNotBeFound("totalImages.in=" + UPDATED_TOTAL_IMAGES);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalImagesIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalImages is not null
+        defaultExtendedUserShouldBeFound("totalImages.specified=true");
+
+        // Get all the extendedUserList where totalImages is null
+        defaultExtendedUserShouldNotBeFound("totalImages.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalImagesIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalImages is greater than or equal to DEFAULT_TOTAL_IMAGES
+        defaultExtendedUserShouldBeFound("totalImages.greaterThanOrEqual=" + DEFAULT_TOTAL_IMAGES);
+
+        // Get all the extendedUserList where totalImages is greater than or equal to UPDATED_TOTAL_IMAGES
+        defaultExtendedUserShouldNotBeFound("totalImages.greaterThanOrEqual=" + UPDATED_TOTAL_IMAGES);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalImagesIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalImages is less than or equal to DEFAULT_TOTAL_IMAGES
+        defaultExtendedUserShouldBeFound("totalImages.lessThanOrEqual=" + DEFAULT_TOTAL_IMAGES);
+
+        // Get all the extendedUserList where totalImages is less than or equal to SMALLER_TOTAL_IMAGES
+        defaultExtendedUserShouldNotBeFound("totalImages.lessThanOrEqual=" + SMALLER_TOTAL_IMAGES);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalImagesIsLessThanSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalImages is less than DEFAULT_TOTAL_IMAGES
+        defaultExtendedUserShouldNotBeFound("totalImages.lessThan=" + DEFAULT_TOTAL_IMAGES);
+
+        // Get all the extendedUserList where totalImages is less than UPDATED_TOTAL_IMAGES
+        defaultExtendedUserShouldBeFound("totalImages.lessThan=" + UPDATED_TOTAL_IMAGES);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalImagesIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalImages is greater than DEFAULT_TOTAL_IMAGES
+        defaultExtendedUserShouldNotBeFound("totalImages.greaterThan=" + DEFAULT_TOTAL_IMAGES);
+
+        // Get all the extendedUserList where totalImages is greater than SMALLER_TOTAL_IMAGES
+        defaultExtendedUserShouldBeFound("totalImages.greaterThan=" + SMALLER_TOTAL_IMAGES);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalNotificationsIsEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalNotifications equals to DEFAULT_TOTAL_NOTIFICATIONS
+        defaultExtendedUserShouldBeFound("totalNotifications.equals=" + DEFAULT_TOTAL_NOTIFICATIONS);
+
+        // Get all the extendedUserList where totalNotifications equals to UPDATED_TOTAL_NOTIFICATIONS
+        defaultExtendedUserShouldNotBeFound("totalNotifications.equals=" + UPDATED_TOTAL_NOTIFICATIONS);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalNotificationsIsInShouldWork() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalNotifications in DEFAULT_TOTAL_NOTIFICATIONS or UPDATED_TOTAL_NOTIFICATIONS
+        defaultExtendedUserShouldBeFound("totalNotifications.in=" + DEFAULT_TOTAL_NOTIFICATIONS + "," + UPDATED_TOTAL_NOTIFICATIONS);
+
+        // Get all the extendedUserList where totalNotifications equals to UPDATED_TOTAL_NOTIFICATIONS
+        defaultExtendedUserShouldNotBeFound("totalNotifications.in=" + UPDATED_TOTAL_NOTIFICATIONS);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalNotificationsIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalNotifications is not null
+        defaultExtendedUserShouldBeFound("totalNotifications.specified=true");
+
+        // Get all the extendedUserList where totalNotifications is null
+        defaultExtendedUserShouldNotBeFound("totalNotifications.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalNotificationsIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalNotifications is greater than or equal to DEFAULT_TOTAL_NOTIFICATIONS
+        defaultExtendedUserShouldBeFound("totalNotifications.greaterThanOrEqual=" + DEFAULT_TOTAL_NOTIFICATIONS);
+
+        // Get all the extendedUserList where totalNotifications is greater than or equal to UPDATED_TOTAL_NOTIFICATIONS
+        defaultExtendedUserShouldNotBeFound("totalNotifications.greaterThanOrEqual=" + UPDATED_TOTAL_NOTIFICATIONS);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalNotificationsIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalNotifications is less than or equal to DEFAULT_TOTAL_NOTIFICATIONS
+        defaultExtendedUserShouldBeFound("totalNotifications.lessThanOrEqual=" + DEFAULT_TOTAL_NOTIFICATIONS);
+
+        // Get all the extendedUserList where totalNotifications is less than or equal to SMALLER_TOTAL_NOTIFICATIONS
+        defaultExtendedUserShouldNotBeFound("totalNotifications.lessThanOrEqual=" + SMALLER_TOTAL_NOTIFICATIONS);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalNotificationsIsLessThanSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalNotifications is less than DEFAULT_TOTAL_NOTIFICATIONS
+        defaultExtendedUserShouldNotBeFound("totalNotifications.lessThan=" + DEFAULT_TOTAL_NOTIFICATIONS);
+
+        // Get all the extendedUserList where totalNotifications is less than UPDATED_TOTAL_NOTIFICATIONS
+        defaultExtendedUserShouldBeFound("totalNotifications.lessThan=" + UPDATED_TOTAL_NOTIFICATIONS);
+    }
+
+    @Test
+    @Transactional
+    void getAllExtendedUsersByTotalNotificationsIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        extendedUserRepository.saveAndFlush(extendedUser);
+
+        // Get all the extendedUserList where totalNotifications is greater than DEFAULT_TOTAL_NOTIFICATIONS
+        defaultExtendedUserShouldNotBeFound("totalNotifications.greaterThan=" + DEFAULT_TOTAL_NOTIFICATIONS);
+
+        // Get all the extendedUserList where totalNotifications is greater than SMALLER_TOTAL_NOTIFICATIONS
+        defaultExtendedUserShouldBeFound("totalNotifications.greaterThan=" + SMALLER_TOTAL_NOTIFICATIONS);
+    }
+
+    @Test
+    @Transactional
     void getAllExtendedUsersByUserIsEqualToSomething() throws Exception {
         // Get already existing entity
         User user = extendedUser.getUser();
@@ -702,7 +1142,11 @@ class ExtendedUserResourceIT {
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION)))
             .andExpect(jsonPath("$.[*].height").value(hasItem(DEFAULT_HEIGHT.doubleValue())))
             .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())))
-            .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE.toString())));
+            .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE.toString())))
+            .andExpect(jsonPath("$.[*].totalFollowers").value(hasItem(DEFAULT_TOTAL_FOLLOWERS)))
+            .andExpect(jsonPath("$.[*].totalFollowing").value(hasItem(DEFAULT_TOTAL_FOLLOWING)))
+            .andExpect(jsonPath("$.[*].totalImages").value(hasItem(DEFAULT_TOTAL_IMAGES)))
+            .andExpect(jsonPath("$.[*].totalNotifications").value(hasItem(DEFAULT_TOTAL_NOTIFICATIONS)));
 
         // Check, that the count call also returns 1
         restExtendedUserMockMvc
@@ -755,7 +1199,11 @@ class ExtendedUserResourceIT {
             .location(UPDATED_LOCATION)
             .height(UPDATED_HEIGHT)
             .weight(UPDATED_WEIGHT)
-            .birthDate(UPDATED_BIRTH_DATE);
+            .birthDate(UPDATED_BIRTH_DATE)
+            .totalFollowers(UPDATED_TOTAL_FOLLOWERS)
+            .totalFollowing(UPDATED_TOTAL_FOLLOWING)
+            .totalImages(UPDATED_TOTAL_IMAGES)
+            .totalNotifications(UPDATED_TOTAL_NOTIFICATIONS);
         ExtendedUserDTO extendedUserDTO = extendedUserMapper.toDto(updatedExtendedUser);
 
         restExtendedUserMockMvc
@@ -775,6 +1223,10 @@ class ExtendedUserResourceIT {
         assertThat(testExtendedUser.getHeight()).isEqualTo(UPDATED_HEIGHT);
         assertThat(testExtendedUser.getWeight()).isEqualTo(UPDATED_WEIGHT);
         assertThat(testExtendedUser.getBirthDate()).isEqualTo(UPDATED_BIRTH_DATE);
+        assertThat(testExtendedUser.getTotalFollowers()).isEqualTo(UPDATED_TOTAL_FOLLOWERS);
+        assertThat(testExtendedUser.getTotalFollowing()).isEqualTo(UPDATED_TOTAL_FOLLOWING);
+        assertThat(testExtendedUser.getTotalImages()).isEqualTo(UPDATED_TOTAL_IMAGES);
+        assertThat(testExtendedUser.getTotalNotifications()).isEqualTo(UPDATED_TOTAL_NOTIFICATIONS);
     }
 
     @Test
@@ -856,7 +1308,13 @@ class ExtendedUserResourceIT {
         ExtendedUser partialUpdatedExtendedUser = new ExtendedUser();
         partialUpdatedExtendedUser.setId(extendedUser.getId());
 
-        partialUpdatedExtendedUser.description(UPDATED_DESCRIPTION).location(UPDATED_LOCATION);
+        partialUpdatedExtendedUser
+            .description(UPDATED_DESCRIPTION)
+            .location(UPDATED_LOCATION)
+            .totalFollowers(UPDATED_TOTAL_FOLLOWERS)
+            .totalFollowing(UPDATED_TOTAL_FOLLOWING)
+            .totalImages(UPDATED_TOTAL_IMAGES)
+            .totalNotifications(UPDATED_TOTAL_NOTIFICATIONS);
 
         restExtendedUserMockMvc
             .perform(
@@ -875,6 +1333,10 @@ class ExtendedUserResourceIT {
         assertThat(testExtendedUser.getHeight()).isEqualTo(DEFAULT_HEIGHT);
         assertThat(testExtendedUser.getWeight()).isEqualTo(DEFAULT_WEIGHT);
         assertThat(testExtendedUser.getBirthDate()).isEqualTo(DEFAULT_BIRTH_DATE);
+        assertThat(testExtendedUser.getTotalFollowers()).isEqualTo(UPDATED_TOTAL_FOLLOWERS);
+        assertThat(testExtendedUser.getTotalFollowing()).isEqualTo(UPDATED_TOTAL_FOLLOWING);
+        assertThat(testExtendedUser.getTotalImages()).isEqualTo(UPDATED_TOTAL_IMAGES);
+        assertThat(testExtendedUser.getTotalNotifications()).isEqualTo(UPDATED_TOTAL_NOTIFICATIONS);
     }
 
     @Test
@@ -894,7 +1356,11 @@ class ExtendedUserResourceIT {
             .location(UPDATED_LOCATION)
             .height(UPDATED_HEIGHT)
             .weight(UPDATED_WEIGHT)
-            .birthDate(UPDATED_BIRTH_DATE);
+            .birthDate(UPDATED_BIRTH_DATE)
+            .totalFollowers(UPDATED_TOTAL_FOLLOWERS)
+            .totalFollowing(UPDATED_TOTAL_FOLLOWING)
+            .totalImages(UPDATED_TOTAL_IMAGES)
+            .totalNotifications(UPDATED_TOTAL_NOTIFICATIONS);
 
         restExtendedUserMockMvc
             .perform(
@@ -913,6 +1379,10 @@ class ExtendedUserResourceIT {
         assertThat(testExtendedUser.getHeight()).isEqualTo(UPDATED_HEIGHT);
         assertThat(testExtendedUser.getWeight()).isEqualTo(UPDATED_WEIGHT);
         assertThat(testExtendedUser.getBirthDate()).isEqualTo(UPDATED_BIRTH_DATE);
+        assertThat(testExtendedUser.getTotalFollowers()).isEqualTo(UPDATED_TOTAL_FOLLOWERS);
+        assertThat(testExtendedUser.getTotalFollowing()).isEqualTo(UPDATED_TOTAL_FOLLOWING);
+        assertThat(testExtendedUser.getTotalImages()).isEqualTo(UPDATED_TOTAL_IMAGES);
+        assertThat(testExtendedUser.getTotalNotifications()).isEqualTo(UPDATED_TOTAL_NOTIFICATIONS);
     }
 
     @Test
