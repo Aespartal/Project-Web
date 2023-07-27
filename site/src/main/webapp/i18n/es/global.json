@@ -13,6 +13,8 @@
         "likeImage": "Like Image",
         "commentary": "Commentary",
         "likeCommentary": "Like Commentary",
+        "follow": "Follow",
+        "notification": "Notification",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

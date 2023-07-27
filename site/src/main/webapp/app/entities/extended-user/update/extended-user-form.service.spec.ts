@@ -24,6 +24,10 @@ describe('ExtendedUser Form Service', () => {
             height: expect.any(Object),
             weight: expect.any(Object),
             birthDate: expect.any(Object),
+            totalFollowers: expect.any(Object),
+            totalFollowing: expect.any(Object),
+            totalImages: expect.any(Object),
+            totalNotifications: expect.any(Object),
             user: expect.any(Object),
           })
         );
@@ -39,6 +43,10 @@ describe('ExtendedUser Form Service', () => {
             height: expect.any(Object),
             weight: expect.any(Object),
             birthDate: expect.any(Object),
+            totalFollowers: expect.any(Object),
+            totalFollowing: expect.any(Object),
+            totalImages: expect.any(Object),
+            totalNotifications: expect.any(Object),
             user: expect.any(Object),
           })
         );

@@ -1,0 +1,74 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="notification">
+      <h2 data-cy="notificationDetailsHeading"><span jhiTranslate="projectApp.notification.detail.title">Notification</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ notification.id }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.notification.message" [ngbTooltip]="'projectApp.notification.help.message' | translate"
+            >Message</span
+          >
+        </dt>
+        <dd>
+          <span>{{ notification.message }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.notification.type" [ngbTooltip]="'projectApp.notification.help.type' | translate">Type</span>
+        </dt>
+        <dd>
+          <span jhiTranslate="{{ 'projectApp.NotificationType.' + notification.type }}">{{ notification.type }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.notification.creationDate" [ngbTooltip]="'projectApp.notification.help.creationDate' | translate"
+            >Creation Date</span
+          >
+        </dt>
+        <dd>
+          <span>{{ notification.creationDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="projectApp.notification.image">Image</span></dt>
+        <dd>
+          <div *ngIf="notification.image">
+            <a [routerLink]="['/extended-user', notification.image.id, 'view']">{{ notification.image.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="projectApp.notification.commentary">Commentary</span></dt>
+        <dd>
+          <div *ngIf="notification.commentary">
+            <a [routerLink]="['/extended-user', notification.commentary.id, 'view']">{{ notification.commentary.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="projectApp.notification.notifier">Notifier</span></dt>
+        <dd>
+          <div *ngIf="notification.notifier">
+            <a [routerLink]="['/extended-user', notification.notifier.id, 'view']">{{ notification.notifier.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="projectApp.notification.notifying">Notifying</span></dt>
+        <dd>
+          <div *ngIf="notification.notifying">
+            <a [routerLink]="['/extended-user', notification.notifying.id, 'view']">{{ notification.notifying.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+      </button>
+
+      <button type="button" [routerLink]="['/notification', notification.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -49,6 +49,20 @@
       "fieldType": "Boolean",
       "fieldValidateRules": ["required"],
       "javadoc": "isPrivate"
+    },
+    {
+      "fieldName": "totalLikes",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0",
+      "javadoc": "totalLikes"
+    },
+    {
+      "fieldName": "totalCommentaries",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0",
+      "javadoc": "totalCommentaries"
     }
   ],
   "fluentMethods": true,

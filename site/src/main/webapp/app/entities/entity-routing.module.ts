@@ -34,6 +34,16 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'projectApp.likeCommentary.home.title' },
         loadChildren: () => import('./like-commentary/like-commentary.module').then(m => m.LikeCommentaryModule),
       },
+      {
+        path: 'follow',
+        data: { pageTitle: 'projectApp.follow.home.title' },
+        loadChildren: () => import('./follow/follow.module').then(m => m.FollowModule),
+      },
+      {
+        path: 'notification',
+        data: { pageTitle: 'projectApp.notification.home.title' },
+        loadChildren: () => import('./notification/notification.module').then(m => m.NotificationModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

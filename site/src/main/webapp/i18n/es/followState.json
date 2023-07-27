@@ -1,0 +1,10 @@
+{
+  "projectApp": {
+    "FollowState": {
+      "null": "",
+      "PENDING": "PENDING",
+      "ACCEPTED": "ACCEPTED",
+      "REJECTED": "REJECTED"
+    }
+  }
+}
