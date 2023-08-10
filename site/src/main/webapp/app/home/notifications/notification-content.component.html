@@ -1,0 +1,27 @@
+<div class="container-fluid">
+  <section class="notification-container">
+    <div *ngFor="let notification of notifications" class="notification-item">
+      <div class="notification-content">
+        <div class="notification-header">
+          <div class="notification-type" [jhiNotificationTypeIcon]="notification.type!">
+            <span jhiTranslate="{{ 'projectApp.NotificationType.' + notification.type }}"></span>
+          </div>
+          <span class="notification-date">{{ notification.creationDate }}</span>
+        </div>
+        <p class="notification-message">{{ notification.message }}</p>
+        <div *ngIf="notification.type === 'FOLLOW'">
+          <!-- BOTONES ACEPTAR Y RECHAZAR-->
+          <div class="notification-buttons">
+            <button class="btn btn-success" (click)="onAcceptClick(notification)">Aceptar</button>
+            <button class="btn btn-danger" (click)="onRejectClick(notification)">Rechazar</button>
+          </div>
+        </div>
+        <div class="notification-details">
+          <div class="notification-commentary" *ngIf="notification.commentary">
+            <p>Commented by: {{ notification.commentary }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

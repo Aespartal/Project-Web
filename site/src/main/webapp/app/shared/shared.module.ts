@@ -15,6 +15,7 @@ import { ItemCountComponent } from './pagination/item-count.component';
 import { FilterComponent } from './filter/filter.component';
 import { ImageCardComponent } from './components/image-card/image-card.component';
 import { BarTitleComponent } from './components/bar-title/bar-title.component';
+import { NotificationTypeIconDirective } from './directive/notification-type-icon.directive';
 
 @NgModule({
   imports: [SharedLibsModule],
@@ -32,7 +33,8 @@ import { BarTitleComponent } from './components/bar-title/bar-title.component';
     ItemCountComponent,
     FilterComponent,
     ImageCardComponent,
-    BarTitleComponent
+    BarTitleComponent,
+    NotificationTypeIconDirective
   ],
   exports: [
     SharedLibsModule,
@@ -49,7 +51,8 @@ import { BarTitleComponent } from './components/bar-title/bar-title.component';
     ItemCountComponent,
     FilterComponent,
     ImageCardComponent,
-    BarTitleComponent
+    BarTitleComponent,
+    NotificationTypeIconDirective
   ],
 })
 export class SharedModule {}

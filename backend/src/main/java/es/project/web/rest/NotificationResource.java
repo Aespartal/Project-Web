@@ -45,15 +45,17 @@ public class NotificationResource {
     private final NotificationRepository notificationRepository;
 
     private final NotificationQueryService notificationQueryService;
+    private final NotificationWebSocketResource notificationWebSocketResource;
 
     public NotificationResource(
         NotificationService notificationService,
         NotificationRepository notificationRepository,
-        NotificationQueryService notificationQueryService
-    ) {
+        NotificationQueryService notificationQueryService,
+        NotificationWebSocketResource notificationWebSocketResource) {
         this.notificationService = notificationService;
         this.notificationRepository = notificationRepository;
         this.notificationQueryService = notificationQueryService;
+        this.notificationWebSocketResource = notificationWebSocketResource;
     }
 
     /**
@@ -71,6 +73,8 @@ public class NotificationResource {
             throw new BadRequestAlertException("A new notification cannot already have an ID", ENTITY_NAME, "idexists");
         }
         NotificationDTO result = notificationService.save(notificationDTO);
+
+        notificationWebSocketResource.notifyClients(result);
         return ResponseEntity
             .created(new URI("/api/notifications/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

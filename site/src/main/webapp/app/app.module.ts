@@ -25,6 +25,9 @@ import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
+import { RxStompService } from './shared/services/rx-stomp.service';
+import { rxStompServiceFactory } from './shared/services/rx-stomp-service.factory';
+import { RxStomp } from '@stomp/rx-stomp';
 
 @NgModule({
   imports: [
@@ -44,6 +47,14 @@ import { ErrorComponent } from './layouts/error/error.component';
     { provide: LOCALE_ID, useValue: 'es' },
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
+    {
+      provide: RxStompService,
+      useFactory: rxStompServiceFactory,
+    },
+    {
+      provide: RxStomp,
+      useFactory: rxStompServiceFactory,
+    }
   ],
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
   bootstrap: [MainComponent],

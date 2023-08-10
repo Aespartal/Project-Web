@@ -1,5 +1,5 @@
-<div class="card-image" *ngIf="image" (click)="navigateToView()">
-  <img *ngIf="image.extendedUser" [src]="url + image.extendedUser.id + '/' + image.fileName" alt="image" />
+<div class="card-image" *ngIf="image">
+  <img *ngIf="image.extendedUser" [src]="url + image.extendedUser.id + '/' + image.fileName" alt="image"  (click)="navigateToView()"/>
   <div class="card-body">
     <h5 class="card-title" *ngIf="image.title">{{image.title}}</h5>
     <div>

@@ -5,29 +5,30 @@
       <img src="../../content/images/user_default.avif" alt="Foto de perfil">
     </div>
     <div class="user-info" *ngIf="extendedUser.user">
-      <!-- Información del usuario -->
       <h3 *ngIf="extendedUser.user.login">{{ extendedUser.user.firstName }}</h3>
       <p *ngIf="extendedUser.user.email">@{{ extendedUser.user.login }}</p>
-      <!-- Otros datos relevantes del usuario -->
-      <!-- Seguidores y seguidos -->
       <div class="user-followers">
         <div class="user-followers-count">
           <p>Seguidores</p>
-          <p>0</p>
+          <p>{{ extendedUser.totalFollowers }}</p>
         </div>
         <div class="user-followers-count">
-          <p>Seguidos</p>
-          <p>0</p>
+          <p>Siguiendo</p>
+          <p>{{ extendedUser.totalFollowing }}</p>
         </div>
       </div>
     </div>
   </div>
-  <!-- Otros elementos de la cuenta del usuario, como configuración, opciones de cuenta, etc. -->
   <div class="account-options">
+    <a class="position-relative" routerLink="notifications"><fa-icon icon="bell"></fa-icon>
+      Notificaciones
+      <span class="badge bg-danger border border-light rounded-circle" *ngIf="extendedUser.totalNotifications">
+        {{ notifications }}
+      </span>
+    </a>
     <a routerLink="/account/settings"><fa-icon icon="gear"></fa-icon>
       Configuración
     </a>
     <a href="#"><fa-icon icon="right-from-bracket"></fa-icon> Salir</a>
-    <!-- Otros enlaces relevantes -->
   </div>
 </div>
