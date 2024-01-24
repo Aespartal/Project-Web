@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="likeImage">
+      <h2 data-cy="likeImageDetailsHeading"><span jhiTranslate="projectApp.likeImage.detail.title">Like Image</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ likeImage.id }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.likeImage.creationDate" [ngbTooltip]="'projectApp.likeImage.help.creationDate' | translate"
+            >Creation Date</span
+          >
+        </dt>
+        <dd>
+          <span>{{ likeImage.creationDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="projectApp.likeImage.image">Image</span></dt>
+        <dd>
+          <div *ngIf="likeImage.image">
+            <a [routerLink]="['/image', likeImage.image.id, 'view']">{{ likeImage.image.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="projectApp.likeImage.extendedUser">Extended User</span></dt>
+        <dd>
+          <div *ngIf="likeImage.extendedUser">
+            <a [routerLink]="['/extended-user', likeImage.extendedUser.id, 'view']">{{ likeImage.extendedUser.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+      </button>
+
+      <button type="button" [routerLink]="['/like-image', likeImage.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,13 +1,27 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IExtendedUser, NewExtendedUser } from '../extended-user.model';
+import { IUser } from 'app/entities/user/user.model';
 
 export type PartialUpdateExtendedUser = Partial<IExtendedUser> & Pick<IExtendedUser, 'id'>;
+
+type RestOf<T extends IExtendedUser | NewExtendedUser> = Omit<T, 'birthDate'> & {
+  birthDate?: string | null;
+  user: IUser;
+};
+
+export type RestExtendedUser = RestOf<IExtendedUser>;
+
+export type NewRestExtendedUser = RestOf<NewExtendedUser>;
+
+export type PartialUpdateRestExtendedUser = RestOf<PartialUpdateExtendedUser>;
 
 export type EntityResponseType = HttpResponse<IExtendedUser>;
 export type EntityArrayResponseType = HttpResponse<IExtendedUser[]>;
@@ -18,29 +32,44 @@ export class ExtendedUserService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(extendedUser: NewExtendedUser): Observable<EntityResponseType> {
-    return this.http.post<IExtendedUser>(this.resourceUrl, extendedUser, { observe: 'response' });
+  create(extendedUser: NewExtendedUser | IExtendedUser): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(extendedUser);
+    return this.http
+      .post<RestExtendedUser>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
+  me(): Observable<EntityResponseType> {
+    return this.http
+      .get<RestExtendedUser>(`${this.resourceUrl}/me`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   update(extendedUser: IExtendedUser): Observable<EntityResponseType> {
-    return this.http.put<IExtendedUser>(`${this.resourceUrl}/${this.getExtendedUserIdentifier(extendedUser)}`, extendedUser, {
-      observe: 'response',
-    });
+    const copy = this.convertDateFromClient(extendedUser);
+    return this.http
+      .put<RestExtendedUser>(`${this.resourceUrl}/${this.getExtendedUserIdentifier(extendedUser)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   partialUpdate(extendedUser: PartialUpdateExtendedUser): Observable<EntityResponseType> {
-    return this.http.patch<IExtendedUser>(`${this.resourceUrl}/${this.getExtendedUserIdentifier(extendedUser)}`, extendedUser, {
-      observe: 'response',
-    });
+    const copy = this.convertDateFromClient(extendedUser);
+    return this.http
+      .patch<RestExtendedUser>(`${this.resourceUrl}/${this.getExtendedUserIdentifier(extendedUser)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IExtendedUser>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http
+      .get<RestExtendedUser>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IExtendedUser[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<RestExtendedUser[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
@@ -48,7 +77,7 @@ export class ExtendedUserService {
   }
 
   getExtendedUserIdentifier(extendedUser: Pick<IExtendedUser, 'id'>): number {
-    return extendedUser.id;
+    return extendedUser.id!;
   }
 
   compareExtendedUser(o1: Pick<IExtendedUser, 'id'> | null, o2: Pick<IExtendedUser, 'id'> | null): boolean {
@@ -75,5 +104,32 @@ export class ExtendedUserService {
       return [...extendedUsersToAdd, ...extendedUserCollection];
     }
     return extendedUserCollection;
+  }
+
+  protected convertDateFromClient<T extends IExtendedUser | NewExtendedUser | PartialUpdateExtendedUser>(extendedUser: T): RestOf<T> {
+    return {
+      ...extendedUser,
+      birthDate: extendedUser.birthDate?.toJSON() ?? null,
+      user: extendedUser.user!,
+    };
+  }
+
+  protected convertDateFromServer(restExtendedUser: RestExtendedUser): IExtendedUser {
+    return {
+      ...restExtendedUser,
+      birthDate: restExtendedUser.birthDate ? dayjs(restExtendedUser.birthDate) : undefined,
+    };
+  }
+
+  protected convertResponseFromServer(res: HttpResponse<RestExtendedUser>): HttpResponse<IExtendedUser> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestExtendedUser[]>): HttpResponse<IExtendedUser[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
   }
 }

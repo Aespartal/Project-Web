@@ -1,0 +1,60 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="follow">
+      <h2 data-cy="followDetailsHeading"><span jhiTranslate="projectApp.follow.detail.title">Follow</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ follow.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="projectApp.follow.state" [ngbTooltip]="'projectApp.follow.help.state' | translate">State</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'projectApp.FollowState.' + follow.state }}">{{ follow.state }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.follow.creationDate" [ngbTooltip]="'projectApp.follow.help.creationDate' | translate"
+            >Creation Date</span
+          >
+        </dt>
+        <dd>
+          <span>{{ follow.creationDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="projectApp.follow.acceptanceDate" [ngbTooltip]="'projectApp.follow.help.acceptanceDate' | translate"
+            >Acceptance Date</span
+          >
+        </dt>
+        <dd>
+          <span>{{ follow.acceptanceDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="projectApp.follow.follower">Follower</span></dt>
+        <dd>
+          <div *ngIf="follow.follower">
+            <a [routerLink]="['/extended-user', follow.follower.id, 'view']">{{ follow.follower.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="projectApp.follow.following">Following</span></dt>
+        <dd>
+          <div *ngIf="follow.following">
+            <a [routerLink]="['/extended-user', follow.following.id, 'view']">{{ follow.following.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+      </button>
+
+      <button type="button" [routerLink]="['/follow', follow.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+      </button>
+    </div>
+  </div>
+</div>

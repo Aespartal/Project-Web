@@ -55,4 +55,6 @@ public interface ExtendedUserService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Optional<ExtendedUserDTO> getCurrentExtendedUser();
 }

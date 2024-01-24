@@ -1,0 +1,11 @@
+{
+  "projectApp": {
+    "NotificationType": {
+      "null": "",
+      "FOLLOW": "Quiere seguirte",
+      "LIKE_IMAGE": "Le gusta tu imagen",
+      "LIKE_COMMENTARY": "Le gusta tu comentario",
+      "COMMENTARY": "Nuevo comentario"
+    }
+  }
+}

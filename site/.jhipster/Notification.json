@@ -1,0 +1,59 @@
+{
+  "applications": "*",
+  "changelogDate": "20230727100901",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "notification",
+  "fields": [
+    {
+      "fieldName": "message",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "3500",
+      "javadoc": "message"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "NotificationType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "FOLLOW,LIKE_IMAGE,LIKE_COMMENTARY,COMMENTARY",
+      "javadoc": "type"
+    },
+    {
+      "fieldName": "creationDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"],
+      "javadoc": "creationDate"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "Notification",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "extendedUser",
+      "relationshipName": "image",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "extendedUser",
+      "relationshipName": "commentary",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "extendedUser",
+      "relationshipName": "notifier",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "extendedUser",
+      "relationshipName": "notifying",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "serviceImpl"
+}

@@ -8,12 +8,17 @@
 // Colors:
 // Grayscale and brand colors for use across Bootstrap.
 
-$primary: #3e8acc;
-$success: #28a745;
+$primary: #007bff;
+$secondary: #6c757d;
+$succes: #28a745;
 $info: #17a2b8;
 $warning: #ffc107;
 $danger: #dc3545;
+$light: #f8f9fa;
+$dark: #222325;
+$hover-links-button: #2B2B2B;
 
+$btn-link-color: #f8f9fa;
 // Options:
 // Quickly modify global styling by enabling or disabling optional features.
 $enable-rounded: true;
@@ -43,3 +48,6 @@ $font-size-base: 1rem;
 
 $dropdown-link-hover-color: white;
 $dropdown-link-hover-bg: #343a40;
+
+// table
+$table-color:  white;

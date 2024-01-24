@@ -1,0 +1,36 @@
+<section>
+  <article>
+    <jhi-bar-title [title]="'global.home.bar.popularImages'"></jhi-bar-title>
+    <div class="row">
+      <div class="col">
+        <div class="grid-gallery">
+          <jhi-card *ngFor="let popularImage of popularImages; trackBy: trackId"
+          [image]="popularImage"
+          (likeClicked)="onLikeClick($event)"
+          (commentClicked)="onCommentClick($event)"
+          (imageClicked)="onImageClicked($event)"
+          >
+          </jhi-card>
+        </div>
+        <jhi-message-empty *ngIf="popularImages.length === 0" [translateMessage]="'projectApp.image.message.popularEmpty'"></jhi-message-empty>
+      </div>
+    </div>
+  </article>
+  <article>
+    <jhi-bar-title [title]="'global.home.bar.recentImages'"></jhi-bar-title>
+    <div class="row">
+      <div class="col">
+        <div class="grid-gallery">
+          <jhi-card *ngFor="let recentImage of recentImages; trackBy: trackId"
+          [image]="recentImage"
+          (likeClicked)="onLikeClick($event)"
+          (commentClicked)="onCommentClick($event)"
+          (imageClicked)="onImageClicked($event)"
+          >
+          </jhi-card>
+        </div>
+        <jhi-message-empty *ngIf="popularImages.length === 0" [translateMessage]="'projectApp.image.message.recentEmpty'"></jhi-message-empty>
+      </div>
+    </div>
+  </article>
+</section>

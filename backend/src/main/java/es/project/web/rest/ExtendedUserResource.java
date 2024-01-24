@@ -1,13 +1,11 @@
 package es.project.web.rest;
 
-import es.project.domain.User;
 import es.project.repository.ExtendedUserRepository;
-import es.project.repository.UserRepository;
 import es.project.service.ExtendedUserQueryService;
 import es.project.service.ExtendedUserService;
 import es.project.service.criteria.ExtendedUserCriteria;
 import es.project.service.dto.ExtendedUserDTO;
-import es.project.web.rest.errors.BadRequestAlertException;
+import es.project.exception.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -51,7 +49,8 @@ public class ExtendedUserResource {
     public ExtendedUserResource(
         ExtendedUserService extendedUserService,
         ExtendedUserRepository extendedUserRepository,
-        ExtendedUserQueryService extendedUserQueryService) {
+        ExtendedUserQueryService extendedUserQueryService
+    ) {
         this.extendedUserService = extendedUserService;
         this.extendedUserRepository = extendedUserRepository;
         this.extendedUserQueryService = extendedUserQueryService;

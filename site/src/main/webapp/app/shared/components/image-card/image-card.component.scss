@@ -1,0 +1,98 @@
+.card-image {
+  position: relative;
+  display: inline;
+
+  figure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    min-height: 100%;
+    // background-color: #000000;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.402);
+
+    transition: box-shadow 0.3s ease;
+  }
+
+  img {
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    aspect-ratio: 1 / 1;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  svg {
+    position: absolute;
+    width: 64px;
+    opacity: 0;
+    pointer-events: none;
+
+    &.like {
+      animation: 1s like ease-in-out;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.card-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.567) 75%, rgba(0,212,255,0) 100%);
+  padding: 10px;
+  transition: transform 0.3s ease;
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .card-title {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .card-likes,
+  .card-comments {
+    gap: 5px;
+
+    span {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+@keyframes like {
+  0% {
+    opacity: 0;
+    scale: 0;
+  }
+  15% {
+    opacity: 1;
+    scale: 1.2;
+  }
+  30% {
+    scale: .95;
+  }
+  45%,
+  88% {
+    scale: 1;
+  }
+  100% {
+    opacity: 1;
+    scale: 0;
+  }
+}

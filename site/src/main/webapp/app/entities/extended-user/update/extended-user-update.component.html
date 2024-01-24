@@ -11,13 +11,134 @@
 
       <div>
         <jhi-alert-error></jhi-alert-error>
+        
+        <form [formGroup]="userFormGroup">
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label" jhiTranslate="userManagement.login">Login</label>
+              <input type="text" class="form-control" name="login" formControlName="login" />
+      
+              <div *ngIf="userFormGroup.get('login')!.invalid && (userFormGroup.get('login')!.dirty || userFormGroup.get('login')!.touched)">
+                <small class="form-text text-danger" *ngIf="userFormGroup.get('login')?.errors?.required" jhiTranslate="entity.validation.required">
+                  Este campo es obligatorio.
+                </small>
+      
+                <small
+                  class="form-text text-danger"
+                  *ngIf="userFormGroup.get('login')?.errors?.maxlength"
+                  jhiTranslate="entity.validation.maxlength"
+                  [translateValues]="{ max: 50 }"
+                >
+                  Este campo no puede superar más de 50 caracteres.
+                </small>
+      
+                <small class="form-text text-danger" *ngIf="userFormGroup.get('login')?.errors?.pattern" jhiTranslate="entity.validation.patternLogin">
+                  This field can only contain letters, digits and e-mail addresses.
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" jhiTranslate="userManagement.email">Email</label>
+              <input type="email" class="form-control" name="email" formControlName="email" />
+    
+            <div *ngIf="userFormGroup.get('email')!.invalid && (userFormGroup.get('email')!.dirty || userFormGroup.get('email')!.touched)">
+              <small class="form-text text-danger" *ngIf="userFormGroup.get('email')?.errors?.required" jhiTranslate="entity.validation.required">
+                Este campo es obligatorio.
+              </small>
+    
+              <small
+                class="form-text text-danger"
+                *ngIf="userFormGroup.get('email')?.errors?.maxlength"
+                jhiTranslate="entity.validation.maxlength"
+                [translateValues]="{ max: 100 }"
+              >
+                Este campo no puede superar más de 100 caracteres.
+              </small>
+    
+              <small
+                class="form-text text-danger"
+                *ngIf="userFormGroup.get('email')?.errors?.minlength"
+                jhiTranslate="entity.validation.minlength"
+                [translateValues]="{ min: 5 }"
+              >
+                Este campo requiere al menos 5 caracteres.
+              </small>
+    
+              <small
+                class="form-text text-danger"
+                *ngIf="userFormGroup.get('email')?.errors?.email"
+                jhiTranslate="global.messages.validate.email.invalid"
+              >
+                Su correo electrónico no es válido.
+              </small>
+            </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" jhiTranslate="userManagement.firstName">Nombre</label>
+              <input type="text" class="form-control" name="firstName" formControlName="firstName" />
+      
+              <div *ngIf="userFormGroup.get('firstName')!.invalid && (userFormGroup.get('firstName')!.dirty || userFormGroup.get('firstName')!.touched)">
+                <small
+                  class="form-text text-danger"
+                  *ngIf="userFormGroup.get('firstName')?.errors?.maxlength"
+                  jhiTranslate="entity.validation.maxlength"
+                  [translateValues]="{ max: 50 }"
+                >
+                  Este campo no puede superar más de 50 caracteres.
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label  class="form-label" jhiTranslate="userManagement.lastName">Apellidos</label>
+              <input type="text" class="form-control" name="lastName" formControlName="lastName" />
+      
+              <div *ngIf="userFormGroup.get('lastName')!.invalid && (userFormGroup.get('lastName')!.dirty || userFormGroup.get('lastName')!.touched)">
+                <small
+                  class="form-text text-danger"
+                  *ngIf="userFormGroup.get('lastName')?.errors?.maxlength"
+                  jhiTranslate="entity.validation.maxlength"
+                  [translateValues]="{ max: 50 }"
+                >
+                  Este campo no puede superar más de 50 caracteres.
+                </small>
+              </div>
+            </div>
+          </div>
 
-        <div class="row mb-3">
+          <div class="form-check">
+            <label class="form-check-label" for="activated">
+              <input
+                class="form-check-input"
+                [attr.disabled]="userFormGroup.value.id === undefined ? 'disabled' : null"
+                type="checkbox"
+                id="activated"
+                name="activated"
+                formControlName="activated"
+              />
+              <span jhiTranslate="userManagement.activated">Activado</span>
+            </label>
+          </div>
+    
+          <div class="mb-3" *ngIf="languages && languages.length > 0">
+            <label jhiTranslate="userManagement.langKey">Idioma</label>
+            <select class="form-control" id="langKey" name="langKey" formControlName="langKey">
+              <option *ngFor="let language of languages" [value]="language">{{ language | findLanguageFromKey }}</option>
+            </select>
+          </div>
+    
+          <div class="mb-3">
+            <label jhiTranslate="userManagement.profiles">Perfiles</label>
+            <select class="form-control" multiple name="authority" formControlName="authorities">
+              <option *ngFor="let authority of authorities" [value]="authority">{{ authority }}</option>
+            </select>
+          </div>
+        </form>
+
+        <div class="mb-3">
           <label
             class="form-label"
             jhiTranslate="projectApp.extendedUser.description"
             for="field_description"
-            [ngbTooltip]="'projectApp.extendedUser.help.description' | translate"
             >Description</label
           >
           <input
@@ -40,33 +161,11 @@
           </div>
         </div>
 
-        <div class="row mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="projectApp.extendedUser.web"
-            for="field_web"
-            [ngbTooltip]="'projectApp.extendedUser.help.web' | translate"
-            >Web</label
-          >
-          <input type="text" class="form-control" name="web" id="field_web" data-cy="web" formControlName="web" />
-          <div *ngIf="editForm.get('web')!.invalid && (editForm.get('web')!.dirty || editForm.get('web')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('web')?.errors?.maxlength"
-              jhiTranslate="entity.validation.maxlength"
-              [translateValues]="{ max: 100 }"
-            >
-              Este campo no puede superar más de 100 caracteres.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
+        <div class="mb-3">
           <label
             class="form-label"
             jhiTranslate="projectApp.extendedUser.location"
             for="field_location"
-            [ngbTooltip]="'projectApp.extendedUser.help.location' | translate"
             >Location</label
           >
           <input type="text" class="form-control" name="location" id="field_location" data-cy="location" formControlName="location" />
@@ -82,40 +181,92 @@
           </div>
         </div>
 
-        <div class="row mb-3">
+        <div class="mb-3">
           <label
             class="form-label"
-            jhiTranslate="projectApp.extendedUser.profession"
-            for="field_profession"
-            [ngbTooltip]="'projectApp.extendedUser.help.profession' | translate"
-            >Profession</label
+            jhiTranslate="projectApp.extendedUser.height"
+            for="field_height"
+            >Height</label
           >
-          <input
-            type="text"
-            class="form-control"
-            name="profession"
-            id="field_profession"
-            data-cy="profession"
-            formControlName="profession"
-          />
-          <div *ngIf="editForm.get('profession')!.invalid && (editForm.get('profession')!.dirty || editForm.get('profession')!.touched)">
+          <input type="number" class="form-control" name="height" id="field_height" data-cy="height" formControlName="height" />
+          <div *ngIf="editForm.get('height')!.invalid && (editForm.get('height')!.dirty || editForm.get('height')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('height')?.errors?.required" jhiTranslate="entity.validation.required">
+              Este campo es obligatorio.
+            </small>
             <small
               class="form-text text-danger"
-              *ngIf="editForm.get('profession')?.errors?.maxlength"
-              jhiTranslate="entity.validation.maxlength"
-              [translateValues]="{ max: 50 }"
+              *ngIf="editForm.get('height')?.errors?.min"
+              jhiTranslate="entity.validation.min"
+              [translateValues]="{ min: 0 }"
             >
-              Este campo no puede superar más de 50 caracteres.
+              Este campo debe ser mayor que 0.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('height')?.errors?.number" jhiTranslate="entity.validation.number">
+              Este campo debe ser un número.
             </small>
           </div>
         </div>
 
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="projectApp.extendedUser.user" for="field_user">User</label>
-          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
-            <option [ngValue]="null"></option>
-            <option [ngValue]="userOption" *ngFor="let userOption of usersSharedCollection">{{ userOption.id }}</option>
-          </select>
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.extendedUser.weight"
+            for="field_weight"
+            >Weight</label
+          >
+          <input type="number" class="form-control" name="weight" id="field_weight" data-cy="weight" formControlName="weight" />
+          <div *ngIf="editForm.get('weight')!.invalid && (editForm.get('weight')!.dirty || editForm.get('weight')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('weight')?.errors?.required" jhiTranslate="entity.validation.required">
+              Este campo es obligatorio.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('weight')?.errors?.min"
+              jhiTranslate="entity.validation.min"
+              [translateValues]="{ min: 0 }"
+            >
+              Este campo debe ser mayor que 0.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('weight')?.errors?.number" jhiTranslate="entity.validation.number">
+              Este campo debe ser un número.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.extendedUser.birthDate"
+            for="field_birthDate"
+            >Birth Date</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_birthDate"
+              data-cy="birthDate"
+              type="datetime-local"
+              class="form-control"
+              name="birthDate"
+              formControlName="birthDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div *ngIf="editForm.get('birthDate')!.invalid && (editForm.get('birthDate')!.dirty || editForm.get('birthDate')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('birthDate')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Este campo es obligatorio.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('birthDate')?.errors?.datetimelocal"
+              jhiTranslate="entity.validation.datetimelocal"
+            >
+              Este campo debe ser una fecha y hora.
+            </small>
+          </div>
         </div>
       </div>
 

@@ -1,0 +1,50 @@
+{
+  "projectApp": {
+    "image": {
+      "home": {
+        "title": "Imágenes",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Imagen",
+        "createOrEditLabel": "Crear o editar Imagen",
+        "notFound": "Ninguna Imagen encontrado"
+      },
+      "created": "Una nueva Imagen ha sido creada con el identificador {{ param }}",
+      "updated": "Una Imagen ha sido actualizada con el identificador {{ param }}",
+      "deleted": "Una Imagen ha sido eliminada con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar la Imagen: {{ id }}?"
+      },
+      "detail": {
+        "title": "Imagen"
+      },
+      "id": "ID",
+      "title": "Título",
+      "description": "Descripción",
+      "fileName": "Nombre del archivo",
+      "path": "Ruta",
+      "creationDate": "Fecha de creación",
+      "modificationDate": "Fecha de modificación",
+      "isPrivate": "Privada",
+      "commentaries": "Comentarios",
+      "extendedUser": "Usuario",
+      "totalLikes": "Total de Me gustas",
+      "totalCommentaries": "Nº de comentarios",
+      "upload": "Subir imagen",
+      "help": {
+        "title": "título",
+        "description": "descripción",
+        "fileName": "nombre del archivo",
+        "path": "ruta",
+        "creationDate": "fecha de creación",
+        "modificationDate": "fecha de modificación",
+        "isPrivate": "privada",
+        "totalLikes": "Total de Me gustas",
+        "totalCommentaries": "Nº de comentarios"
+      },
+      "message": {
+        "popularEmpty": "No existen imágenes populares",
+        "recentEmpty": "No existen imágenes recientes"
+      }
+    }
+  }
+}

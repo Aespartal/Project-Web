@@ -1,0 +1,212 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-notification-heading"
+        data-cy="NotificationCreateUpdateHeading"
+        jhiTranslate="projectApp.notification.home.createOrEditLabel"
+      >
+        Crear o editar Notification
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.notification.message"
+            for="field_message"
+            [ngbTooltip]="'projectApp.notification.help.message' | translate"
+            >Message</label
+          >
+          <input type="text" class="form-control" name="message" id="field_message" data-cy="message" formControlName="message" />
+          <div *ngIf="editForm.get('message')!.invalid && (editForm.get('message')!.dirty || editForm.get('message')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('message')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Este campo es obligatorio.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('message')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 3500 }"
+            >
+              Este campo no puede superar más de 3500 caracteres.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.notification.type"
+            for="field_type"
+            [ngbTooltip]="'projectApp.notification.help.type' | translate"
+            >Type</label
+          >
+          <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
+            <option [ngValue]="null">{{ 'projectApp.NotificationType.null' | translate }}</option>
+            <option *ngFor="let notificationType of notificationTypeValues" [value]="notificationType">
+              {{ 'projectApp.NotificationType.' + notificationType | translate }}
+            </option>
+          </select>
+          <div *ngIf="editForm.get('type')!.invalid && (editForm.get('type')!.dirty || editForm.get('type')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('type')?.errors?.required" jhiTranslate="entity.validation.required">
+              Este campo es obligatorio.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.notification.creationDate"
+            for="field_creationDate"
+            [ngbTooltip]="'projectApp.notification.help.creationDate' | translate"
+            >Creation Date</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_creationDate"
+              data-cy="creationDate"
+              type="datetime-local"
+              class="form-control"
+              name="creationDate"
+              formControlName="creationDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div
+            *ngIf="editForm.get('creationDate')!.invalid && (editForm.get('creationDate')!.dirty || editForm.get('creationDate')!.touched)"
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('creationDate')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Este campo es obligatorio.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('creationDate')?.errors?.datetimelocal"
+              jhiTranslate="entity.validation.datetimelocal"
+            >
+              Este campo debe ser una fecha y hora.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="projectApp.notification.image" for="field_image">Image</label>
+          <select
+            class="form-control"
+            id="field_image"
+            data-cy="image"
+            name="image"
+            formControlName="image"
+            [compareWith]="compareExtendedUser"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="extendedUserOption" *ngFor="let extendedUserOption of extendedUsersSharedCollection">
+              {{ extendedUserOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="projectApp.notification.commentary" for="field_commentary">Commentary</label>
+          <select
+            class="form-control"
+            id="field_commentary"
+            data-cy="commentary"
+            name="commentary"
+            formControlName="commentary"
+            [compareWith]="compareExtendedUser"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="extendedUserOption" *ngFor="let extendedUserOption of extendedUsersSharedCollection">
+              {{ extendedUserOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="projectApp.notification.notifier" for="field_notifier">Notifier</label>
+          <select
+            class="form-control"
+            id="field_notifier"
+            data-cy="notifier"
+            name="notifier"
+            formControlName="notifier"
+            [compareWith]="compareExtendedUser"
+          >
+            <option *ngIf="!editForm.get('notifier')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="extendedUserOption" *ngFor="let extendedUserOption of extendedUsersSharedCollection">
+              {{ extendedUserOption.id }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['notifier'])!.invalid && (editForm.get(['notifier'])!.dirty || editForm.get(['notifier'])!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['notifier'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Este campo es obligatorio.
+          </small>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="projectApp.notification.notifying" for="field_notifying">Notifying</label>
+          <select
+            class="form-control"
+            id="field_notifying"
+            data-cy="notifying"
+            name="notifying"
+            formControlName="notifying"
+            [compareWith]="compareExtendedUser"
+          >
+            <option *ngIf="!editForm.get('notifying')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="extendedUserOption" *ngFor="let extendedUserOption of extendedUsersSharedCollection">
+              {{ extendedUserOption.id }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['notifying'])!.invalid && (editForm.get(['notifying'])!.dirty || editForm.get(['notifying'])!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['notifying'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Este campo es obligatorio.
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

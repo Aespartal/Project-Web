@@ -1,0 +1,116 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-like-image-heading" data-cy="LikeImageCreateUpdateHeading" jhiTranslate="projectApp.likeImage.home.createOrEditLabel">
+        Crear o editar Like Image
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="projectApp.likeImage.creationDate"
+            for="field_creationDate"
+            [ngbTooltip]="'projectApp.likeImage.help.creationDate' | translate"
+            >Creation Date</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_creationDate"
+              data-cy="creationDate"
+              type="datetime-local"
+              class="form-control"
+              name="creationDate"
+              formControlName="creationDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div
+            *ngIf="editForm.get('creationDate')!.invalid && (editForm.get('creationDate')!.dirty || editForm.get('creationDate')!.touched)"
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('creationDate')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Este campo es obligatorio.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('creationDate')?.errors?.datetimelocal"
+              jhiTranslate="entity.validation.datetimelocal"
+            >
+              Este campo debe ser una fecha y hora.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="projectApp.likeImage.image" for="field_image">Image</label>
+          <select class="form-control" id="field_image" data-cy="image" name="image" formControlName="image" [compareWith]="compareImage">
+            <option *ngIf="!editForm.get('image')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="imageOption" *ngFor="let imageOption of imagesSharedCollection">{{ imageOption.id }}</option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['image'])!.invalid && (editForm.get(['image'])!.dirty || editForm.get(['image'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['image'])?.errors?.required" jhiTranslate="entity.validation.required">
+            Este campo es obligatorio.
+          </small>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="projectApp.likeImage.extendedUser" for="field_extendedUser">Extended User</label>
+          <select
+            class="form-control"
+            id="field_extendedUser"
+            data-cy="extendedUser"
+            name="extendedUser"
+            formControlName="extendedUser"
+            [compareWith]="compareExtendedUser"
+          >
+            <option *ngIf="!editForm.get('extendedUser')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="extendedUserOption" *ngFor="let extendedUserOption of extendedUsersSharedCollection">
+              {{ extendedUserOption.id }}
+            </option>
+          </select>
+        </div>
+        <div
+          *ngIf="
+            editForm.get(['extendedUser'])!.invalid && (editForm.get(['extendedUser'])!.dirty || editForm.get(['extendedUser'])!.touched)
+          "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['extendedUser'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Este campo es obligatorio.
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

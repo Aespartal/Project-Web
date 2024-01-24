@@ -1,0 +1,76 @@
+@import '../../../content/scss/bootstrap-variables';
+
+/* Main container */
+.container-fluid {
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* notification container */
+.notification-container {
+  margin-top: 1rem;
+  margin-left: 320px;
+  width: calc(100% - 320px);
+  transition: margin-left 0.2s;
+}
+
+.notification-item {
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+}
+
+.notification-content {
+  margin: 10px 0;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.notification-type {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.notification-date {
+  color: #888;
+}
+
+.notification-message {
+  margin-top: 5px;
+}
+
+.notification-details {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.notification-image img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.notification-commentary,
+.notification-notifier,
+.notification-notifying {
+  margin-right: 20px;
+  color: #888;
+}
+
+.notification-container.close {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+/* Additional styling, you can customize it further based on your requirements */
+

@@ -237,6 +237,8 @@ dependencies {
     liquibaseRuntime sourceSets.main.compileClasspath
     liquibaseRuntime "org.liquibase.ext:liquibase-hibernate5:${liquibaseHibernate5Version}"
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
+    implementation "org.springframework.boot:spring-boot-starter-websocket"
+
 }
 
 if (project.hasProperty("gae")) {
@@ -260,5 +262,12 @@ wrapper {
 }
 
 
+task copyWebApp(type: Copy) {
+    from "../site/target/classes/static/"
+    into "build/resources/main/static/."
+}
+
 compileJava.dependsOn processResources
 processResources.dependsOn bootBuildInfo
+
+compileJava.dependsOn copyWebApp

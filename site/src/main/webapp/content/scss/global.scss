@@ -20,10 +20,6 @@ a {
   font-weight: bold;
 }
 
-a:hover {
-  color: #533f03;
-}
-
 /* override hover color for dropdown-item forced by bootstrap to all a:not([href]):not([tabindex]) elements in _reboot.scss */
 a:not([href]):not([tabindex]):hover.dropdown-item {
   color: $dropdown-link-hover-color;
@@ -237,3 +233,63 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   }
 }
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+/* Estilos personalizados */
+:root {
+  --bs-dark-rgb: #161616
+}
+
+body {
+  background-color: var(--bs-dark-rgb);
+  /*background-image: url(../images/bg.webp);
+  background-repeat: none;
+  background-position: center;
+  background-size: cover;*/
+  color: white;
+}
+
+.navbar-dark {
+  background-color: var(--bs-dark-rgb);
+}
+
+.row {
+  --bs-gutter-x: 0;
+}
+
+button.btn {
+  border-radius: 20px;
+}
+
+.btn.btn-primary {
+  color: $btn-link-color;
+}
+
+.btn-icon {
+  padding: 0.25rem 0.5rem;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: white;
+
+  &:hover {
+    background-color: $hover-links-button;
+  }
+}
+
+.isFavourited {
+  color: red;
+}
+
+.user-avatar {
+  width: 65px;
+  height: 65px;
+}
+
+.divide {
+  width: 100%;
+  border-top: 1px solid #c3c3c3;
+  margin: 10px 0;
+}
+
+figure {
+  margin: 0;
+}

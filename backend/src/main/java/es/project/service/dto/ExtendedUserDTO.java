@@ -2,6 +2,7 @@ package es.project.service.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 import javax.validation.constraints.*;
 
@@ -22,13 +23,6 @@ public class ExtendedUserDTO implements Serializable {
     private String description;
 
     /**
-     * web
-     */
-    @Size(max = 100)
-    @Schema(description = "web")
-    private String web;
-
-    /**
      * location
      */
     @Size(max = 50)
@@ -36,13 +30,61 @@ public class ExtendedUserDTO implements Serializable {
     private String location;
 
     /**
-     * profession
+     * height
      */
-    @Size(max = 50)
-    @Schema(description = "profession")
-    private String profession;
+    @NotNull
+    @DecimalMin(value = "0")
+    @Schema(description = "height", required = true)
+    private Double height;
 
-    private UserDTO user;
+    /**
+     * weight
+     */
+    @NotNull
+    @DecimalMin(value = "0")
+    @Schema(description = "weight", required = true)
+    private Double weight;
+
+    /**
+     * birthDate
+     */
+    @NotNull
+    @Schema(description = "birthDate", required = true)
+    private Instant birthDate;
+
+    /**
+     * totalFollowers
+     */
+    @Min(value = 0)
+    @Schema(description = "totalFollowers")
+    private Integer totalFollowers;
+
+    /**
+     * totalFollowing
+     */
+    @Min(value = 0)
+    @Schema(description = "totalFollowing")
+    private Integer totalFollowing;
+
+    /**
+     * totalImages
+     */
+    @NotNull
+    @Min(value = 0)
+    @Schema(description = "totalImages", required = true)
+    private Integer totalImages;
+
+    /**
+     * totalNotifications
+     */
+    @NotNull
+    @Min(value = 0)
+    @Schema(description = "totalNotifications", required = true)
+    private Integer totalNotifications;
+
+    private AdminUserDTO user;
+
+    private String userLogin;
 
     public Long getId() {
         return id;
@@ -60,14 +102,6 @@ public class ExtendedUserDTO implements Serializable {
         this.description = description;
     }
 
-    public String getWeb() {
-        return web;
-    }
-
-    public void setWeb(String web) {
-        this.web = web;
-    }
-
     public String getLocation() {
         return location;
     }
@@ -76,20 +110,76 @@ public class ExtendedUserDTO implements Serializable {
         this.location = location;
     }
 
-    public String getProfession() {
-        return profession;
+    public Double getHeight() {
+        return height;
     }
 
-    public void setProfession(String profession) {
-        this.profession = profession;
+    public void setHeight(Double height) {
+        this.height = height;
     }
 
-    public UserDTO getUser() {
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public Instant getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Instant birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Integer getTotalFollowers() {
+        return totalFollowers;
+    }
+
+    public void setTotalFollowers(Integer totalFollowers) {
+        this.totalFollowers = totalFollowers;
+    }
+
+    public Integer getTotalFollowing() {
+        return totalFollowing;
+    }
+
+    public void setTotalFollowing(Integer totalFollowing) {
+        this.totalFollowing = totalFollowing;
+    }
+
+    public Integer getTotalImages() {
+        return totalImages;
+    }
+
+    public void setTotalImages(Integer totalImages) {
+        this.totalImages = totalImages;
+    }
+
+    public Integer getTotalNotifications() {
+        return totalNotifications;
+    }
+
+    public void setTotalNotifications(Integer totalNotifications) {
+        this.totalNotifications = totalNotifications;
+    }
+
+    public AdminUserDTO getUser() {
         return user;
     }
 
-    public void setUser(UserDTO user) {
+    public void setUser(AdminUserDTO user) {
         this.user = user;
+    }
+
+    public String getUserLogin() {
+    	return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+    	this.userLogin = userLogin;
     }
 
     @Override
@@ -119,9 +209,14 @@ public class ExtendedUserDTO implements Serializable {
         return "ExtendedUserDTO{" +
             "id=" + getId() +
             ", description='" + getDescription() + "'" +
-            ", web='" + getWeb() + "'" +
             ", location='" + getLocation() + "'" +
-            ", profession='" + getProfession() + "'" +
+            ", height=" + getHeight() +
+            ", weight=" + getWeight() +
+            ", birthDate='" + getBirthDate() + "'" +
+            ", totalFollowers=" + getTotalFollowers() +
+            ", totalFollowing=" + getTotalFollowing() +
+            ", totalImages=" + getTotalImages() +
+            ", totalNotifications=" + getTotalNotifications() +
             ", user=" + getUser() +
             "}";
     }

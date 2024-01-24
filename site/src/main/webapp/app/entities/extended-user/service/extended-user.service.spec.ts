@@ -4,10 +4,11 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { IExtendedUser } from '../extended-user.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../extended-user.test-samples';
 
-import { ExtendedUserService } from './extended-user.service';
+import { ExtendedUserService, RestExtendedUser } from './extended-user.service';
 
-const requireRestSample: IExtendedUser = {
+const requireRestSample: RestExtendedUser = {
   ...sampleWithRequiredData,
+  birthDate: sampleWithRequiredData.birthDate?.toJSON(),
 };
 
 describe('ExtendedUser Service', () => {

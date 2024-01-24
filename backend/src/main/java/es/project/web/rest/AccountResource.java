@@ -1,13 +1,15 @@
 package es.project.web.rest;
 
 import es.project.domain.User;
+import es.project.exception.EmailAlreadyUsedException;
+import es.project.exception.InvalidPasswordException;
+import es.project.exception.LoginAlreadyUsedException;
 import es.project.repository.UserRepository;
 import es.project.security.SecurityUtils;
 import es.project.service.MailService;
 import es.project.service.UserService;
 import es.project.service.dto.AdminUserDTO;
 import es.project.service.dto.PasswordChangeDTO;
-import es.project.web.rest.errors.*;
 import es.project.web.rest.vm.KeyAndPasswordVM;
 import es.project.web.rest.vm.ManagedUserVM;
 import java.util.*;

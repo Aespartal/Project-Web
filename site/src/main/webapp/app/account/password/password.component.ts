@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 import { PasswordService } from './password.service';
+import { IExtendedUser } from 'app/entities/extended-user/extended-user.model';
 
 @Component({
   selector: 'jhi-password',
@@ -14,7 +15,7 @@ export class PasswordComponent implements OnInit {
   doNotMatch = false;
   error = false;
   success = false;
-  account$?: Observable<Account | null>;
+  account$?: Observable<IExtendedUser | null>;
   passwordForm = new FormGroup({
     currentPassword: new FormControl('', { nonNullable: true, validators: Validators.required }),
     newPassword: new FormControl('', {

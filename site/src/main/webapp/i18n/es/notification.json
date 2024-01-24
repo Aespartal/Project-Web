@@ -1,0 +1,35 @@
+{
+  "projectApp": {
+    "notification": {
+      "home": {
+        "title": "Notifiaciones",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Notification",
+        "createOrEditLabel": "Crear o editar Notification",
+        "notFound": "Ningún notificación encontrada"
+      },
+      "created": "Un nuevo Notification ha sido creado con el identificador {{ param }}",
+      "updated": "Un Notification ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Notification ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Notification {{ id }}?"
+      },
+      "detail": {
+        "title": "Notification"
+      },
+      "id": "ID",
+      "message": "Message",
+      "type": "Type",
+      "creationDate": "Creation Date",
+      "image": "Image",
+      "commentary": "Commentary",
+      "notifier": "Notifier",
+      "notifying": "Notifying",
+      "help": {
+        "message": "message",
+        "type": "type",
+        "creationDate": "creationDate"
+      }
+    }
+  }
+}

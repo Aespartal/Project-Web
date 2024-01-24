@@ -2,31 +2,41 @@
   "projectApp": {
     "extendedUser": {
       "home": {
-        "title": "Extended Users",
+        "title": "Usuarios",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Extended User",
-        "createOrEditLabel": "Crear o editar Extended User",
-        "notFound": "Ningún Extended Users encontrado"
+        "createLabel": "Crear nuevo Usuario",
+        "createOrEditLabel": "Crear o editar Usuario",
+        "notFound": "Ningún Usuario encontrado"
       },
-      "created": "Un nuevo Extended User ha sido creado con el identificador {{ param }}",
-      "updated": "Un Extended User ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un Extended User ha sido eliminado con el identificador {{ param }}",
+      "created": "Un nuevo Usuario ha sido creado con el identificador {{ param }}",
+      "updated": "Un Usuario ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Usuario ha sido eliminado con el identificador {{ param }}",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Extended User {{ id }}?"
+        "question": "¿Seguro que quiere eliminar el Usuario: {{ id }}?"
       },
       "detail": {
-        "title": "Extended User"
+        "title": "Usuarios"
       },
-      "description": "Description",
-      "web": "Web",
-      "location": "Location",
-      "profession": "Profession",
+      "description": "Descripción",
+      "location": "Localidad",
+      "height": "Altura (cm)",
+      "weight": "Peso (kg)",
+      "birthDate": "Fecha de nacimiento",
       "user": "User",
+      "totalFollowers": "Seguidores",
+      "totalFollowing": "Siguiendo",
+      "totalImages": "Nº de imagenes subidas",
+      "totalNotifications": "Nº de notificaciones",
       "help": {
-        "description": "description",
-        "web": "web",
-        "location": "location",
-        "profession": "profession"
+        "description": "descripción",
+        "location": "localidad",
+        "height": "altura (cm)",
+        "weight": "peso (kg)",
+        "birthDate": "fecha de nacimiento",
+        "totalFollowers": "Seguidores",
+        "totalFollowing": "Siguiendo",
+        "totalImages": "Nº de imagenes subidas",
+        "totalNotifications": "Nº de notificaciones"
       }
     }
   }

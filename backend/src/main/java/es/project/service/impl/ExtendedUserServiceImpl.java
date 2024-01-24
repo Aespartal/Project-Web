@@ -2,9 +2,11 @@ package es.project.service.impl;
 
 import es.project.domain.ExtendedUser;
 import es.project.domain.User;
+import es.project.exception.ValidationException;
 import es.project.repository.ExtendedUserRepository;
 import es.project.repository.UserRepository;
 import es.project.service.ExtendedUserService;
+import es.project.service.UserService;
 import es.project.service.dto.ExtendedUserDTO;
 import es.project.service.mapper.ExtendedUserMapper;
 import java.util.Optional;
@@ -30,22 +32,25 @@ public class ExtendedUserServiceImpl implements ExtendedUserService {
 
     private final UserRepository userRepository;
 
+    private final UserService userService;
+
     public ExtendedUserServiceImpl(
         ExtendedUserRepository extendedUserRepository,
         ExtendedUserMapper extendedUserMapper,
-        UserRepository userRepository
-    ) {
+        UserRepository userRepository,
+        UserService userService) {
         this.extendedUserRepository = extendedUserRepository;
         this.extendedUserMapper = extendedUserMapper;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
     public ExtendedUserDTO save(ExtendedUserDTO extendedUserDTO) {
         log.debug("Request to save ExtendedUser : {}", extendedUserDTO);
         ExtendedUser extendedUser = extendedUserMapper.toEntity(extendedUserDTO);
-        Long userId = extendedUserDTO.getUser().getId();
-        userRepository.findById(userId).ifPresent(extendedUser::user);
+        User user = userService.createUser(extendedUserDTO.getUser());
+        extendedUser.user(user);
         extendedUser = extendedUserRepository.save(extendedUser);
         return extendedUserMapper.toDto(extendedUser);
     }
@@ -54,8 +59,7 @@ public class ExtendedUserServiceImpl implements ExtendedUserService {
     public ExtendedUserDTO update(ExtendedUserDTO extendedUserDTO) {
         log.debug("Request to update ExtendedUser : {}", extendedUserDTO);
         ExtendedUser extendedUser = extendedUserMapper.toEntity(extendedUserDTO);
-        Long userId = extendedUserDTO.getUser().getId();
-        userRepository.findById(userId).ifPresent(extendedUser::user);
+        userService.updateUser(extendedUserDTO.getUser());
         extendedUser = extendedUserRepository.save(extendedUser);
         return extendedUserMapper.toDto(extendedUser);
     }
@@ -92,11 +96,17 @@ public class ExtendedUserServiceImpl implements ExtendedUserService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete ExtendedUser : {}", id);
-        Optional<ExtendedUser> extendedUserOptional = extendedUserRepository.findById(id);
-        if (!extendedUserOptional.isPresent()) {
-            return;
-        }
+        extendedUserRepository.findById(id)
+            .orElseThrow(() -> new ValidationException("User not exist", "userNotExist"));
         extendedUserRepository.deleteById(id);
         userRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<ExtendedUserDTO> getCurrentExtendedUser() {
+        return userService.getUserWithAuthorities().flatMap(
+            user -> extendedUserRepository.findById(user.getId()).map(extendedUserMapper::toDto)
+        );
     }
 }

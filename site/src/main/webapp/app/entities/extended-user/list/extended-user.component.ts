@@ -11,6 +11,8 @@ import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/conf
 import { EntityArrayResponseType, ExtendedUserService } from '../service/extended-user.service';
 import { ExtendedUserDeleteDialogComponent } from '../delete/extended-user-delete-dialog.component';
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
+import { IUser } from 'app/entities/user/user.model';
+import { UserManagementService } from 'app/admin/user-management/service/user-management.service';
 
 @Component({
   selector: 'jhi-extended-user',
@@ -32,7 +34,8 @@ export class ExtendedUserComponent implements OnInit {
     protected extendedUserService: ExtendedUserService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    private userService: UserManagementService
   ) {}
 
   trackId = (_index: number, item: IExtendedUser): number => this.extendedUserService.getExtendedUserIdentifier(item);
@@ -73,6 +76,10 @@ export class ExtendedUserComponent implements OnInit {
 
   navigateToPage(page = this.page): void {
     this.handleNavigation(page, this.predicate, this.ascending, this.filters.filterOptions);
+  }
+
+  setActive(user: IUser, isActivated: boolean): void {
+    this.userService.update({ ...user, activated: isActivated }).subscribe(() => this.load());
   }
 
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {

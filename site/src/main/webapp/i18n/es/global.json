@@ -9,6 +9,12 @@
         "main": "Entidades",
         "extendedUser": "Extended User",
         "project": "Project",
+        "image": "Image",
+        "likeImage": "Like Image",
+        "commentary": "Commentary",
+        "likeCommentary": "Like Commentary",
+        "follow": "Follow",
+        "notification": "Notification",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -33,6 +39,12 @@
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
       },
       "language": "Idioma"
+    },
+    "home": {
+      "bar": {
+        "recentImages": "Imágenes recientes",
+        "popularImages": "Imágenes populares"
+      }
     },
     "form": {
       "username.label": "Usuario",

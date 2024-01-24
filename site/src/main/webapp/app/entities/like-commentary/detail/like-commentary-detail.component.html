@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="likeCommentary">
+      <h2 data-cy="likeCommentaryDetailsHeading"><span jhiTranslate="projectApp.likeCommentary.detail.title">Like Commentary</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ likeCommentary.id }}</span>
+        </dd>
+        <dt>
+          <span
+            jhiTranslate="projectApp.likeCommentary.creationDate"
+            [ngbTooltip]="'projectApp.likeCommentary.help.creationDate' | translate"
+            >Creation Date</span
+          >
+        </dt>
+        <dd>
+          <span>{{ likeCommentary.creationDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="projectApp.likeCommentary.commentary">Commentary</span></dt>
+        <dd>
+          <div *ngIf="likeCommentary.commentary">
+            <a [routerLink]="['/commentary', likeCommentary.commentary.id, 'view']">{{ likeCommentary.commentary.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="projectApp.likeCommentary.extendedUser">Extended User</span></dt>
+        <dd>
+          <div *ngIf="likeCommentary.extendedUser">
+            <a [routerLink]="['/extended-user', likeCommentary.extendedUser.id, 'view']">{{ likeCommentary.extendedUser.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+      </button>
+
+      <button type="button" [routerLink]="['/like-commentary', likeCommentary.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+      </button>
+    </div>
+  </div>
+</div>

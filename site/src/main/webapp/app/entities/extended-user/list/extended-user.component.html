@@ -8,12 +8,8 @@
         <span jhiTranslate="projectApp.extendedUser.home.refreshListLabel">Refrescar lista</span>
       </button>
 
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-extended-user"
-        [routerLink]="['/extended-user/new']"
-      >
+      <button id="jh-create-entity" data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-extended-user" [routerLink]="['/extended-user/new']">
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="projectApp.extendedUser.home.createLabel"> Crear nuevo Extended User </span>
       </button>
@@ -34,33 +30,45 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th scope="col" jhiSortBy="description">
+          <th scope="col" jhiSortBy="user.login"><span jhiTranslate="userManagement.login">Login</span> <fa-icon
+              icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="user.email"><span jhiTranslate="userManagement.email">Email</span> <fa-icon
+              icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+          <th scope="col" jhiSortBy="user.langKey"><span jhiTranslate="userManagement.langKey">Idioma</span> <fa-icon
+              icon="sort"></fa-icon></th>
+          <th scope="col"><span jhiTranslate="userManagement.profiles">Perfiles</span></th>
+          <th scope="col" jhiSortBy="user.createdDate">
+            <span jhiTranslate="userManagement.createdDate">Fecha de creación</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="user.lastModifiedBy">
+            <span jhiTranslate="userManagement.lastModifiedBy">Modificado por</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="user.lastModifiedDate">
+            <span jhiTranslate="userManagement.lastModifiedDate">Fecha de modificación</span> <fa-icon
+              icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="totalFollowers">
             <div class="d-flex">
-              <span jhiTranslate="projectApp.extendedUser.description">Description</span>
+              <span jhiTranslate="projectApp.extendedUser.totalFollowers">Total Followers</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="web">
+          <th scope="col" jhiSortBy="totalFollowing">
             <div class="d-flex">
-              <span jhiTranslate="projectApp.extendedUser.web">Web</span>
+              <span jhiTranslate="projectApp.extendedUser.totalFollowing">Total Following</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="location">
+          <th scope="col" jhiSortBy="totalImages">
             <div class="d-flex">
-              <span jhiTranslate="projectApp.extendedUser.location">Location</span>
+              <span jhiTranslate="projectApp.extendedUser.totalImages">Total Images</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="profession">
+          <th scope="col" jhiSortBy="totalNotifications">
             <div class="d-flex">
-              <span jhiTranslate="projectApp.extendedUser.profession">Profession</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="user.id">
-            <div class="d-flex">
-              <span jhiTranslate="projectApp.extendedUser.user">User</span>
+              <span jhiTranslate="projectApp.extendedUser.totalNotifications">Total Notifications</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -69,36 +77,47 @@
       </thead>
       <tbody>
         <tr *ngFor="let extendedUser of extendedUsers; trackBy: trackId" data-cy="entityTable">
-          <td>{{ extendedUser.description }}</td>
-          <td>{{ extendedUser.web }}</td>
-          <td>{{ extendedUser.location }}</td>
-          <td>{{ extendedUser.profession }}</td>
+          <td>{{ extendedUser.user?.login }}</td>
+          <td>{{ extendedUser.user?.email }}</td>
           <td>
-            {{ extendedUser.user?.id }}
+            <button class="btn btn-danger btn-sm" (click)="setActive(extendedUser.user!, true)"
+              *ngIf="!extendedUser.user!.activated" jhiTranslate="userManagement.deactivated">
+              Desactivado
+            </button>
+            <button class="btn btn-success btn-sm" (click)="setActive(extendedUser.user!, false)"
+              *ngIf="extendedUser.user!.activated" jhiTranslate="userManagement.activated">
+              Activado
+            </button>
           </td>
+          <td>{{ extendedUser.user?.langKey }}</td>
+          <td>
+            <div *ngFor="let authority of extendedUser.user?.authorities">
+              <span class="badge bg-info">{{ authority }}</span>
+            </div>
+          </td>
+          <td>{{ extendedUser.user?.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+          <td>{{ extendedUser.user?.lastModifiedBy }}</td>
+          <td>{{ extendedUser.user?.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
+          <td>{{ extendedUser.totalFollowers }}</td>
+          <td>{{ extendedUser.totalFollowing }}</td>
+          <td>{{ extendedUser.totalImages }}</td>
+          <td>{{ extendedUser.totalNotifications }}</td>
           <td class="text-end">
             <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/extended-user', extendedUser.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
+              <button type="submit" [routerLink]="['/extended-user', extendedUser.id, 'view']"
+                class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
               </button>
 
-              <button
-                type="submit"
-                [routerLink]="['/extended-user', extendedUser.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
+              <button type="submit" [routerLink]="['/extended-user', extendedUser.id, 'edit']"
+                class="btn btn-primary btn-sm" data-cy="entityEditButton">
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
               </button>
 
-              <button type="submit" (click)="delete(extendedUser)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button type="submit" (click)="delete(extendedUser)" class="btn btn-danger btn-sm"
+                data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
               </button>
@@ -115,15 +134,8 @@
     </div>
 
     <div class="d-flex justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [page]="page"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="navigateToPage($event)"
-      ></ngb-pagination>
+      <ngb-pagination [collectionSize]="totalItems" [page]="page" [pageSize]="itemsPerPage" [maxSize]="5"
+        [rotate]="true" [boundaryLinks]="true" (pageChange)="navigateToPage($event)"></ngb-pagination>
     </div>
   </div>
 </div>

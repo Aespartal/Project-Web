@@ -18,31 +18,28 @@ export class SettingsComponent implements OnInit {
 
   settingsForm = new FormGroup({
     firstName: new FormControl(initialAccount.firstName, {
-      nonNullable: true,
       validators: [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
     }),
     lastName: new FormControl(initialAccount.lastName, {
-      nonNullable: true,
       validators: [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
     }),
     email: new FormControl(initialAccount.email, {
-      nonNullable: true,
       validators: [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email],
     }),
-    langKey: new FormControl(initialAccount.langKey, { nonNullable: true }),
+    langKey: new FormControl(initialAccount.langKey),
 
-    activated: new FormControl(initialAccount.activated, { nonNullable: true }),
-    authorities: new FormControl(initialAccount.authorities, { nonNullable: true }),
-    imageUrl: new FormControl(initialAccount.imageUrl, { nonNullable: true }),
-    login: new FormControl(initialAccount.login, { nonNullable: true }),
+    activated: new FormControl(initialAccount.activated),
+    authorities: new FormControl(initialAccount.authorities),
+    imageUrl: new FormControl(initialAccount.imageUrl),
+    login: new FormControl(initialAccount.login),
   });
 
   constructor(private accountService: AccountService, private translateService: TranslateService) {}
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
-      if (account) {
-        this.settingsForm.patchValue(account);
+      if (account?.user) {
+        this.settingsForm.patchValue(account.user);
       }
     });
   }
@@ -51,14 +48,14 @@ export class SettingsComponent implements OnInit {
     this.success = false;
 
     const account = this.settingsForm.getRawValue();
-    this.accountService.save(account).subscribe(() => {
-      this.success = true;
+    // this.accountService.save(account).subscribe(() => {
+    //   this.success = true;
 
-      this.accountService.authenticate(account);
+    //   this.accountService.authenticate(account);
 
-      if (account.langKey !== this.translateService.currentLang) {
-        this.translateService.use(account.langKey);
-      }
-    });
+    //   if (account.langKey !== this.translateService.currentLang) {
+    //     this.translateService.use(account.langKey);
+    //   }
+    // });
   }
 }

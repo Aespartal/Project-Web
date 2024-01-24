@@ -152,7 +152,10 @@ spring:
   output:
     ansi:
       console-available: true
-
+  servlet:
+    multipart:
+      max-file-size: 12MB
+      max-request-size: 25MB
 server:
   servlet:
     session:
@@ -208,4 +211,6 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+  media:
+    maxChunkSize: 1048576

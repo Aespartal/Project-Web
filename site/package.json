@@ -38,6 +38,8 @@
     "default_environment": "prod"
   },
   "dependencies": {
+    "@angular/animations": "14.2.0",
+    "@angular/cdk": "14.2.0",
     "@angular/common": "14.2.0",
     "@angular/compiler": "14.2.0",
     "@angular/core": "14.2.0",
@@ -53,10 +55,14 @@
     "@ngx-translate/core": "14.0.0",
     "@ngx-translate/http-loader": "7.0.0",
     "@popperjs/core": "2.11.6",
+    "@stomp/rx-stomp": "^2.0.0",
     "bootstrap": "5.2.0",
     "dayjs": "1.11.5",
+    "ngx-image-cropper": "^7.1.0",
     "ngx-infinite-scroll": "14.0.0",
     "ngx-webstorage": "10.0.1",
+    "primeicons": "6.0.1",
+    "primeng": "14.2.3",
     "rxjs": "7.5.6",
     "sonar-scanner": "3.1.0",
     "tslib": "2.4.0",

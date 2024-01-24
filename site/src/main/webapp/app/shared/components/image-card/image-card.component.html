@@ -1,0 +1,27 @@
+<article class="card-image" *ngIf="image">
+  <figure>
+    <img *ngIf="image.extendedUser" [src]="url + image.extendedUser.id + '/' + image.fileName" alt="image"
+      (click)="onImageClicked()" (dblclick)="onImageClickedAnimation()" />
+      <!-- SVG de Me gusta -->
+      <svg fill="#FFFF" height="200px" width="200px" version="1.1"
+      id="Layer_{{image.id}}"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M372.87,8.348c-49.003,0-92.083,25.336-116.87,63.62c-24.786-38.283-67.867-63.62-116.87-63.62 C62.29,8.348,0,70.639,0,147.478c0,33.479,11.828,64.194,31.529,88.201L256,503.652L480.471,235.68 C500.172,211.673,512,180.959,512,147.478C512,70.638,449.71,8.348,372.87,8.348z"></path> </g> </g> </g></svg>
+
+    <figcaption class="card-body">
+      <h5 class="card-title" *ngIf="image.title">{{image.title}}</h5>
+      <div>
+        <div class="card-likes">
+          <span>{{image.totalLikes}}
+            <jhi-fav-button [favourited]="image.favourited" (favClicked)="onLikeClick()"></jhi-fav-button>
+          </span>
+        </div>
+        <div class="card-comments">
+          <span>{{image.totalCommentaries}}
+            <jhi-comment-button (commentClicked)="onCommentClick()"></jhi-comment-button>
+          </span>
+        </div>
+      </div>
+    </figcaption>
+  </figure>
+</article>

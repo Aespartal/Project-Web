@@ -3,6 +3,9 @@ package es.project.service;
 import es.project.config.Constants;
 import es.project.domain.Authority;
 import es.project.domain.User;
+import es.project.exception.EmailAlreadyUsedException;
+import es.project.exception.InvalidPasswordException;
+import es.project.exception.UsernameAlreadyUsedException;
 import es.project.repository.AuthorityRepository;
 import es.project.repository.UserRepository;
 import es.project.security.AuthoritiesConstants;
@@ -201,6 +204,7 @@ public class UserService {
             .map(AdminUserDTO::new);
     }
 
+    @Transactional
     public void deleteUser(String login) {
         userRepository
             .findOneByLogin(login)

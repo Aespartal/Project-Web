@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity Image.
+    -->
+    <changeSet id="20230928122400-1" author="jhipster" context="test">
+        <createTable tableName="image_ext" remarks="The Image entity.\n@author alejandro.espartal">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(100)" remarks="title">
+                <constraints nullable="false" />
+            </column>
+            <column name="description" type="varchar(3500)" remarks="description">
+                <constraints nullable="false" />
+            </column>
+            <column name="file_name" type="varchar(3500)" remarks="fileName">
+                <constraints nullable="false" />
+            </column>
+            <column name="path" type="varchar(3500)" remarks="path">
+                <constraints nullable="false" />
+            </column>
+            <column name="creation_date" type="${datetimeType}" remarks="creationDate">
+                <constraints nullable="false" />
+            </column>
+            <column name="modification_date" type="${datetimeType}" remarks="modificationDate">
+                <constraints nullable="true" />
+            </column>
+            <column name="is_private" type="boolean" remarks="isPrivate">
+                <constraints nullable="false" />
+            </column>
+            <column name="total_likes" type="integer" remarks="totalLikes">
+                <constraints nullable="true" />
+            </column>
+            <column name="total_commentaries" type="integer" remarks="totalCommentaries">
+                <constraints nullable="true" />
+            </column>
+            <column name="is_favourited" type="boolean" remarks="isFavourited">
+                <constraints nullable="true" />
+            </column>
+            <column name="extended_user_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+        <dropDefaultValue tableName="image_ext" columnName="creation_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="image_ext" columnName="modification_date" columnDataType="${datetimeType}"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,29 @@
+{
+  "projectApp": {
+    "likeImage": {
+      "home": {
+        "title": "Like Images",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Like Image",
+        "createOrEditLabel": "Crear o editar Like Image",
+        "notFound": "Ningún Like Images encontrado"
+      },
+      "created": "Un nuevo Like Image ha sido creado con el identificador {{ param }}",
+      "updated": "Un Like Image ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Like Image ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Like Image {{ id }}?"
+      },
+      "detail": {
+        "title": "Like Image"
+      },
+      "id": "ID",
+      "creationDate": "Creation Date",
+      "image": "Image",
+      "extendedUser": "Extended User",
+      "help": {
+        "creationDate": "creationDate"
+      }
+    }
+  }
+}

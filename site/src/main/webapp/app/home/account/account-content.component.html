@@ -1,0 +1,50 @@
+<div class="account-content" [ngClass]="{'close': (sidebarOpen$ | async)}">
+  <div class="user-profile" *ngIf="extendedUser">
+    <div class="user-avatar">
+      <img src="../../content/images/user_default.avif" alt="Foto de perfil">
+    </div>
+    <div class="user-info" *ngIf="extendedUser.user">
+      <h3 *ngIf="extendedUser.user.firstName">{{ extendedUser.user.firstName }}</h3>
+      <p *ngIf="extendedUser.user.login">@{{ extendedUser.user.login }}</p>
+    </div>
+  </div>
+  <!-- <div class="user-followers" *ngIf="extendedUser">
+    <div class="user-followers-count">
+      <p>Seguidores</p>
+      <p>{{ extendedUser.totalFollowers }}</p>
+    </div>
+    <div class="user-followers-count">
+      <p>Siguiendo</p>
+      <p>{{ extendedUser.totalFollowing }}</p>
+    </div>
+  </div> -->
+  <div class="account-options">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <fa-icon icon="home"></fa-icon>
+      <span>Inicio</span>
+    </a>
+    <a routerLink="/image-upload" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="extendedUser">
+      <fa-icon icon="upload"></fa-icon>
+      <span>Subir imagen</span>
+    </a>
+    <a class="position-relative" routerLink="notifications" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="extendedUser">
+      <fa-icon icon="bell"></fa-icon>
+      <span>Notificaciones</span>
+      <span class="badge bg-danger border border-light rounded-circle" *ngIf="extendedUser.totalNotifications">
+        {{ notifications }}
+      </span>
+    </a>
+    <a routerLink="/account/settings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="extendedUser">
+      <fa-icon icon="gear"></fa-icon>
+      <span>Configuración</span>
+    </a>
+    <a (click)="logout()" *ngIf="extendedUser">
+      <fa-icon icon="right-from-bracket"></fa-icon>
+      <span>Salir</span>
+    </a>
+    <a routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="!extendedUser">
+      <fa-icon icon="sign-in-alt"></fa-icon>
+      <span>Iniciar sesión</span>
+    </a>
+  </div>
+</div>

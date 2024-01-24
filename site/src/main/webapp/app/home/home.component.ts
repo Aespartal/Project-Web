@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
+import { IExtendedUser } from 'app/entities/extended-user/extended-user.model';
+import { SidebarService } from 'app/shared/services/sidebar.service';
 
 @Component({
   selector: 'jhi-home',
@@ -12,25 +12,31 @@ import { Account } from 'app/core/auth/account.model';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  account: Account | null = null;
+  extendedUser: IExtendedUser | null = null;
+  sidebarOpen$ = this.sidebarService.sidebarOpen$;
 
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private accountService: AccountService, private router: Router) {}
+  constructor(
+    private accountService: AccountService,
+    private sidebarService: SidebarService
+    ) {
+  }
 
   ngOnInit(): void {
     this.accountService
       .getAuthenticationState()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(account => (this.account = account));
-  }
-
-  login(): void {
-    this.router.navigate(['/login']);
+      .subscribe(account => (this.extendedUser = account));
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  toggleSidebar(): void {
+    this.sidebarService.toggleSidebar();
+  }
+
 }

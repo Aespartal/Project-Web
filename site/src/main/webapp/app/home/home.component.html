@@ -1,15 +1,14 @@
-<div class="row">
-  <div class="col-md-3">
-    <span class="hipster img-fluid rounded"></span>
+
+<section class="account-container" [ngClass]="{'close': (sidebarOpen$ | async)}">
+  <div class="account-toggle">
+    <button class="btn btn-none btn-icon" (click)="toggleSidebar()">
+      <fa-icon [icon]="(sidebarOpen$ | async) ? 'angle-right' : 'angle-left'"></fa-icon>
+    </button>
   </div>
-
-  <div class="col-md-9">
-    <h1 class="display-4"><span>¡Bienvenido a Votamimierda.com!</span></h1>
-
-    <p class="lead">Aquí podrás compartir tu mierda.</p>
-
-    <div [ngSwitch]="account !== null">
-
-    </div>
+  <jhi-account-content [extendedUser]="extendedUser"></jhi-account-content>
+</section>
+<div class="container-fluid" >
+  <div class="right-container" [ngClass]="{'close': (sidebarOpen$ | async) }">
+    <router-outlet></router-outlet>
   </div>
 </div>

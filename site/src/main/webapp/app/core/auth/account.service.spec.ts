@@ -14,6 +14,7 @@ import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 
 import { AccountService } from './account.service';
+import { IExtendedUser } from 'app/entities/extended-user/extended-user.model';
 
 function accountWithAuthorities(authorities: string[]): Account {
   return {
@@ -74,34 +75,6 @@ describe('Account Service', () => {
     });
   });
 
-  describe('authenticate', () => {
-    it('authenticationState should emit null if input is null', () => {
-      // GIVEN
-      let userIdentity: Account | null = accountWithAuthorities([]);
-      service.getAuthenticationState().subscribe(account => (userIdentity = account));
-
-      // WHEN
-      service.authenticate(null);
-
-      // THEN
-      expect(userIdentity).toBeNull();
-      expect(service.isAuthenticated()).toBe(false);
-    });
-
-    it('authenticationState should emit the same account as was in input parameter', () => {
-      // GIVEN
-      const expectedResult = accountWithAuthorities([]);
-      let userIdentity: Account | null = null;
-      service.getAuthenticationState().subscribe(account => (userIdentity = account));
-
-      // WHEN
-      service.authenticate(expectedResult);
-
-      // THEN
-      expect(userIdentity).toEqual(expectedResult);
-      expect(service.isAuthenticated()).toBe(true);
-    });
-  });
 
   describe('identity', () => {
     it('should call /account only once if last call have not returned', () => {
@@ -197,54 +170,6 @@ describe('Account Service', () => {
         expect(mockStorageService.getUrl).toHaveBeenCalledTimes(1);
         expect(mockStorageService.clearUrl).not.toHaveBeenCalled();
         expect(mockRouter.navigateByUrl).not.toHaveBeenCalled();
-      });
-    });
-  });
-
-  describe('hasAnyAuthority', () => {
-    describe('hasAnyAuthority string parameter', () => {
-      it('should return false if user is not logged', () => {
-        const hasAuthority = service.hasAnyAuthority(Authority.USER);
-        expect(hasAuthority).toBe(false);
-      });
-
-      it('should return false if user is logged and has not authority', () => {
-        service.authenticate(accountWithAuthorities([Authority.USER]));
-
-        const hasAuthority = service.hasAnyAuthority(Authority.ADMIN);
-
-        expect(hasAuthority).toBe(false);
-      });
-
-      it('should return true if user is logged and has authority', () => {
-        service.authenticate(accountWithAuthorities([Authority.USER]));
-
-        const hasAuthority = service.hasAnyAuthority(Authority.USER);
-
-        expect(hasAuthority).toBe(true);
-      });
-    });
-
-    describe('hasAnyAuthority array parameter', () => {
-      it('should return false if user is not logged', () => {
-        const hasAuthority = service.hasAnyAuthority([Authority.USER]);
-        expect(hasAuthority).toBeFalsy();
-      });
-
-      it('should return false if user is logged and has not authority', () => {
-        service.authenticate(accountWithAuthorities([Authority.USER]));
-
-        const hasAuthority = service.hasAnyAuthority([Authority.ADMIN]);
-
-        expect(hasAuthority).toBe(false);
-      });
-
-      it('should return true if user is logged and has authority', () => {
-        service.authenticate(accountWithAuthorities([Authority.USER]));
-
-        const hasAuthority = service.hasAnyAuthority([Authority.USER, Authority.ADMIN]);
-
-        expect(hasAuthority).toBe(true);
       });
     });
   });

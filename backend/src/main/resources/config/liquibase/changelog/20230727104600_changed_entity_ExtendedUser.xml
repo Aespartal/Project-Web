@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity ExtendedUser.
+    -->
+    <changeSet id="20230727104600-1" author="jhipster">
+        <addColumn tableName="extended_user">
+            <column name="total_followers" type="integer" remarks="totalFollowers" defaultValueNumeric="0">
+                <constraints nullable="true" />
+            </column>
+            <column name="total_following" type="integer" remarks="totalFollowing" defaultValueNumeric="0">
+                <constraints nullable="true" />
+            </column>
+            <column name="total_images" type="integer" remarks="totalImages" defaultValueNumeric="0">
+                <constraints nullable="true" />
+            </column>
+            <column name="total_notifications" type="integer" remarks="totalNotifications" defaultValueNumeric="0">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,47 @@
+{
+  "applications": "*",
+  "changelogDate": "20230727082111",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "follow",
+  "fields": [
+    {
+      "fieldName": "state",
+      "fieldType": "FollowState",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "PENDING,ACCEPTED,REJECTED",
+      "javadoc": "state"
+    },
+    {
+      "fieldName": "creationDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"],
+      "javadoc": "creationDate"
+    },
+    {
+      "fieldName": "acceptanceDate",
+      "fieldType": "Instant",
+      "javadoc": "acceptanceDate"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "Follow",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "extendedUser",
+      "relationshipName": "follower",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "extendedUser",
+      "relationshipName": "following",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "serviceImpl"
+}

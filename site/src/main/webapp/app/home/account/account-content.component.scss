@@ -1,0 +1,149 @@
+@import '../../../content/scss/bootstrap-variables';
+
+.account-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  gap: 3rem;
+
+  &.close {
+
+    align-items: center;
+
+    .user-avatar {
+      margin-top: 4rem;
+    }
+
+    .user-info {
+      display: none;
+    }
+
+    .account-options {
+      margin-top: 3rem;
+
+      > a {
+        padding: 0.5rem 0.5rem;
+        font-size: 1rem;
+
+        & > span {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .user-profile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    /* Estilos para el avatar del usuario */
+    .user-avatar {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      overflow: hidden;
+
+      /* Estilo de la imagen de perfil */
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .user-info {
+      margin-top: 10px;
+      text-align: left;
+
+      h3 {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+      }
+
+      p {
+        font-size: 1rem;
+        color: rgb(113, 118, 123);
+      }
+    }
+  }
+    .account-options {
+      > a {
+        display: block;
+        margin-bottom: 1rem;
+        color: #717171 !important;
+        text-decoration: none;
+        transition: color 0.2s;
+        font-size: 1.1rem;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        font-weight: 700;
+
+        &.active {
+          color: #fff !important;
+          background-color: $hover-links-button;
+        }
+
+        &:hover {
+          color: #fff !important;
+          background-color: $hover-links-button;
+        }
+
+        & > span {
+          margin-left: 0.5rem;
+        }
+      }
+  }
+
+  .user-followers {
+    margin-top: 10px;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+
+    .user-followers-count {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      p {
+        margin: 0;
+        font-size: 1rem;
+        color: #FFF;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1390px) {
+  .account-content {
+    align-items: center;
+
+    .user-avatar {
+      width: 50px!important;
+      height: 50px!important;
+      margin-top: 4rem;
+    }
+
+    .user-info {
+      display: none;
+    }
+
+    .account-options {
+      margin-top: 1rem;
+
+      > a {
+        padding: 0.5rem 0.5rem;
+        font-size: 1rem;
+
+        & > span {
+          display: none;
+        }
+      }
+    }
+  }
+}
