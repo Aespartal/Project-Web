@@ -27,7 +27,7 @@
 <h2>Instrucciones de Despliegue</h2>
 <ol>
     <li><strong>Clonar el Repositorio:</strong>
-        <code>git clone https://github.com/AEspartal/Project-Web.git</code></li>
+        <code>git clone https://github.com/Aespartal/Project-Web.git</code></li>
     <li><strong>Configuración del Backend:</strong>
         <ul>
             <li>Configurar la base de datos en <code>application.properties</code>.</li>
