@@ -33,4 +33,5 @@
     <include file="config/liquibase/changelog/20230715114500_added_functions.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230727104600_changed_entity_ExtendedUser.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230727104700_changed_entity_Image.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230928122400_added_entity_Image_ext.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

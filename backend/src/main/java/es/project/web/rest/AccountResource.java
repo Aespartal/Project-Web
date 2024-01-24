@@ -1,9 +1,9 @@
 package es.project.web.rest;
 
 import es.project.domain.User;
-import es.project.errors.EmailAlreadyUsedException;
-import es.project.errors.InvalidPasswordException;
-import es.project.errors.LoginAlreadyUsedException;
+import es.project.exception.EmailAlreadyUsedException;
+import es.project.exception.InvalidPasswordException;
+import es.project.exception.LoginAlreadyUsedException;
 import es.project.repository.UserRepository;
 import es.project.security.SecurityUtils;
 import es.project.service.MailService;

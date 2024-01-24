@@ -16,21 +16,17 @@ export class GalleryContentComponent implements OnInit {
 
   popularImages: IImage[] = [];
   recentImages: IImage[] = [];
-  carouselImages: IImage[] = [];
 
   predicate!: string;
   ascending!: boolean;
 
-  recentTitle = 'global.home.bar.recentImages';
-  popularTitle = 'global.home.bar.popularImages';
-
-  activeIndex = 0;
-
   url = this.imageService.resourceUrl.concat('/base64/');
 
-  MAX_CAROUSEL_IMAGES = 3;
-
-  constructor(private accountService: AccountService, private router: Router, private imageService: ImageService) {
+  constructor(
+    private accountService: AccountService,
+    private router: Router,
+    private imageService: ImageService
+    ) {
     this.predicate = 'id';
     this.ascending = true;
   }
@@ -53,12 +49,6 @@ export class GalleryContentComponent implements OnInit {
         return;
       }
       this.popularImages = res.body;
-      this.carouselImages = this.popularImages.slice(0, this.MAX_CAROUSEL_IMAGES);
-      this.carouselImages.sort((a, b) => b.totalLikes! - a.totalLikes!);
-      this.carouselImages = this.carouselImages.map((image, index) => ({
-        ...image,
-        order: index,
-      }));
     })
   }
 
@@ -81,18 +71,14 @@ export class GalleryContentComponent implements OnInit {
   }
 
   onCommentClick(image: IImage): void {
-    this.router.navigate(['/image', image.id, 'view']);
+    this.router.navigate(['/', 'image', image.id, 'photo-view']);
+  }
+
+  onImageClicked(image: IImage): void {
+    this.router.navigate(['/', 'image', image.id, 'photo-view']);
   }
 
   trackId(index: number, item: IImage): number {
     return item.id;
-  }
-
-  prevSlide(): void {
-    this.activeIndex = (this.activeIndex - 1 + this.carouselImages.length) % this.carouselImages.length;
-  }
-
-  nextSlide(): void  {
-    this.activeIndex = (this.activeIndex + 1) % this.carouselImages.length;
   }
 }

@@ -1,6 +1,6 @@
 package es.project.web.rest;
 
-import es.project.errors.BadRequestAlertException;
+import es.project.exception.BadRequestAlertException;
 import es.project.repository.FollowRepository;
 import es.project.service.FollowQueryService;
 import es.project.service.FollowService;

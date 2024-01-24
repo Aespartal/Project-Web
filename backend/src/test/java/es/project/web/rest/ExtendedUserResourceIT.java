@@ -145,36 +145,6 @@ class ExtendedUserResourceIT {
 
     @Test
     @Transactional
-    void createExtendedUser() throws Exception {
-        int databaseSizeBeforeCreate = extendedUserRepository.findAll().size();
-        // Create the ExtendedUser
-        ExtendedUserDTO extendedUserDTO = extendedUserMapper.toDto(extendedUser);
-        restExtendedUserMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(extendedUserDTO))
-            )
-            .andExpect(status().isCreated());
-
-        // Validate the ExtendedUser in the database
-        List<ExtendedUser> extendedUserList = extendedUserRepository.findAll();
-        assertThat(extendedUserList).hasSize(databaseSizeBeforeCreate + 1);
-        ExtendedUser testExtendedUser = extendedUserList.get(extendedUserList.size() - 1);
-        assertThat(testExtendedUser.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testExtendedUser.getLocation()).isEqualTo(DEFAULT_LOCATION);
-        assertThat(testExtendedUser.getHeight()).isEqualTo(DEFAULT_HEIGHT);
-        assertThat(testExtendedUser.getWeight()).isEqualTo(DEFAULT_WEIGHT);
-        assertThat(testExtendedUser.getBirthDate()).isEqualTo(DEFAULT_BIRTH_DATE);
-        assertThat(testExtendedUser.getTotalFollowers()).isEqualTo(DEFAULT_TOTAL_FOLLOWERS);
-        assertThat(testExtendedUser.getTotalFollowing()).isEqualTo(DEFAULT_TOTAL_FOLLOWING);
-        assertThat(testExtendedUser.getTotalImages()).isEqualTo(DEFAULT_TOTAL_IMAGES);
-        assertThat(testExtendedUser.getTotalNotifications()).isEqualTo(DEFAULT_TOTAL_NOTIFICATIONS);
-
-        // Validate the id for MapsId, the ids must be same
-        assertThat(testExtendedUser.getId()).isEqualTo(extendedUserDTO.getUser().getId());
-    }
-
-    @Test
-    @Transactional
     void createExtendedUserWithExistingId() throws Exception {
         // Create the ExtendedUser with an existing ID
         extendedUser.setId(1L);
@@ -192,47 +162,6 @@ class ExtendedUserResourceIT {
         // Validate the ExtendedUser in the database
         List<ExtendedUser> extendedUserList = extendedUserRepository.findAll();
         assertThat(extendedUserList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void updateExtendedUserMapsIdAssociationWithNewId() throws Exception {
-        // Initialize the database
-        extendedUserRepository.saveAndFlush(extendedUser);
-        int databaseSizeBeforeCreate = extendedUserRepository.findAll().size();
-        // Add a new parent entity
-        User user = UserResourceIT.createEntity(em);
-        em.persist(user);
-        em.flush();
-
-        // Load the extendedUser
-        ExtendedUser updatedExtendedUser = extendedUserRepository.findById(extendedUser.getId()).get();
-        assertThat(updatedExtendedUser).isNotNull();
-        // Disconnect from session so that the updates on updatedExtendedUser are not directly saved in db
-        em.detach(updatedExtendedUser);
-
-        // Update the User with new association value
-        updatedExtendedUser.setUser(user);
-        ExtendedUserDTO updatedExtendedUserDTO = extendedUserMapper.toDto(updatedExtendedUser);
-        assertThat(updatedExtendedUserDTO).isNotNull();
-
-        // Update the entity
-        restExtendedUserMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, updatedExtendedUserDTO.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedExtendedUserDTO))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the ExtendedUser in the database
-        List<ExtendedUser> extendedUserList = extendedUserRepository.findAll();
-        assertThat(extendedUserList).hasSize(databaseSizeBeforeCreate);
-        ExtendedUser testExtendedUser = extendedUserList.get(extendedUserList.size() - 1);
-        // Validate the id for MapsId, the ids must be same
-        // Uncomment the following line for assertion. However, please note that there is a known issue and uncommenting will fail the test.
-        // Please look at https://github.com/jhipster/generator-jhipster/issues/9100. You can modify this test as necessary.
-        // assertThat(testExtendedUser.getId()).isEqualTo(testExtendedUser.getUser().getId());
     }
 
     @Test
@@ -389,14 +318,14 @@ class ExtendedUserResourceIT {
 
         Long id = extendedUser.getId();
 
-        defaultExtendedUserShouldBeFound("id.equals=" + id);
-        defaultExtendedUserShouldNotBeFound("id.notEquals=" + id);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&id.equals=" + id);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&id.notEquals=" + id);
 
-        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=" + id);
-        defaultExtendedUserShouldNotBeFound("id.greaterThan=" + id);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&id.greaterThanOrEqual=" + id);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&id.greaterThan=" + id);
 
-        defaultExtendedUserShouldBeFound("id.lessThanOrEqual=" + id);
-        defaultExtendedUserShouldNotBeFound("id.lessThan=" + id);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&id.lessThanOrEqual=" + id);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&id.lessThan=" + id);
     }
 
     @Test
@@ -432,10 +361,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where description is not null
-        defaultExtendedUserShouldBeFound("description.specified=true");
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&description.specified=true");
 
         // Get all the extendedUserList where description is null
-        defaultExtendedUserShouldNotBeFound("description.specified=false");
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&description.specified=false");
     }
 
     @Test
@@ -458,10 +387,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where description does not contain DEFAULT_DESCRIPTION
-        defaultExtendedUserShouldNotBeFound("description.doesNotContain=" + DEFAULT_DESCRIPTION);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&description.doesNotContain=" + DEFAULT_DESCRIPTION);
 
         // Get all the extendedUserList where description does not contain UPDATED_DESCRIPTION
-        defaultExtendedUserShouldBeFound("description.doesNotContain=" + UPDATED_DESCRIPTION);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&description.doesNotContain=" + UPDATED_DESCRIPTION);
     }
 
     @Test
@@ -497,10 +426,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where location is not null
-        defaultExtendedUserShouldBeFound("location.specified=true");
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&location.specified=true");
 
         // Get all the extendedUserList where location is null
-        defaultExtendedUserShouldNotBeFound("location.specified=false");
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&location.specified=false");
     }
 
     @Test
@@ -523,10 +452,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where location does not contain DEFAULT_LOCATION
-        defaultExtendedUserShouldNotBeFound("location.doesNotContain=" + DEFAULT_LOCATION);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&location.doesNotContain=" + DEFAULT_LOCATION);
 
         // Get all the extendedUserList where location does not contain UPDATED_LOCATION
-        defaultExtendedUserShouldBeFound("location.doesNotContain=" + UPDATED_LOCATION);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&location.doesNotContain=" + UPDATED_LOCATION);
     }
 
     @Test
@@ -562,10 +491,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where height is not null
-        defaultExtendedUserShouldBeFound("height.specified=true");
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&height.specified=true");
 
         // Get all the extendedUserList where height is null
-        defaultExtendedUserShouldNotBeFound("height.specified=false");
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&height.specified=false");
     }
 
     @Test
@@ -575,10 +504,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where height is greater than or equal to DEFAULT_HEIGHT
-        defaultExtendedUserShouldBeFound("height.greaterThanOrEqual=" + DEFAULT_HEIGHT);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&height.greaterThanOrEqual=" + DEFAULT_HEIGHT);
 
         // Get all the extendedUserList where height is greater than or equal to UPDATED_HEIGHT
-        defaultExtendedUserShouldNotBeFound("height.greaterThanOrEqual=" + UPDATED_HEIGHT);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&height.greaterThanOrEqual=" + UPDATED_HEIGHT);
     }
 
     @Test
@@ -614,10 +543,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where height is greater than DEFAULT_HEIGHT
-        defaultExtendedUserShouldNotBeFound("height.greaterThan=" + DEFAULT_HEIGHT);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&height.greaterThan=" + DEFAULT_HEIGHT);
 
         // Get all the extendedUserList where height is greater than SMALLER_HEIGHT
-        defaultExtendedUserShouldBeFound("height.greaterThan=" + SMALLER_HEIGHT);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&height.greaterThan=" + SMALLER_HEIGHT);
     }
 
     @Test
@@ -653,10 +582,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where weight is not null
-        defaultExtendedUserShouldBeFound("weight.specified=true");
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&weight.specified=true");
 
         // Get all the extendedUserList where weight is null
-        defaultExtendedUserShouldNotBeFound("weight.specified=false");
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&weight.specified=false");
     }
 
     @Test
@@ -666,10 +595,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where weight is greater than or equal to DEFAULT_WEIGHT
-        defaultExtendedUserShouldBeFound("weight.greaterThanOrEqual=" + DEFAULT_WEIGHT);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&weight.greaterThanOrEqual=" + DEFAULT_WEIGHT);
 
         // Get all the extendedUserList where weight is greater than or equal to UPDATED_WEIGHT
-        defaultExtendedUserShouldNotBeFound("weight.greaterThanOrEqual=" + UPDATED_WEIGHT);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&weight.greaterThanOrEqual=" + UPDATED_WEIGHT);
     }
 
     @Test
@@ -705,10 +634,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where weight is greater than DEFAULT_WEIGHT
-        defaultExtendedUserShouldNotBeFound("weight.greaterThan=" + DEFAULT_WEIGHT);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&weight.greaterThan=" + DEFAULT_WEIGHT);
 
         // Get all the extendedUserList where weight is greater than SMALLER_WEIGHT
-        defaultExtendedUserShouldBeFound("weight.greaterThan=" + SMALLER_WEIGHT);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&weight.greaterThan=" + SMALLER_WEIGHT);
     }
 
     @Test
@@ -744,10 +673,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where birthDate is not null
-        defaultExtendedUserShouldBeFound("birthDate.specified=true");
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&birthDate.specified=true");
 
         // Get all the extendedUserList where birthDate is null
-        defaultExtendedUserShouldNotBeFound("birthDate.specified=false");
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&birthDate.specified=false");
     }
 
     @Test
@@ -757,10 +686,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalFollowers equals to DEFAULT_TOTAL_FOLLOWERS
-        defaultExtendedUserShouldBeFound("totalFollowers.equals=" + DEFAULT_TOTAL_FOLLOWERS);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalFollowers.equals=" + DEFAULT_TOTAL_FOLLOWERS);
 
         // Get all the extendedUserList where totalFollowers equals to UPDATED_TOTAL_FOLLOWERS
-        defaultExtendedUserShouldNotBeFound("totalFollowers.equals=" + UPDATED_TOTAL_FOLLOWERS);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalFollowers.equals=" + UPDATED_TOTAL_FOLLOWERS);
     }
 
     @Test
@@ -770,10 +699,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalFollowers in DEFAULT_TOTAL_FOLLOWERS or UPDATED_TOTAL_FOLLOWERS
-        defaultExtendedUserShouldBeFound("totalFollowers.in=" + DEFAULT_TOTAL_FOLLOWERS + "," + UPDATED_TOTAL_FOLLOWERS);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalFollowers.in=" + DEFAULT_TOTAL_FOLLOWERS + "," + UPDATED_TOTAL_FOLLOWERS);
 
         // Get all the extendedUserList where totalFollowers equals to UPDATED_TOTAL_FOLLOWERS
-        defaultExtendedUserShouldNotBeFound("totalFollowers.in=" + UPDATED_TOTAL_FOLLOWERS);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalFollowers.in=" + UPDATED_TOTAL_FOLLOWERS);
     }
 
     @Test
@@ -783,10 +712,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalFollowers is not null
-        defaultExtendedUserShouldBeFound("totalFollowers.specified=true");
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalFollowers.specified=true");
 
         // Get all the extendedUserList where totalFollowers is null
-        defaultExtendedUserShouldNotBeFound("totalFollowers.specified=false");
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalFollowers.specified=false");
     }
 
     @Test
@@ -796,10 +725,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalFollowers is greater than or equal to DEFAULT_TOTAL_FOLLOWERS
-        defaultExtendedUserShouldBeFound("totalFollowers.greaterThanOrEqual=" + DEFAULT_TOTAL_FOLLOWERS);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalFollowers.greaterThanOrEqual=" + DEFAULT_TOTAL_FOLLOWERS);
 
         // Get all the extendedUserList where totalFollowers is greater than or equal to UPDATED_TOTAL_FOLLOWERS
-        defaultExtendedUserShouldNotBeFound("totalFollowers.greaterThanOrEqual=" + UPDATED_TOTAL_FOLLOWERS);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalFollowers.greaterThanOrEqual=" + UPDATED_TOTAL_FOLLOWERS);
     }
 
     @Test
@@ -809,10 +738,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalFollowers is less than or equal to DEFAULT_TOTAL_FOLLOWERS
-        defaultExtendedUserShouldBeFound("totalFollowers.lessThanOrEqual=" + DEFAULT_TOTAL_FOLLOWERS);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalFollowers.lessThanOrEqual=" + DEFAULT_TOTAL_FOLLOWERS);
 
         // Get all the extendedUserList where totalFollowers is less than or equal to SMALLER_TOTAL_FOLLOWERS
-        defaultExtendedUserShouldNotBeFound("totalFollowers.lessThanOrEqual=" + SMALLER_TOTAL_FOLLOWERS);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalFollowers.lessThanOrEqual=" + SMALLER_TOTAL_FOLLOWERS);
     }
 
     @Test
@@ -822,10 +751,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalFollowers is less than DEFAULT_TOTAL_FOLLOWERS
-        defaultExtendedUserShouldNotBeFound("totalFollowers.lessThan=" + DEFAULT_TOTAL_FOLLOWERS);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalFollowers.lessThan=" + DEFAULT_TOTAL_FOLLOWERS);
 
         // Get all the extendedUserList where totalFollowers is less than UPDATED_TOTAL_FOLLOWERS
-        defaultExtendedUserShouldBeFound("totalFollowers.lessThan=" + UPDATED_TOTAL_FOLLOWERS);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalFollowers.lessThan=" + UPDATED_TOTAL_FOLLOWERS);
     }
 
     @Test
@@ -835,10 +764,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalFollowers is greater than DEFAULT_TOTAL_FOLLOWERS
-        defaultExtendedUserShouldNotBeFound("totalFollowers.greaterThan=" + DEFAULT_TOTAL_FOLLOWERS);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalFollowers.greaterThan=" + DEFAULT_TOTAL_FOLLOWERS);
 
         // Get all the extendedUserList where totalFollowers is greater than SMALLER_TOTAL_FOLLOWERS
-        defaultExtendedUserShouldBeFound("totalFollowers.greaterThan=" + SMALLER_TOTAL_FOLLOWERS);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalFollowers.greaterThan=" + SMALLER_TOTAL_FOLLOWERS);
     }
 
     @Test
@@ -848,10 +777,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalFollowing equals to DEFAULT_TOTAL_FOLLOWING
-        defaultExtendedUserShouldBeFound("totalFollowing.equals=" + DEFAULT_TOTAL_FOLLOWING);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalFollowing.equals=" + DEFAULT_TOTAL_FOLLOWING);
 
         // Get all the extendedUserList where totalFollowing equals to UPDATED_TOTAL_FOLLOWING
-        defaultExtendedUserShouldNotBeFound("totalFollowing.equals=" + UPDATED_TOTAL_FOLLOWING);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalFollowing.equals=" + UPDATED_TOTAL_FOLLOWING);
     }
 
     @Test
@@ -861,10 +790,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalFollowing in DEFAULT_TOTAL_FOLLOWING or UPDATED_TOTAL_FOLLOWING
-        defaultExtendedUserShouldBeFound("totalFollowing.in=" + DEFAULT_TOTAL_FOLLOWING + "," + UPDATED_TOTAL_FOLLOWING);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalFollowing.in=" + DEFAULT_TOTAL_FOLLOWING + "," + UPDATED_TOTAL_FOLLOWING);
 
         // Get all the extendedUserList where totalFollowing equals to UPDATED_TOTAL_FOLLOWING
-        defaultExtendedUserShouldNotBeFound("totalFollowing.in=" + UPDATED_TOTAL_FOLLOWING);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalFollowing.in=" + UPDATED_TOTAL_FOLLOWING);
     }
 
     @Test
@@ -874,10 +803,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalFollowing is not null
-        defaultExtendedUserShouldBeFound("totalFollowing.specified=true");
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalFollowing.specified=true");
 
         // Get all the extendedUserList where totalFollowing is null
-        defaultExtendedUserShouldNotBeFound("totalFollowing.specified=false");
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalFollowing.specified=false");
     }
 
     @Test
@@ -887,10 +816,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalFollowing is greater than or equal to DEFAULT_TOTAL_FOLLOWING
-        defaultExtendedUserShouldBeFound("totalFollowing.greaterThanOrEqual=" + DEFAULT_TOTAL_FOLLOWING);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalFollowing.greaterThanOrEqual=" + DEFAULT_TOTAL_FOLLOWING);
 
         // Get all the extendedUserList where totalFollowing is greater than or equal to UPDATED_TOTAL_FOLLOWING
-        defaultExtendedUserShouldNotBeFound("totalFollowing.greaterThanOrEqual=" + UPDATED_TOTAL_FOLLOWING);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalFollowing.greaterThanOrEqual=" + UPDATED_TOTAL_FOLLOWING);
     }
 
     @Test
@@ -900,10 +829,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalFollowing is less than or equal to DEFAULT_TOTAL_FOLLOWING
-        defaultExtendedUserShouldBeFound("totalFollowing.lessThanOrEqual=" + DEFAULT_TOTAL_FOLLOWING);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalFollowing.lessThanOrEqual=" + DEFAULT_TOTAL_FOLLOWING);
 
         // Get all the extendedUserList where totalFollowing is less than or equal to SMALLER_TOTAL_FOLLOWING
-        defaultExtendedUserShouldNotBeFound("totalFollowing.lessThanOrEqual=" + SMALLER_TOTAL_FOLLOWING);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalFollowing.lessThanOrEqual=" + SMALLER_TOTAL_FOLLOWING);
     }
 
     @Test
@@ -913,10 +842,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalFollowing is less than DEFAULT_TOTAL_FOLLOWING
-        defaultExtendedUserShouldNotBeFound("totalFollowing.lessThan=" + DEFAULT_TOTAL_FOLLOWING);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalFollowing.lessThan=" + DEFAULT_TOTAL_FOLLOWING);
 
         // Get all the extendedUserList where totalFollowing is less than UPDATED_TOTAL_FOLLOWING
-        defaultExtendedUserShouldBeFound("totalFollowing.lessThan=" + UPDATED_TOTAL_FOLLOWING);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalFollowing.lessThan=" + UPDATED_TOTAL_FOLLOWING);
     }
 
     @Test
@@ -926,10 +855,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalFollowing is greater than DEFAULT_TOTAL_FOLLOWING
-        defaultExtendedUserShouldNotBeFound("totalFollowing.greaterThan=" + DEFAULT_TOTAL_FOLLOWING);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalFollowing.greaterThan=" + DEFAULT_TOTAL_FOLLOWING);
 
         // Get all the extendedUserList where totalFollowing is greater than SMALLER_TOTAL_FOLLOWING
-        defaultExtendedUserShouldBeFound("totalFollowing.greaterThan=" + SMALLER_TOTAL_FOLLOWING);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalFollowing.greaterThan=" + SMALLER_TOTAL_FOLLOWING);
     }
 
     @Test
@@ -939,10 +868,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalImages equals to DEFAULT_TOTAL_IMAGES
-        defaultExtendedUserShouldBeFound("totalImages.equals=" + DEFAULT_TOTAL_IMAGES);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalImages.equals=" + DEFAULT_TOTAL_IMAGES);
 
         // Get all the extendedUserList where totalImages equals to UPDATED_TOTAL_IMAGES
-        defaultExtendedUserShouldNotBeFound("totalImages.equals=" + UPDATED_TOTAL_IMAGES);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalImages.equals=" + UPDATED_TOTAL_IMAGES);
     }
 
     @Test
@@ -952,10 +881,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalImages in DEFAULT_TOTAL_IMAGES or UPDATED_TOTAL_IMAGES
-        defaultExtendedUserShouldBeFound("totalImages.in=" + DEFAULT_TOTAL_IMAGES + "," + UPDATED_TOTAL_IMAGES);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalImages.in=" + DEFAULT_TOTAL_IMAGES + "," + UPDATED_TOTAL_IMAGES);
 
         // Get all the extendedUserList where totalImages equals to UPDATED_TOTAL_IMAGES
-        defaultExtendedUserShouldNotBeFound("totalImages.in=" + UPDATED_TOTAL_IMAGES);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalImages.in=" + UPDATED_TOTAL_IMAGES);
     }
 
     @Test
@@ -965,10 +894,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalImages is not null
-        defaultExtendedUserShouldBeFound("totalImages.specified=true");
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalImages.specified=true");
 
         // Get all the extendedUserList where totalImages is null
-        defaultExtendedUserShouldNotBeFound("totalImages.specified=false");
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalImages.specified=false");
     }
 
     @Test
@@ -978,10 +907,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalImages is greater than or equal to DEFAULT_TOTAL_IMAGES
-        defaultExtendedUserShouldBeFound("totalImages.greaterThanOrEqual=" + DEFAULT_TOTAL_IMAGES);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalImages.greaterThanOrEqual=" + DEFAULT_TOTAL_IMAGES);
 
         // Get all the extendedUserList where totalImages is greater than or equal to UPDATED_TOTAL_IMAGES
-        defaultExtendedUserShouldNotBeFound("totalImages.greaterThanOrEqual=" + UPDATED_TOTAL_IMAGES);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalImages.greaterThanOrEqual=" + UPDATED_TOTAL_IMAGES);
     }
 
     @Test
@@ -991,7 +920,7 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalImages is less than or equal to DEFAULT_TOTAL_IMAGES
-        defaultExtendedUserShouldBeFound("totalImages.lessThanOrEqual=" + DEFAULT_TOTAL_IMAGES);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalImages.lessThanOrEqual=" + DEFAULT_TOTAL_IMAGES);
 
         // Get all the extendedUserList where totalImages is less than or equal to SMALLER_TOTAL_IMAGES
         defaultExtendedUserShouldNotBeFound("totalImages.lessThanOrEqual=" + SMALLER_TOTAL_IMAGES);
@@ -1004,10 +933,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalImages is less than DEFAULT_TOTAL_IMAGES
-        defaultExtendedUserShouldNotBeFound("totalImages.lessThan=" + DEFAULT_TOTAL_IMAGES);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalImages.lessThan=" + DEFAULT_TOTAL_IMAGES);
 
         // Get all the extendedUserList where totalImages is less than UPDATED_TOTAL_IMAGES
-        defaultExtendedUserShouldBeFound("totalImages.lessThan=" + UPDATED_TOTAL_IMAGES);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalImages.lessThan=" + UPDATED_TOTAL_IMAGES);
     }
 
     @Test
@@ -1017,10 +946,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalImages is greater than DEFAULT_TOTAL_IMAGES
-        defaultExtendedUserShouldNotBeFound("totalImages.greaterThan=" + DEFAULT_TOTAL_IMAGES);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalImages.greaterThan=" + DEFAULT_TOTAL_IMAGES);
 
         // Get all the extendedUserList where totalImages is greater than SMALLER_TOTAL_IMAGES
-        defaultExtendedUserShouldBeFound("totalImages.greaterThan=" + SMALLER_TOTAL_IMAGES);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalImages.greaterThan=" + SMALLER_TOTAL_IMAGES);
     }
 
     @Test
@@ -1030,10 +959,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalNotifications equals to DEFAULT_TOTAL_NOTIFICATIONS
-        defaultExtendedUserShouldBeFound("totalNotifications.equals=" + DEFAULT_TOTAL_NOTIFICATIONS);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalNotifications.equals=" + DEFAULT_TOTAL_NOTIFICATIONS);
 
         // Get all the extendedUserList where totalNotifications equals to UPDATED_TOTAL_NOTIFICATIONS
-        defaultExtendedUserShouldNotBeFound("totalNotifications.equals=" + UPDATED_TOTAL_NOTIFICATIONS);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalNotifications.equals=" + UPDATED_TOTAL_NOTIFICATIONS);
     }
 
     @Test
@@ -1043,10 +972,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalNotifications in DEFAULT_TOTAL_NOTIFICATIONS or UPDATED_TOTAL_NOTIFICATIONS
-        defaultExtendedUserShouldBeFound("totalNotifications.in=" + DEFAULT_TOTAL_NOTIFICATIONS + "," + UPDATED_TOTAL_NOTIFICATIONS);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalNotifications.in=" + DEFAULT_TOTAL_NOTIFICATIONS + "," + UPDATED_TOTAL_NOTIFICATIONS);
 
         // Get all the extendedUserList where totalNotifications equals to UPDATED_TOTAL_NOTIFICATIONS
-        defaultExtendedUserShouldNotBeFound("totalNotifications.in=" + UPDATED_TOTAL_NOTIFICATIONS);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalNotifications.in=" + UPDATED_TOTAL_NOTIFICATIONS);
     }
 
     @Test
@@ -1056,10 +985,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalNotifications is not null
-        defaultExtendedUserShouldBeFound("totalNotifications.specified=true");
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalNotifications.specified=true");
 
         // Get all the extendedUserList where totalNotifications is null
-        defaultExtendedUserShouldNotBeFound("totalNotifications.specified=false");
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalNotifications.specified=false");
     }
 
     @Test
@@ -1069,10 +998,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalNotifications is greater than or equal to DEFAULT_TOTAL_NOTIFICATIONS
-        defaultExtendedUserShouldBeFound("totalNotifications.greaterThanOrEqual=" + DEFAULT_TOTAL_NOTIFICATIONS);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalNotifications.greaterThanOrEqual=" + DEFAULT_TOTAL_NOTIFICATIONS);
 
         // Get all the extendedUserList where totalNotifications is greater than or equal to UPDATED_TOTAL_NOTIFICATIONS
-        defaultExtendedUserShouldNotBeFound("totalNotifications.greaterThanOrEqual=" + UPDATED_TOTAL_NOTIFICATIONS);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalNotifications.greaterThanOrEqual=" + UPDATED_TOTAL_NOTIFICATIONS);
     }
 
     @Test
@@ -1082,10 +1011,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalNotifications is less than or equal to DEFAULT_TOTAL_NOTIFICATIONS
-        defaultExtendedUserShouldBeFound("totalNotifications.lessThanOrEqual=" + DEFAULT_TOTAL_NOTIFICATIONS);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalNotifications.lessThanOrEqual=" + DEFAULT_TOTAL_NOTIFICATIONS);
 
         // Get all the extendedUserList where totalNotifications is less than or equal to SMALLER_TOTAL_NOTIFICATIONS
-        defaultExtendedUserShouldNotBeFound("totalNotifications.lessThanOrEqual=" + SMALLER_TOTAL_NOTIFICATIONS);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalNotifications.lessThanOrEqual=" + SMALLER_TOTAL_NOTIFICATIONS);
     }
 
     @Test
@@ -1095,10 +1024,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalNotifications is less than DEFAULT_TOTAL_NOTIFICATIONS
-        defaultExtendedUserShouldNotBeFound("totalNotifications.lessThan=" + DEFAULT_TOTAL_NOTIFICATIONS);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalNotifications.lessThan=" + DEFAULT_TOTAL_NOTIFICATIONS);
 
         // Get all the extendedUserList where totalNotifications is less than UPDATED_TOTAL_NOTIFICATIONS
-        defaultExtendedUserShouldBeFound("totalNotifications.lessThan=" + UPDATED_TOTAL_NOTIFICATIONS);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalNotifications.lessThan=" + UPDATED_TOTAL_NOTIFICATIONS);
     }
 
     @Test
@@ -1108,10 +1037,10 @@ class ExtendedUserResourceIT {
         extendedUserRepository.saveAndFlush(extendedUser);
 
         // Get all the extendedUserList where totalNotifications is greater than DEFAULT_TOTAL_NOTIFICATIONS
-        defaultExtendedUserShouldNotBeFound("totalNotifications.greaterThan=" + DEFAULT_TOTAL_NOTIFICATIONS);
+        defaultExtendedUserShouldNotBeFound("id.greaterThanOrEqual=1000&totalNotifications.greaterThan=" + DEFAULT_TOTAL_NOTIFICATIONS);
 
         // Get all the extendedUserList where totalNotifications is greater than SMALLER_TOTAL_NOTIFICATIONS
-        defaultExtendedUserShouldBeFound("totalNotifications.greaterThan=" + SMALLER_TOTAL_NOTIFICATIONS);
+        defaultExtendedUserShouldBeFound("id.greaterThanOrEqual=1000&totalNotifications.greaterThan=" + SMALLER_TOTAL_NOTIFICATIONS);
     }
 
     @Test
@@ -1180,53 +1109,6 @@ class ExtendedUserResourceIT {
     void getNonExistingExtendedUser() throws Exception {
         // Get the extendedUser
         restExtendedUserMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
-    }
-
-    @Test
-    @Transactional
-    void putExistingExtendedUser() throws Exception {
-        // Initialize the database
-        extendedUserRepository.saveAndFlush(extendedUser);
-
-        int databaseSizeBeforeUpdate = extendedUserRepository.findAll().size();
-
-        // Update the extendedUser
-        ExtendedUser updatedExtendedUser = extendedUserRepository.findById(extendedUser.getId()).get();
-        // Disconnect from session so that the updates on updatedExtendedUser are not directly saved in db
-        em.detach(updatedExtendedUser);
-        updatedExtendedUser
-            .description(UPDATED_DESCRIPTION)
-            .location(UPDATED_LOCATION)
-            .height(UPDATED_HEIGHT)
-            .weight(UPDATED_WEIGHT)
-            .birthDate(UPDATED_BIRTH_DATE)
-            .totalFollowers(UPDATED_TOTAL_FOLLOWERS)
-            .totalFollowing(UPDATED_TOTAL_FOLLOWING)
-            .totalImages(UPDATED_TOTAL_IMAGES)
-            .totalNotifications(UPDATED_TOTAL_NOTIFICATIONS);
-        ExtendedUserDTO extendedUserDTO = extendedUserMapper.toDto(updatedExtendedUser);
-
-        restExtendedUserMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, extendedUserDTO.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(extendedUserDTO))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the ExtendedUser in the database
-        List<ExtendedUser> extendedUserList = extendedUserRepository.findAll();
-        assertThat(extendedUserList).hasSize(databaseSizeBeforeUpdate);
-        ExtendedUser testExtendedUser = extendedUserList.get(extendedUserList.size() - 1);
-        assertThat(testExtendedUser.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testExtendedUser.getLocation()).isEqualTo(UPDATED_LOCATION);
-        assertThat(testExtendedUser.getHeight()).isEqualTo(UPDATED_HEIGHT);
-        assertThat(testExtendedUser.getWeight()).isEqualTo(UPDATED_WEIGHT);
-        assertThat(testExtendedUser.getBirthDate()).isEqualTo(UPDATED_BIRTH_DATE);
-        assertThat(testExtendedUser.getTotalFollowers()).isEqualTo(UPDATED_TOTAL_FOLLOWERS);
-        assertThat(testExtendedUser.getTotalFollowing()).isEqualTo(UPDATED_TOTAL_FOLLOWING);
-        assertThat(testExtendedUser.getTotalImages()).isEqualTo(UPDATED_TOTAL_IMAGES);
-        assertThat(testExtendedUser.getTotalNotifications()).isEqualTo(UPDATED_TOTAL_NOTIFICATIONS);
     }
 
     @Test

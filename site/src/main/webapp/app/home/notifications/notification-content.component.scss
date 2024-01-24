@@ -8,8 +8,10 @@
 
 /* notification container */
 .notification-container {
+  margin-top: 1rem;
   margin-left: 320px;
   width: calc(100% - 320px);
+  transition: margin-left 0.2s;
 }
 
 .notification-item {
@@ -66,5 +68,9 @@
   color: #888;
 }
 
+.notification-container.close {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
 /* Additional styling, you can customize it further based on your requirements */
 

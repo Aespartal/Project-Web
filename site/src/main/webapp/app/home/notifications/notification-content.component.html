@@ -1,27 +1,42 @@
-<div class="container-fluid">
-  <section class="notification-container">
-    <div *ngFor="let notification of notifications" class="notification-item">
-      <div class="notification-content">
-        <div class="notification-header">
-          <div class="notification-type" [jhiNotificationTypeIcon]="notification.type!">
-            <span jhiTranslate="{{ 'projectApp.NotificationType.' + notification.type }}"></span>
+
+<section>
+  <article>
+    <jhi-bar-title [title]="'projectApp.notification.home.title'"></jhi-bar-title>
+    <ng-container *ngIf="notifications.length > 0; else noNotificationsTemplate">
+      <div *ngFor="let notification of notifications" class="notification-item">
+        <div class="notification-content">
+          <div class="notification-header">
+            <div class="notification-type" [jhiNotificationTypeIcon]="notification.type!">
+              <span jhiTranslate="{{ 'projectApp.NotificationType.' + notification.type }}"></span>
+            </div>
+            <span class="notification-date">{{ notification.creationDate }}</span>
           </div>
-          <span class="notification-date">{{ notification.creationDate }}</span>
-        </div>
-        <p class="notification-message">{{ notification.message }}</p>
-        <div *ngIf="notification.type === 'FOLLOW'">
-          <!-- BOTONES ACEPTAR Y RECHAZAR-->
-          <div class="notification-buttons">
-            <button class="btn btn-success" (click)="onAcceptClick(notification)">Aceptar</button>
-            <button class="btn btn-danger" (click)="onRejectClick(notification)">Rechazar</button>
+          <p class="notification-message">{{ notification.message }} ->
+            <span *ngIf="notification.notifier">Notificador: {{notification.notifier.id}}</span>,
+            <span *ngIf="notification.notifying">Notificando: {{notification.notifying.id!}} </span>
+          </p>
+          <div *ngIf="notification.type === 'FOLLOW'">
+            <!-- BOTONES ACEPTAR Y RECHAZAR-->
+            <div class="notification-buttons">
+              <button class="btn btn-success" (click)="onAcceptClick(notification)">Aceptar</button>
+              <button class="btn btn-danger" (click)="onRejectClick(notification)">Rechazar</button>
+            </div>
           </div>
-        </div>
-        <div class="notification-details">
-          <div class="notification-commentary" *ngIf="notification.commentary">
-            <p>Commented by: {{ notification.commentary }}</p>
+          <div class="notification-details">
+            <div class="notification-commentary" *ngIf="notification.commentary">
+              <p>Commented by: {{ notification.commentary.id }}</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-</div>
+    </ng-container>
+    <ng-template #noNotificationsTemplate>
+      <div class="no-notifications">
+        <p jhiTranslate="projectApp.notification.home.notFound">No hay notificaciones disponibles en este momento.</p>
+      </div>
+    </ng-template>
+  </article>
+</section>
+
+
+

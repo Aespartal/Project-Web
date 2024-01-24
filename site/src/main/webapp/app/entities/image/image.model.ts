@@ -13,7 +13,7 @@ export interface IImage {
   totalLikes?: number;
   totalCommentaries?: number;
   favourited?: boolean;
-  extendedUser?: Pick<IExtendedUser, 'id' |  'userLogin'> | null;
+  extendedUser?: Pick<IExtendedUser, 'id' |  'userLogin' | 'user'> | null;
   order?: number | null;
 }
 

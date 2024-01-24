@@ -8,6 +8,8 @@ export interface ICommentary {
   creationDate?: dayjs.Dayjs | null;
   extendedUser?: Pick<IExtendedUser, 'id'> | null;
   image?: Pick<IImage, 'id'> | null;
+  extendedUserName?: string | null;
+  extendedUserLogin?: string | null;
 }
 
 export type NewCommentary = Omit<ICommentary, 'id'> & { id: null };

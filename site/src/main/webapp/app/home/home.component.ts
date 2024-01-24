@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { IExtendedUser } from 'app/entities/extended-user/extended-user.model';
+import { SidebarService } from 'app/shared/services/sidebar.service';
 
 @Component({
   selector: 'jhi-home',
@@ -12,12 +13,14 @@ import { IExtendedUser } from 'app/entities/extended-user/extended-user.model';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   extendedUser: IExtendedUser | null = null;
-
+  sidebarOpen$ = this.sidebarService.sidebarOpen$;
 
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private accountService: AccountService) {
-
+  constructor(
+    private accountService: AccountService,
+    private sidebarService: SidebarService
+    ) {
   }
 
   ngOnInit(): void {
@@ -31,4 +34,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  toggleSidebar(): void {
+    this.sidebarService.toggleSidebar();
+  }
+
 }

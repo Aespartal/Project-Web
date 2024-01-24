@@ -90,37 +90,6 @@ class LikeImageResourceIT {
         return likeImage;
     }
 
-    /**
-     * Create an updated entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static LikeImage createUpdatedEntity(EntityManager em) {
-        LikeImage likeImage = new LikeImage().creationDate(UPDATED_CREATION_DATE);
-        // Add required entity
-        Image image;
-        if (TestUtil.findAll(em, Image.class).isEmpty()) {
-            image = ImageResourceIT.createUpdatedEntity(em);
-            em.persist(image);
-            em.flush();
-        } else {
-            image = TestUtil.findAll(em, Image.class).get(0);
-        }
-        likeImage.setImage(image);
-        // Add required entity
-        ExtendedUser extendedUser;
-        if (TestUtil.findAll(em, ExtendedUser.class).isEmpty()) {
-            extendedUser = ExtendedUserResourceIT.createUpdatedEntity(em);
-            em.persist(extendedUser);
-            em.flush();
-        } else {
-            extendedUser = TestUtil.findAll(em, ExtendedUser.class).get(0);
-        }
-        likeImage.setExtendedUser(extendedUser);
-        return likeImage;
-    }
-
     @BeforeEach
     public void initTest() {
         likeImage = createEntity(em);

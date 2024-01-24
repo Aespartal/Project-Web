@@ -5,7 +5,11 @@ import { INotification } from "app/entities/notification/notification.model";
 import { NotificationService } from "app/entities/notification/service/notification.service";
 import { NotificationFilter } from "./notification.filter";
 import { ImageService } from "app/entities/image/service/image.service";
-import { NotificationType } from "app/entities/enumerations/notification-type.model";
+import { SidebarService } from "app/shared/services/sidebar.service";
+import { FollowService } from "app/entities/follow/service/follow.service";
+import { NewFollow } from "app/entities/follow/follow.model";
+import { FollowState } from "app/entities/enumerations/follow-state.model";
+import dayjs from 'dayjs/esm';
 
 @Component({
   selector: 'jhi-notification-content',
@@ -28,7 +32,9 @@ export class NotificationContentComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private notificationService: NotificationService,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private sidebarService: SidebarService,
+    private followService: FollowService
     ) {
     this.predicate = 'creationDate';
     this.ascending = true;
@@ -42,8 +48,6 @@ export class NotificationContentComponent implements OnInit {
         this.filters.notifyingId = this.extendedUser.id!;
         this.getNotifications();
       });
-
-
   }
 
   getNotifications(): void {
@@ -62,11 +66,35 @@ export class NotificationContentComponent implements OnInit {
   }
 
   onAcceptClick(notification: INotification): void {;
-   // empty
+    const newFollow: NewFollow = {
+      id: null,
+      follower: notification.notifier,
+      following: notification.notifying,
+      state: FollowState.ACCEPTED,
+      acceptanceDate: dayjs(),
+      creationDate: dayjs(),
+    };
+    this.followService.create(newFollow).subscribe(() => {
+      this.notificationService.delete(notification.id).subscribe(() => {
+        this.getNotifications();
+      });
+    });
   }
 
   onRejectClick(notification: INotification): void {
-    // empty
+    const newFollow: NewFollow = {
+      id: null,
+      follower: notification.notifier,
+      following: notification.notifying,
+      state: FollowState.REJECTED,
+      creationDate: dayjs(),
+    };
+
+    this.followService.create(newFollow).subscribe(() => {
+      this.notificationService.delete(notification.id).subscribe(() => {
+        this.getNotifications();
+      });
+    });
   }
 
   sort(): string[] {

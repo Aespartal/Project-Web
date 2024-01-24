@@ -2,7 +2,7 @@ import { RxStompConfig } from "@stomp/rx-stomp/esm6/rx-stomp-config";
 
 export const myRxStompConfig: RxStompConfig = {
   // Which server?
-  brokerURL: 'ws://127.0.0.1:8080/ws',
+  brokerURL: 'ws://localhost:8080/ws',
 
   // How often to heartbeat?
   // Interval in milliseconds, set to 0 to disable
@@ -18,6 +18,7 @@ export const myRxStompConfig: RxStompConfig = {
   // It can be quite verbose, not recommended in production
   // Skip this key to stop logging to console
   debug(msg: string): void {
+    // eslint-disable-next-line no-console
     console.log(new Date(), msg);
   },
 };

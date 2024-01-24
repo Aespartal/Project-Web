@@ -262,5 +262,12 @@ wrapper {
 }
 
 
+task copyWebApp(type: Copy) {
+    from "../site/target/classes/static/"
+    into "build/resources/main/static/."
+}
+
 compileJava.dependsOn processResources
 processResources.dependsOn bootBuildInfo
+
+compileJava.dependsOn copyWebApp

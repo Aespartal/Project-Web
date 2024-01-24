@@ -1,7 +1,7 @@
 package es.project.web.rest;
 
 import es.project.config.ApplicationProperties;
-import es.project.errors.BadRequestAlertException;
+import es.project.exception.BadRequestAlertException;
 import es.project.repository.ImageRepository;
 import es.project.service.ImageService;
 import es.project.service.dto.ImageDTO;

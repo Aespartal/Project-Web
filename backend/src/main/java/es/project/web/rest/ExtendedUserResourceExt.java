@@ -1,8 +1,7 @@
 package es.project.web.rest;
 
 import es.project.domain.User;
-import es.project.errors.InvalidPasswordException;
-import es.project.repository.ExtendedUserRepository;
+import es.project.exception.InvalidPasswordException;
 import es.project.service.ExtendedUserQueryService;
 import es.project.service.ExtendedUserService;
 import es.project.service.UserService;

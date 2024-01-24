@@ -22,6 +22,7 @@ export type NewRestNotification = RestOf<NewNotification>;
 export type PartialUpdateRestNotification = RestOf<PartialUpdateNotification>;
 
 export type EntityResponseType = HttpResponse<INotification>;
+export type NumberResponseType = HttpResponse<number>;
 export type EntityArrayResponseType = HttpResponse<INotification[]>;
 
 @Injectable({ providedIn: 'root' })
@@ -62,6 +63,12 @@ export class NotificationService {
     return this.http
       .get<RestNotification[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  count(req?: any): Observable<NumberResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<number>(`${this.resourceUrl}/count`, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

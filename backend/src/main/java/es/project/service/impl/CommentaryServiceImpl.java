@@ -1,10 +1,15 @@
 package es.project.service.impl;
 
 import es.project.domain.Commentary;
+import es.project.exception.CurrentUserNotFoundException;
 import es.project.repository.CommentaryRepository;
 import es.project.service.CommentaryService;
+import es.project.service.ExtendedUserService;
 import es.project.service.dto.CommentaryDTO;
+import es.project.service.dto.ExtendedUserDTO;
 import es.project.service.mapper.CommentaryMapper;
+
+import java.time.Instant;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +31,23 @@ public class CommentaryServiceImpl implements CommentaryService {
 
     private final CommentaryMapper commentaryMapper;
 
-    public CommentaryServiceImpl(CommentaryRepository commentaryRepository, CommentaryMapper commentaryMapper) {
+    private final ExtendedUserService extendedUserService;
+
+    public CommentaryServiceImpl(CommentaryRepository commentaryRepository, CommentaryMapper commentaryMapper, ExtendedUserService extendedUserService) {
         this.commentaryRepository = commentaryRepository;
         this.commentaryMapper = commentaryMapper;
+        this.extendedUserService = extendedUserService;
     }
 
     @Override
     public CommentaryDTO save(CommentaryDTO commentaryDTO) {
         log.debug("Request to save Commentary : {}", commentaryDTO);
+        ExtendedUserDTO currentExtendedUserDTO = extendedUserService.getCurrentExtendedUser()
+            .orElseThrow(CurrentUserNotFoundException::new);
+        if (commentaryDTO.getId() == null) {
+            commentaryDTO.setCreationDate(Instant.now());
+            commentaryDTO.setExtendedUser(currentExtendedUserDTO);
+        }
         Commentary commentary = commentaryMapper.toEntity(commentaryDTO);
         commentary = commentaryRepository.save(commentary);
         return commentaryMapper.toDto(commentary);

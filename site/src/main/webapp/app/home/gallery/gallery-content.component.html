@@ -1,27 +1,6 @@
-<div class=" container-fluid">
-<section class="w-100" [ngClass]="{'gallery-container': extendedUser}">
+<section>
   <article>
-      <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div *ngFor="let image of carouselImages; let i = index; trackBy: trackId" class="carousel-item" [ngClass]="{'active': i === activeIndex}">
-            <img [src]="url + image.extendedUser!.id + '/' + image.fileName" [alt]="'Slide ' + (i + 1)">
-            <div class="carousel__caption carousel-caption">
-              <h1>{{image.title}}</h1>
-            </div>
-          </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" (click)="prevSlide()">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" (click)="nextSlide()">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-  </article>
-  <article>
-    <jhi-bar-title [title]="popularTitle"></jhi-bar-title>
+    <jhi-bar-title [title]="'global.home.bar.popularImages'"></jhi-bar-title>
     <div class="row">
       <div class="col">
         <div class="grid-gallery">
@@ -29,14 +8,16 @@
           [image]="popularImage"
           (likeClicked)="onLikeClick($event)"
           (commentClicked)="onCommentClick($event)"
+          (imageClicked)="onImageClicked($event)"
           >
-        </jhi-card>
-      </div>
+          </jhi-card>
+        </div>
+        <jhi-message-empty *ngIf="popularImages.length === 0" [translateMessage]="'projectApp.image.message.popularEmpty'"></jhi-message-empty>
       </div>
     </div>
   </article>
   <article>
-    <jhi-bar-title [title]="recentTitle"></jhi-bar-title>
+    <jhi-bar-title [title]="'global.home.bar.recentImages'"></jhi-bar-title>
     <div class="row">
       <div class="col">
         <div class="grid-gallery">
@@ -44,11 +25,12 @@
           [image]="recentImage"
           (likeClicked)="onLikeClick($event)"
           (commentClicked)="onCommentClick($event)"
+          (imageClicked)="onImageClicked($event)"
           >
-        </jhi-card>
-      </div>
+          </jhi-card>
+        </div>
+        <jhi-message-empty *ngIf="popularImages.length === 0" [translateMessage]="'projectApp.image.message.recentEmpty'"></jhi-message-empty>
       </div>
     </div>
   </article>
 </section>
-</div>

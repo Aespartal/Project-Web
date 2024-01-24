@@ -1,4 +1,4 @@
-package es.project.errors;
+package es.project.exception;
 
 public class CurrentUserNotFoundException extends BadRequestAlertException {
     private static final long serialVersionUID = 1L;

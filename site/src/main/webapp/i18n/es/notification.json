@@ -2,11 +2,11 @@
   "projectApp": {
     "notification": {
       "home": {
-        "title": "Notifications",
+        "title": "Notifiaciones",
         "refreshListLabel": "Refrescar lista",
         "createLabel": "Crear nuevo Notification",
         "createOrEditLabel": "Crear o editar Notification",
-        "notFound": "Ningún Notifications encontrado"
+        "notFound": "Ningún notificación encontrada"
       },
       "created": "Un nuevo Notification ha sido creado con el identificador {{ param }}",
       "updated": "Un Notification ha sido actualizado con el identificador {{ param }}",

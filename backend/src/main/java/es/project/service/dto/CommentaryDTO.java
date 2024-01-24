@@ -25,13 +25,16 @@ public class CommentaryDTO implements Serializable {
     /**
      * creationDate
      */
-    @NotNull
     @Schema(description = "creationDate", required = true)
     private Instant creationDate;
 
     private ExtendedUserDTO extendedUser;
 
     private ImageDTO image;
+
+    private String extendedUserName;
+
+    private String extendedUserLogin;
 
     public Long getId() {
         return id;
@@ -71,6 +74,22 @@ public class CommentaryDTO implements Serializable {
 
     public void setImage(ImageDTO image) {
         this.image = image;
+    }
+
+    public String getExtendedUserName() {
+        return extendedUserName;
+    }
+
+    public void setExtendedUserName(String extendedUserName) {
+        this.extendedUserName = extendedUserName;
+    }
+
+    public String getExtendedUserLogin() {
+        return extendedUserLogin;
+    }
+
+    public void setExtendedUserLogin(String extendedUserLogin) {
+        this.extendedUserLogin = extendedUserLogin;
     }
 
     @Override

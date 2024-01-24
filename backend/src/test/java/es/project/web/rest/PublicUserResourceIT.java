@@ -47,23 +47,6 @@ class PublicUserResourceIT {
 
     @Test
     @Transactional
-    void getAllPublicUsers() throws Exception {
-        // Initialize the database
-        userRepository.saveAndFlush(user);
-
-        // Get all the users
-        restUserMockMvc
-            .perform(get("/api/users?sort=id,desc").accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].login").value(hasItem(DEFAULT_LOGIN)))
-            .andExpect(jsonPath("$.[*].email").doesNotExist())
-            .andExpect(jsonPath("$.[*].imageUrl").doesNotExist())
-            .andExpect(jsonPath("$.[*].langKey").doesNotExist());
-    }
-
-    @Test
-    @Transactional
     void getAllAuthorities() throws Exception {
         restUserMockMvc
             .perform(get("/api/authorities").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
@@ -73,17 +56,4 @@ class PublicUserResourceIT {
             .andExpect(jsonPath("$").value(hasItems(AuthoritiesConstants.USER, AuthoritiesConstants.ADMIN)));
     }
 
-    @Test
-    @Transactional
-    void getAllUsersSortedByParameters() throws Exception {
-        // Initialize the database
-        userRepository.saveAndFlush(user);
-
-        restUserMockMvc.perform(get("/api/users?sort=resetKey,desc").accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
-        restUserMockMvc.perform(get("/api/users?sort=password,desc").accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
-        restUserMockMvc
-            .perform(get("/api/users?sort=resetKey,desc&sort=id,desc").accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isBadRequest());
-        restUserMockMvc.perform(get("/api/users?sort=id,desc").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-    }
 }

@@ -29,6 +29,7 @@
       "extendedUser": "Usuario",
       "totalLikes": "Total de Me gustas",
       "totalCommentaries": "Nº de comentarios",
+      "upload": "Subir imagen",
       "help": {
         "title": "título",
         "description": "descripción",
@@ -39,6 +40,10 @@
         "isPrivate": "privada",
         "totalLikes": "Total de Me gustas",
         "totalCommentaries": "Nº de comentarios"
+      },
+      "message": {
+        "popularEmpty": "No existen imágenes populares",
+        "recentEmpty": "No existen imágenes recientes"
       }
     }
   }

@@ -16,9 +16,16 @@ import { FilterComponent } from './filter/filter.component';
 import { ImageCardComponent } from './components/image-card/image-card.component';
 import { BarTitleComponent } from './components/bar-title/bar-title.component';
 import { NotificationTypeIconDirective } from './directive/notification-type-icon.directive';
+import { MessageEmptyComponent } from './components/message-empty/message-empty.component';
+import { FavButtonComponent } from './components/fav-button/fav-button.component';
+
+import { StepsModule } from 'primeng/steps';
+import { CommentButtonComponent } from './components/comment-button/comment-button.component';
+
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
-  imports: [SharedLibsModule],
+  imports: [SharedLibsModule, StepsModule, ImageCropperModule],
   declarations: [
     FindLanguageFromKeyPipe,
     TranslateDirective,
@@ -34,7 +41,10 @@ import { NotificationTypeIconDirective } from './directive/notification-type-ico
     FilterComponent,
     ImageCardComponent,
     BarTitleComponent,
-    NotificationTypeIconDirective
+    NotificationTypeIconDirective,
+    MessageEmptyComponent,
+    FavButtonComponent,
+    CommentButtonComponent
   ],
   exports: [
     SharedLibsModule,
@@ -52,7 +62,12 @@ import { NotificationTypeIconDirective } from './directive/notification-type-ico
     FilterComponent,
     ImageCardComponent,
     BarTitleComponent,
-    NotificationTypeIconDirective
+    NotificationTypeIconDirective,
+    MessageEmptyComponent,
+    FavButtonComponent,
+    StepsModule,
+    CommentButtonComponent,
+    ImageCropperModule
   ],
 })
 export class SharedModule {}

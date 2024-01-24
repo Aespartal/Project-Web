@@ -1,11 +1,13 @@
 package es.project.web.rest;
 
 import es.project.repository.NotificationRepository;
+import es.project.service.ExtendedUserService;
 import es.project.service.NotificationQueryService;
 import es.project.service.NotificationService;
 import es.project.service.criteria.NotificationCriteria;
+import es.project.service.dto.ExtendedUserDTO;
 import es.project.service.dto.NotificationDTO;
-import es.project.errors.BadRequestAlertException;
+import es.project.exception.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -46,16 +48,19 @@ public class NotificationResource {
 
     private final NotificationQueryService notificationQueryService;
     private final NotificationWebSocketResource notificationWebSocketResource;
+    private final ExtendedUserService extendedUserService;
 
     public NotificationResource(
         NotificationService notificationService,
         NotificationRepository notificationRepository,
         NotificationQueryService notificationQueryService,
-        NotificationWebSocketResource notificationWebSocketResource) {
+        NotificationWebSocketResource notificationWebSocketResource,
+        ExtendedUserService extendedUserService) {
         this.notificationService = notificationService;
         this.notificationRepository = notificationRepository;
         this.notificationQueryService = notificationQueryService;
         this.notificationWebSocketResource = notificationWebSocketResource;
+        this.extendedUserService = extendedUserService;
     }
 
     /**

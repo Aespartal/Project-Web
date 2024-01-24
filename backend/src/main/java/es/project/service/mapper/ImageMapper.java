@@ -9,9 +9,11 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Image} and its DTO {@link ImageDTO}.
  */
-@Mapper(componentModel = "spring", uses = {ExtendedUserMapper.class})
+@Mapper(componentModel = "spring", uses = { ExtendedUserMapper.class })
 public interface ImageMapper extends EntityMapper<ImageDTO, Image> {
-    @Mapping(target = "extendedUser", source = "extendedUser", qualifiedByName = "extendedUserId")
+
+    @Mapping(target = "extendedUserName", source = "extendedUser.user.firstName")
+    @Mapping(target = "extendedUserLogin", source = "extendedUser.user.login")
     ImageDTO toDto(Image s);
 
     @Named("extendedUserId")

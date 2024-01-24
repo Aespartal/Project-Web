@@ -2,8 +2,8 @@ package es.project.service.impl;
 
 import es.project.domain.Image;
 import es.project.domain.ImageExt;
-import es.project.errors.CurrentUserNotFoundException;
-import es.project.errors.ValidationException;
+import es.project.exception.CurrentUserNotFoundException;
+import es.project.exception.ValidationException;
 import es.project.repository.ImageRepository;
 import es.project.repository.ImageRepositoryCustom;
 import es.project.service.ExtendedUserService;
@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,13 +72,18 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public ImageDTO createImage(ImageDTO imageDTO, MultipartFile file) {
         log.debug("Request to save Image : {}", imageDTO);
-        Image image = imageMapper.toEntity(imageDTO);
-        image.setFileName(file.getOriginalFilename());
-        image.setCreationDate(Instant.now());
-        Path pathImage = FileUtil.getImagePath(imageDTO.getExtendedUser().getId()).resolve(image.getFileName());
-        image.setPath(pathImage.toString());
+
+        Optional<ExtendedUserDTO> currentExtendedUserDTO = extendedUserService.getCurrentExtendedUser();
+
+        imageDTO.setExtendedUser(currentExtendedUserDTO.get());
+
+        Image image = createImageEntity(imageDTO, file);
+
         image = imageRepository.save(image);
-        saveFile(file, pathImage);
+
+        // Save the file
+        saveFile(file, FileUtil.getImagePath(currentExtendedUserDTO.get().getId()).resolve(image.getFileName()));
+
         return imageMapper.toDto(image);
     }
 
@@ -163,44 +170,39 @@ public class ImageServiceImpl implements ImageService {
     public Page<ImageDTO> findRecentImages(Pageable page) {
         log.debug("find by page: {}", page);
         Optional<ExtendedUserDTO> currentExtendedUserDTO = extendedUserService.getCurrentExtendedUser();
-        List<ImageExt> imageExtList;
-        long total;
         boolean allUsers = true;
         boolean isPrivate = false;
         boolean isPopular = false;
-        if (currentExtendedUserDTO.isPresent()) {
-            Long id = currentExtendedUserDTO.get().getId();
-            imageExtList = imageRepositoryCustom.findImages(id, isPrivate, page.getPageNumber(), page.getPageSize(), allUsers, isPopular);
-            total = imageRepositoryCustom.countImages(id, isPrivate, allUsers);
-        } else {
-            imageExtList = imageRepositoryCustom.findImages(null, isPrivate, page.getPageNumber(), page.getPageSize(), allUsers, isPopular);
-            total = imageRepositoryCustom.countImages( null, isPrivate, allUsers);
-        }
+
+        Long id = currentExtendedUserDTO.map(ExtendedUserDTO::getId).orElse(null);
+
+        List<ImageExt> imageExtList = imageRepositoryCustom.findImages(id, isPrivate, page.getPageNumber(), page.getPageSize(), allUsers, isPopular);
+        long total = imageRepositoryCustom.countImages(id, isPrivate, allUsers);
+
         return new PageImpl<>(imageExtMapper.toDto(imageExtList), page, total);
     }
 
     @Override
     public void likeImage(ImageDTO imageDTO) {
-        ExtendedUserDTO currentExtendedUserDTO = extendedUserService.getCurrentExtendedUser()
-            .orElseThrow(CurrentUserNotFoundException::new);
+        ExtendedUserDTO currentExtendedUserDTO = getCurrentUser();
 
         Optional<LikeImageDTO> likeImageDTOOptional = likeImageService.findByExtendedUserIdAndImageId(currentExtendedUserDTO.getId(), imageDTO.getId());
 
-        if (!likeImageDTOOptional.isPresent()) {
+        likeImageDTOOptional.ifPresent(likeImageDTO -> likeImageService.delete(likeImageDTO.getId()));
+
+        likeImageDTOOptional.orElseGet(() -> {
             LikeImageDTO likeImageDTO = new LikeImageDTO();
             likeImageDTO.setImage(imageDTO);
             likeImageDTO.setCreationDate(Instant.now());
             likeImageDTO.setExtendedUser(currentExtendedUserDTO);
-            likeImageService.save(likeImageDTO);
-        } else {
-            likeImageService.delete(likeImageDTOOptional.get().getId());
-        }
+            return likeImageService.save(likeImageDTO);
+        });
     }
 
     @Override
     public void deleteImage(Long id) {
         likeImageService.removeFromImageId(id);
-        likeImageService.delete(id);
+        imageRepository.deleteById(id);
     }
 
     @Override
@@ -236,5 +238,43 @@ public class ImageServiceImpl implements ImageService {
         } catch (IOException e) {
             throw new ValidationException("Error saving files");
         }
+    }
+
+
+    private Image createImageEntity(ImageDTO imageDTO, MultipartFile file) {
+        Image image = imageMapper.toEntity(imageDTO);
+        setDefaultImageValues(image, file);
+
+        // Set image path based on user and filename
+        setImagePath(image, imageDTO.getExtendedUser().getId());
+
+        return image;
+    }
+
+    private void setDefaultImageValues(Image image, MultipartFile file) {
+        // Set default values for new image
+        image.setTotalCommentaries(0);
+        image.setTotalLikes(0);
+
+        // Set filename with timestamp
+        Instant today = Instant.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmssSSSZ");
+        String formattedDate = today.atZone(ZoneId.systemDefault()).format(formatter);
+
+        image.setFileName(file.getOriginalFilename().concat("-").concat(formattedDate));
+
+
+        // Set creation date
+        image.setCreationDate(today);
+    }
+
+    private void setImagePath(Image image, Long userId) {
+        // Set image path based on user and filename
+        Path pathImage = FileUtil.getImagePath(userId).resolve(image.getFileName());
+        image.setPath(pathImage.toString());
+    }
+
+    private ExtendedUserDTO getCurrentUser() {
+        return extendedUserService.getCurrentExtendedUser().orElseThrow(CurrentUserNotFoundException::new);
     }
 }

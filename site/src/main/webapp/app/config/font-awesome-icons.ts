@@ -40,6 +40,9 @@ import {
   faComment,
   faGear,
   faRightFromBracket,
+  faAngleLeft,
+  faAngleRight,
+  faUpload
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -84,6 +87,9 @@ export const fontAwesomeIcons = [
   faWrench,
   faComment,
   faGear,
-  faRightFromBracket
+  faRightFromBracket,
+  faAngleLeft,
+  faAngleRight,
+  faUpload
   // jhipster-needle-add-icon-import
 ];

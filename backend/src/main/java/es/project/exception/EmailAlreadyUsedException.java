@@ -1,4 +1,4 @@
-package es.project.errors;
+package es.project.exception;
 
 @SuppressWarnings("java:S110") // Inheritance tree of classes should not be too deep
 public class EmailAlreadyUsedException extends BadRequestAlertException {

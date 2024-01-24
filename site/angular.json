@@ -37,6 +37,8 @@
             ],
             "styles": [
               "src/main/webapp/content/scss/vendor.scss",
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
               "src/main/webapp/content/scss/global.scss",
               "node_modules/@fortawesome/fontawesome-svg-core/styles.css"
             ],

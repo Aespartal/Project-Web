@@ -1,4 +1,4 @@
-package es.project.errors;
+package es.project.exception;
 
 public class UsernameAlreadyUsedException extends RuntimeException {
 

@@ -2,7 +2,7 @@ package es.project.service.impl;
 
 import es.project.domain.ExtendedUser;
 import es.project.domain.User;
-import es.project.errors.ValidationException;
+import es.project.exception.ValidationException;
 import es.project.repository.ExtendedUserRepository;
 import es.project.repository.UserRepository;
 import es.project.service.ExtendedUserService;

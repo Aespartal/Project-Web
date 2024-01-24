@@ -8,8 +8,63 @@
   left: 0;
   bottom: 0;
 
-  background-color: #151515;
+  background-color: #00000070;
+
   padding: 20px;
   padding-top: 5rem;
-  border-right: 1px solid #333;
+  border-right: 1px solid #2e2e2e;
+
+  transition: width 0.2s;
+}
+
+.account-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 1rem;
+  color: $light !important;
+  text-decoration: none;
+  transition: color 0.2s;
+  z-index: 100;
+}
+
+.account-container.close {
+  width: 80px;
+  padding: 0.5rem 1rem;
+
+  .account-toggle {
+    right: 50%;
+    transform: translateX(50%);
+    margin: 1rem 0;
+  }
+}
+
+/* right container */
+.right-container {
+  margin-left: 320px;
+  width: calc(100% - 340px);
+  transition: margin-left 0.2s;
+}
+
+.right-container.close {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+
+@media screen and (max-width: 1390px) {
+  .account-container {
+    width: 80px;
+    padding: 0.5rem 1rem;
+
+    .account-toggle {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 1390px) {
+  .right-container {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+  }
 }

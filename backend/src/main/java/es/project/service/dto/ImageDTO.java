@@ -34,7 +34,6 @@ public class ImageDTO implements Serializable {
     /**
      * fileName
      */
-    @NotNull
     @Size(max = 3500)
     @Schema(description = "fileName", required = true)
     private String fileName;
@@ -42,7 +41,6 @@ public class ImageDTO implements Serializable {
     /**
      * path
      */
-    @NotNull
     @Size(max = 3500)
     @Schema(description = "path", required = true)
     private String path;
@@ -50,7 +48,6 @@ public class ImageDTO implements Serializable {
     /**
      * creationDate
      */
-    @NotNull
     @Schema(description = "creationDate", required = true)
     private Instant creationDate;
 
@@ -63,7 +60,6 @@ public class ImageDTO implements Serializable {
     /**
      * isPrivate
      */
-    @NotNull
     @Schema(description = "isPrivate", required = true)
     private Boolean isPrivate;
 
@@ -84,6 +80,10 @@ public class ImageDTO implements Serializable {
     private ExtendedUserDTO extendedUser;
 
     private Boolean isFavourited;
+
+    private String extendedUserName;
+
+    private String extendedUserLogin;
 
     public Long getId() {
         return id;
@@ -179,6 +179,22 @@ public class ImageDTO implements Serializable {
 
     public void setFavourited(Boolean favourited) {
         isFavourited = favourited;
+    }
+
+    public String getExtendedUserName() {
+        return extendedUserName;
+    }
+
+    public void setExtendedUserName(String extendedUserName) {
+        this.extendedUserName = extendedUserName;
+    }
+
+    public String getExtendedUserLogin() {
+        return extendedUserLogin;
+    }
+
+    public void setExtendedUserLogin(String extendedUserLogin) {
+        this.extendedUserLogin = extendedUserLogin;
     }
 
     @Override
